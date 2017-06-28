@@ -1,1 +1,10 @@
+Work on vagrant mysql DB
+
 find java layer mapping programming for app doc
+
+http://viralpatel.net/blogs/spring-4-mvc-rest-example-json/
+
+
+#Beginning to End
+Database object abstraction Access
+Model --> DAO --> DaoInterface --> Service ---> Controller

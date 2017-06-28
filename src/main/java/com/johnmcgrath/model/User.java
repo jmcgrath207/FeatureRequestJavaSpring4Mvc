@@ -1,8 +1,8 @@
 package com.johnmcgrath.model;
 
-/**
- * Created by root on 6/27/17.
- */
+import org.springframework.stereotype.Component;
+
+@Component("user")
 public class User {
 
     //Model for the case view once the client logs in.
