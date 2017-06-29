@@ -12,6 +12,7 @@ Model --> DAO --> DaoInterface --> Service ---> Controller
 
 
 #Vagrant issue
+pkill -9 -f .*vagrant.*; pkill -9 -f .*virtualbox.*
 
-https://github.com/mitchellh/vagrant/issues/8157
-'https://github.com/mitchellh/vagrant/issues/8056#issuecomment-267600935'
+#Vagrant Ansible
+https://www.vagrantup.com/docs/provisioning/ansible_intro.html
