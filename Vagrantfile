@@ -2,7 +2,7 @@ Vagrant.configure("2") do |config|
 
   config.vm.box = "ubuntu/trusty64"
   config.vm.box_version = "20170619.0.0"
-    config.vm.provision "ansible" do |ansible|
+    config.vm.provision "ansible_local" do |ansible|
       ansible.playbook = "provisioning/playbook.yml"
       end
   config.vm.boot_timeout = 600
