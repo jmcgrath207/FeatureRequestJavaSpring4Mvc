@@ -16,6 +16,10 @@ MAIN_DISTRO = "ubuntu/xenial64"
 BOX_VERSION = "20170626.0.0"
 RAM = 1000
 
+ROOT_PASSWORD = "testtest"
+UBUNTU_PASSWORD = "ubuntu"
+
+
 #bridge interface and Ip space
 BRIDGE_NAME = "wlp3s0"
 BRIDGE_NET="192.168.1."
@@ -26,7 +30,8 @@ DOMAIN="" # Warning causes SSH connect issue at build ex: .sample.com
 
 #Set the vagrant hostname and corresponding ansible playbook
 
-#Note: When using vagrant provision, change the variable disable if you do not want to provision again or ever
+#Note: When using vagrant provision, change the variable disable if you do not want to provision again or
+#Note: vagrant ssh will b
 # ex. HOSTNAME_3_DISABLE = true
 
 HOSTNAME_1 = "web"
@@ -94,6 +99,14 @@ Vagrant.configure(2) do |config|
       node.vm.hostname = machine[:hostname]
       node.vm.network "public_network", ip: machine[:ip], bridge: BRIDGE_NAME
       node.vm.network "private_network", ip: machine[:ip_int], virtualbox__intnet: "intnet"
+
+
+        # added as a fix to https://github.com/mitchellh/vagrant/issues/7350
+        config.vm.provision "shell" do |s|
+          s.inline = 'echo "root:$1" | sudo chpasswd; echo "ubuntu:$2" | sudo chpasswd'
+          s.args   = [ROOT_PASSWORD,UBUNTU_PASSWORD]
+        end
+
 
 
         config.vm.provision "ansible_local" do |ansible|
