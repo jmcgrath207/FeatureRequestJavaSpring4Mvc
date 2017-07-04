@@ -1,0 +1,4 @@
+- hosts: web
+  roles:
+     - role: ChristopherDavenport.universal-tomcat
+       become: yes

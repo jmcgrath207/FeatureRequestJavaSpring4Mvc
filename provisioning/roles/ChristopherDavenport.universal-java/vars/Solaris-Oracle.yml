@@ -1,0 +1,5 @@
+---
+
+__java_oracle_package: "jdk-{{ java_version}}"
+
+java_home: /usr/jdk/latest

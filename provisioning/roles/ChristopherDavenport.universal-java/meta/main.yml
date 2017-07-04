@@ -1,0 +1,51 @@
+galaxy_info:
+  author: ChristopherDavenport
+  description: Universal Java Installer For Both OpenJDK and Oracle
+  company: Eckerd College
+
+  license: MIT
+
+  min_ansible_version: 2.2
+
+  # min_ansible_container_version:
+  # github_branch:
+
+  platforms:
+  - name: Fedora
+    versions:
+      - all
+  - name: GenericLinux
+    versions:
+      - any
+  - name: Ubuntu
+    versions:
+      - all
+  - name: Debian
+    versions:
+      - all
+  - name: EL
+    versions:
+      - all
+  - name: Solaris
+    versions:
+      - all
+  - name: opensuse
+    versions:
+      - all
+  - name: SLES
+    versions:
+      - all
+
+  galaxy_tags:
+    - jdk
+    - java
+    - oracle
+    - openjdk
+    - universal
+    - application
+    - development
+    - system
+    - installer
+    - tools
+
+dependencies: []

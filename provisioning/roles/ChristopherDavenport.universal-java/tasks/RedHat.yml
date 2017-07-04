@@ -1,0 +1,35 @@
+---
+
+- name: Create Temporary Storage Folder
+  file:
+    path: "{{ java_tmp_storage }}"
+    state: directory
+  when: java_type == "Oracle"
+
+- name: Download Oracle Java RPM
+  get_url:
+    url: "{{ __java_oracle_download }}"
+    headers: 'Cookie:oraclelicense=accept-secure-backup-cookie'
+    dest: "{{ java_tmp_storage }}/{{ __java_oracle_rpm }}.rpm"
+    checksum: "{{ __java_oracle_download_checksum }}"
+  when: java_type == "Oracle"
+
+- name: Install Oracle Java
+  package:
+    name: "{{ java_tmp_storage }}/{{ __java_oracle_rpm }}.rpm"
+    state: installed
+  when: java_type == "Oracle"
+
+- name: Install Open Java
+  register: __java_open_install
+  yum:
+    name: "{{ __java_open_package }}"
+    state: installed
+  when: java_type == "Open"
+
+- name: Wait For Install to Complete And Directory to Exist
+  pause:
+    seconds: 10
+  when:
+    - java_type == "Open"
+    - __java_open_install|changed

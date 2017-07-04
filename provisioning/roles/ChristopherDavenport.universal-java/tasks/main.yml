@@ -1,0 +1,53 @@
+---
+# tasks file for universal-java
+
+- name: Include Operating System Variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "vars/{{ ansible_os_family }}-{{ ansible_distribution_major_version }}-{{ java_type }}-{{ java_version }}.yml"
+    - "vars/{{ ansible_os_family }}-{{ ansible_distribution_major_version }}-{{ java_type }}.yml"
+    - "vars/{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
+
+    - "vars/{{ ansible_distribution }}-{{ ansible_distribution_version }}-{{ java_type }}-{{ java_version }}.yml"
+    - "vars/{{ ansible_distribution }}-{{ ansible_distribution_version }}-{{ java_type }}.yml"
+    - "vars/{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
+
+    - "vars/{{ ansible_distribution }}-{{ java_type }}-{{ java_version }}.yml"
+    - "vars/{{ ansible_distribution }}-{{ java_type }}.yml"
+    - "vars/{{ ansible_distribution }}.yml"
+
+    - "vars/{{ ansible_os_family }}-{{ java_type }}-{{ java_version }}.yml"
+    - "vars/{{ ansible_os_family }}-{{ java_type }}.yml"
+    - "vars/{{ ansible_os_family }}.yml"
+
+    - "vars/default-{{ java_type }}-{{ java_version }}.yml"
+    - "vars/default-{{ java_type }}.yml"
+    - "vars/default.yml"
+
+- name: Include Steps For Installation
+  include: "{{ os_item }}"
+  static: no
+  with_first_found:
+    - "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
+    - "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
+    - "{{ ansible_distribution }}.yml"
+    - "{{ ansible_os_family }}.yml"
+    - "default.yml"
+  loop_control:
+    loop_var: os_item
+
+- name: Check Java Version
+  command: /usr/bin/java -version
+  register: __java_version
+  changed_when: False
+
+- name: Check Java Home Version
+  command: "{{ java_home }}/bin/java -version"
+  register: __java_home_version
+  changed_when: False
+
+- name: Set Java Home Environmental Variables
+  template:
+    src: java_home.sh.j2
+    dest: "/etc/profile.d/{{ java_home_script_name }}"
+  when: java_home_script_install

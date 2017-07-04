@@ -1,0 +1,7 @@
+---
+
+__java_oracle_rpm: java8u131
+__java_oracle_download: http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm
+__java_oracle_download_checksum: md5:9024d13ec651d07de450d465f14065a6
+
+java_home: /usr/java/latest
