@@ -13,7 +13,9 @@
 #|   |-- playbook.yml
 
 
+#####GLOBAL CONFIG########
 
+VAGRANT_VERSION = 2
 
 #bridge interface and Ip space
 BRIDGE_NAME = "wlp3s0"
@@ -25,43 +27,53 @@ DOMAIN="" # Warning causes SSH connect issue at build ex: .sample.com
 
 #Set the vagrant hostname and corresponding ansible playbook
 
-#Note: When using vagrant provision, change the variable disable if you do not want to provision again
-# ex. HOSTNAME_3_DISABLE = true
-
-#Note: vagrant ssh will not work for boxes that are disable, you will have to re enable it again to gain ssh access
 
 ROOT_PASSWORD = "root"
 UBUNTU_PASSWORD = "ubuntu"
 
 
+
+#NOTE:  the hostname needs to be set in ansible playbook file ex. - hosts: web
+#NOTE: when vagrant provision command is ran, all boxes are loaded in the vagrant inventory file,
+# to disable a certian box use ANSIBLE_ENABLE_* = false. The same concept applies to SHELL_ENABLE_*
+
+####HOST CONFIGS###########
+
 HOSTNAME_1 = "web"
-HOSTNAME_1_PLAYBOOK = "provisioning/web-playbook.yml"
 HOSTNAME_1_DISABLE = false
+HOSTNAME_1_PLAYBOOK = "provisioning/web-playbook.yml"
+ANSIBLE_ENABLE_B1 = false # enables ables anisble provision
+#SHELL_ENABLE_B1 = true # Enables shell provision   # Not working correctly
 DISTRO_B1 = "ubuntu/xenial64"
 VERSION_B1 = "20170626.0.0"
 RAM_B1 = 1000
 PORT_FOWARD_1 = [80,8080]   #Vagrant box port first then local host port
+#PORT_FOWARD_1 = false   # set as false if port foward needs to be disabled
 
 
 HOSTNAME_2 = "db"
-HOSTNAME_2_PLAYBOOK = "provisioning/db-playbook.yml"
 HOSTNAME_2_DISABLE = false
+HOSTNAME_2_PLAYBOOK = "provisioning/db-playbook.yml"
+ANSIBLE_ENABLE_B2 = false
+#SHELL_ENABLE_B2 = true # Enables shell provision   # Not working correctly
 DISTRO_B2 = "ubuntu/xenial64"
 VERSION_B2 = "20170626.0.0"
 RAM_B2 = 1000
-PORT_FOWARD_2 = false   # set as false if port foward needs to be disabled
+PORT_FOWARD_2 = false
 
-# comment out boxes you don't want in the hash array before vagrant up or first build
+
 HOSTNAME_3 = ""
-HOSTNAME_3_PLAYBOOK = ""
 HOSTNAME_3_DISABLE = true
+HOSTNAME_3_PLAYBOOK = ""
+ANSIBLE_ENABLE_B3 = false
+#SHELL_ENABLE_B3 = false # Enables shell provision   # Not working correctly
 DISTRO_B3 = "ubuntu/xenial64"
 VERSION_B3 = "20170626.0.0"
 RAM_B3 = 1000
-PORT_FOWARD_3 = [80,8082]   #Vagrant box first then local host port
+PORT_FOWARD_3 = [80,8082]
 
 
-#NOTE:  ansible.limit = "" #Does not work and the name needs to be set in ansible playbook file ex. - hosts: web
+
 
 
 # An array of hashes in which settings are configured for each virtual machine
@@ -75,6 +87,8 @@ servers=[
         :box_version => VERSION_B1,
         :disable => HOSTNAME_1_DISABLE,
         :port_forward => PORT_FOWARD_1,
+        :ansible_enabled => ANSIBLE_ENABLE_B1,
+        #:shell_enabled => SHELL_ENABLE_B1
 
 
     },
@@ -87,25 +101,27 @@ servers=[
         :box_version => VERSION_B2,
         :disable => HOSTNAME_2_DISABLE,
         :port_forward => PORT_FOWARD_2,
+        :ansible_enabled => ANSIBLE_ENABLE_B2,
+        #:shell_enabled => SHELL_ENABLE_B2
 
     },
-    #{
-    #    :hostname => HOSTNAME_3 + DOMAIN,
-    #    :ip => BRIDGE_NET + "152",
-    #    :ip_int => INTERNAL_NET+ "152",
-    #    :ram => RAM_B3,
-    #    :main_distro => DISTRO_B3,
-    #    :box_version => VERSION_B3,
-    #    :disable => HOSTNAME_3_DISABLE,
-    #    :port_forward => PORT_FOWARD_3,
-    #},
+    {
+        :hostname => HOSTNAME_3 + DOMAIN,
+        :ip => BRIDGE_NET + "152",
+        :ip_int => INTERNAL_NET+ "152",
+        :ram => RAM_B3,
+        :main_distro => DISTRO_B3,
+        :box_version => VERSION_B3,
+        :disable => HOSTNAME_3_DISABLE,
+        :port_forward => PORT_FOWARD_3,
+        #:shell_enabled => SHELL_ENABLE_B3
+    },
 
 
 ]
 
 
-#Could not get the next command in ruby to work working
-# found it best to disable the boxes before vagrant became a
+#Could not get the next command in ruby to work working in Vagrant.configure(2)
 servers.each do |machine|
   if machine[:disable]
     servers.delete(machine)
@@ -116,7 +132,7 @@ end
 
 
 
-Vagrant.configure(2) do |config|
+Vagrant.configure(VAGRANT_VERSION) do |config|
   servers.each do |machine|
     config.vm.define machine[:hostname] do |node|
       node.vm.box = machine[:main_distro]
@@ -130,14 +146,8 @@ Vagrant.configure(2) do |config|
       node.vm.network "private_network", ip: machine[:ip_int], virtualbox__intnet: "intnet"
 
 
-        # added as a fix to https://github.com/mitchellh/vagrant/issues/7350
-        config.vm.provision "shell" do |s|
-          s.inline = 'echo "root:$1" | sudo chpasswd; echo "ubuntu:$2" | sudo chpasswd'
-          s.args   = [ROOT_PASSWORD,UBUNTU_PASSWORD]
-        end
 
-
-
+        if machine[:ansible_enabled]
         config.vm.provision "ansible_local" do |ansible|
           if node.vm.hostname == HOSTNAME_1
             ansible.playbook = HOSTNAME_1_PLAYBOOK
@@ -149,7 +159,21 @@ Vagrant.configure(2) do |config|
             ansible.playbook = HOSTNAME_3_PLAYBOOK
           end
         end
-      end
+        end
+
+
+      #if machine[:shell_enabled]
+        # added as a fix to https://github.com/mitchellh/vagrant/issues/7350
+        config.vm.provision "shell" do |s|
+          s.inline = 'echo "root:$1" | sudo chpasswd; echo "ubuntu:$2" | sudo chpasswd'
+          s.args   = [ROOT_PASSWORD,UBUNTU_PASSWORD]
+        end
+      #end
+
+
     end
   end
+  end
+
+
 
