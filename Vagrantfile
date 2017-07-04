@@ -17,6 +17,17 @@ INTERNAL_NET="192.168.15."
 DOMAIN="" # Warning causes SSH connect issue at build ex: .sample.com
 
 
+#Based on this directory structure
+#|-- Vagrantfile
+#|-- provisioning
+#|   |-- group_vars
+#|           |-- all
+#|   |-- roles
+#|           |-- bar
+#|           |-- foo
+#|   |-- playbook.yml
+
+
 #Set the vagrant hostname and corrpsoning ansible playbook
 HOSTNAME_1 = "web"
 HOSTNAME_1_PLAYBOOK = "provisioning/web-playbook.yml"
