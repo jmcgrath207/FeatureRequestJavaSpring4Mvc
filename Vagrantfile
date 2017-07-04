@@ -1,8 +1,16 @@
 
-
+# array approach based on:
 #http://sysadm.pp.ua/linux/sistemy-virtualizacii/vagrantfile.html
 
-
+#Based on this directory structure
+#|-- Vagrantfile
+#|-- provisioning
+#|   |-- group_vars
+#|           |-- all
+#|   |-- roles
+#|           |-- bar
+#|           |-- foo
+#|   |-- playbook.yml
 
 MAIN_DISTRO = "ubuntu/xenial64"
 BOX_VERSION = "20170626.0.0"
@@ -16,27 +24,23 @@ INTERNAL_NET="192.168.15."
 # The domain that we will use for the entire site
 DOMAIN="" # Warning causes SSH connect issue at build ex: .sample.com
 
+#Set the vagrant hostname and corresponding ansible playbook
 
-#Based on this directory structure
-#|-- Vagrantfile
-#|-- provisioning
-#|   |-- group_vars
-#|           |-- all
-#|   |-- roles
-#|           |-- bar
-#|           |-- foo
-#|   |-- playbook.yml
+#Note: When using vagrant provision, change the variable disable if you do not want to provision again or ever
+# ex. HOSTNAME_3_DISABLE = true
 
-
-#Set the vagrant hostname and corrpsoning ansible playbook
 HOSTNAME_1 = "web"
 HOSTNAME_1_PLAYBOOK = "provisioning/web-playbook.yml"
+HOSTNAME_1_DISABLE = false
 
 HOSTNAME_2 = "db"
 HOSTNAME_2_PLAYBOOK = "provisioning/db-playbook.yml"
+HOSTNAME_2_DISABLE = true
 
+# comment out boxes you don't want in the hash array before vagrant up or first build
 HOSTNAME_3 = ""
 HOSTNAME_3_PLAYBOOK = ""
+HOSTNAME_3_DISABLE = true
 
 #NOTE:  ansible.limit = "" #Does not work and the name needs to be set in ansible playbook file ex. - hosts: web
 
@@ -50,6 +54,7 @@ servers=[
         :ram => RAM,
         :main_distro => MAIN_DISTRO,
         :box_version => BOX_VERSION,
+        :disable => HOSTNAME_1_DISABLE
 
     },
     {
@@ -59,6 +64,7 @@ servers=[
         :ram => RAM,
         :main_distro => MAIN_DISTRO,
         :box_version => BOX_VERSION,
+        :disable => HOSTNAME_2_DISABLE
     },
     #{
     #    :hostname => HOSTNAME_3 + DOMAIN,
@@ -67,11 +73,17 @@ servers=[
     #    :ram => RAM,
     #    :main_distro => MAIN_DISTRO,
     #    :box_version => BOX_VERSION,
+    #    :disable => HOSTNAME_3_DISABLE
     #},
 
 
 ]
 
+servers.each do |machine|
+  if machine[:disable]
+    servers.delete(machine)
+  end
+  end
 
 Vagrant.configure(2) do |config|
   servers.each do |machine|
@@ -95,6 +107,7 @@ Vagrant.configure(2) do |config|
             ansible.playbook = HOSTNAME_3_PLAYBOOK
           end
         end
+      end
     end
   end
-end
+
