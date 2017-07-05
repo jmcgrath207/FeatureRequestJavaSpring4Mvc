@@ -14,7 +14,7 @@
   limitations under the License.
 -->
 <!-- The contents of this file will be loaded for each web application -->
-<Context>
+<Context path="" docBase="johnmcgrath">
 
     <!-- Default set of monitored resources. If one of these changes, the    -->
     <!-- web application will be reloaded.                                   -->
@@ -25,7 +25,6 @@
     <!--
     <Manager pathname="" />
     -->
-
     <Resource name="jdbc/spring" auth="Container" type="javax.sql.DataSource"
               maxActive="100" maxIdle="30" maxWait="10000"
               username="root" password="password" driverClassName="com.mysql.jdbc.Driver"

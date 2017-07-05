@@ -20,42 +20,5 @@ http://www.codejava.net/servers/tomcat/how-to-deploy-a-java-web-application-on-t
 
 
 
-Find out how to enable debugging port on tomcat in ubuntu
+Find out how to change the root context on tomcat with out deleting the ROOT folder
 
-
-
-JMX port 1009
-
-######JMX PORT ######
-
-/etc/systemd/system/tomcat.service
-Environment='JAVA_OPTS=-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.awt.headless=true'
-
-
-http://blog.trifork.com/2014/07/14/how-to-remotely-debug-application-running-on-tomcat-from-within-intellij-idea/
-https://wiki.scn.sap.com/wiki/pages/viewpage.action?pageId=441453905
-https://stackoverflow.com/questions/11222365/catalina-opts-vs-java-opts-what-is-the-difference
-
-
-######JPDA INFO ##############
-
--agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n
-
-JPDA_TRANSPORT: to specify JPDA transport used
-JPDA_ADDRESS: to specify port for remote debugging
-JPDA_SUSPEND: to specify if to suspend JVM after startup
-
-
-#Working?
-set JPDA_ADDRESS=8000
-set JPDA_TRANSPORT=dt_socket
-to start server in debug mode:
-
-%TOMCAT_HOME%/bin/catalina.bat jpda start
-For unix first export variables:
-
-export JPDA_ADDRESS=8000
-export JPDA_TRANSPORT=dt_socket
-and to start server in debug mode:
-
-%TOMCAT_HOME%/bin/catalina.sh jpda start
