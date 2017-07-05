@@ -13,6 +13,8 @@
 #|   |-- playbook.yml
 
 
+#NOTE: Intellj/jetbrains has not build all boxes from it's best to run vagrant command from the terminal
+
 #####GLOBAL CONFIG########
 
 VAGRANT_VERSION = 2
@@ -29,7 +31,7 @@ DOMAIN="" # Warning causes SSH connect issue at build ex: .sample.com
 
 
 ROOT_PASSWORD = "root"
-UBUNTU_PASSWORD = "ubuntu"
+UBUNTU_PASSWORD = "password" # default password for that is set at build time ubuntu NOTE: do not change useless needed
 
 
 
@@ -47,7 +49,7 @@ ANSIBLE_ENABLE_B1 = true # enables ables anisble provision
 DISTRO_B1 = "ubuntu/xenial64"
 VERSION_B1 = "20170626.0.0"
 RAM_B1 = 1000
-PORT_FOWARD_1 = [80,8080]   #Vagrant box port first then local host port
+PORT_FOWARD_1 = [8080,8080]   #Vagrant box port first then local host port
 #PORT_FOWARD_1 = false   # set as false if port foward needs to be disabled
 
 
