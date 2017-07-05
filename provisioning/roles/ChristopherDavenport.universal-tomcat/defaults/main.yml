@@ -28,7 +28,8 @@ tomcat_port_connector: 8080
 tomcat_port_redirect: 8443
 tomcat_port_ajp: 8009
 
-tomcat_java_opts: ""
+tomcat_java_opts: "-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.ssl=false
+ -Dcom.sun.management.jmxremote.authenticate=false -Djava.awt.headless=true"
 tomcat_catalina_opts: ""
 
 tomcat_base_dir: /opt

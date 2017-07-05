@@ -48,7 +48,7 @@ ANSIBLE_ENABLE_B1 = true # enables ables anisble provision
 DISTRO_B1 = "ubuntu/xenial64"
 VERSION_B1 = "20170626.0.0"
 RAM_B1 = 1000
-PORT_FOWARD_1 = [8080,8080,8000,8000]   #Vagrant box port first then local host port
+PORT_FOWARD_1 = [8080,8080,8000,8000,1099,1099]   #Vagrant box port first then local host port
 #PORT_FOWARD_1 = false   # set as false if port foward needs to be disabled
 
 
