@@ -8,6 +8,8 @@
 # 8.5.6
 # 9.0.0.M18
 
+# web app on box is /opt/tomcat/webapps/johnmcgrath
+
 tomcat_version: "8.5.6"
 
 tomcat_mirrors:
@@ -63,7 +65,7 @@ tomcat_configure_webapps: "{{ tomcat_configure }}"
 
 # These copy files across and will use basename
 tomcat_extra_libs_path: []
-tomcat_webapps_path: []
+tomcat_webapps_path: ["{{ playbook_dir }}/src/main/java/com/johnmcgrath"]
 
 # Strings That Allow you to modify your
 # tomcat instance in a predictable fashion.
@@ -81,7 +83,7 @@ tomcat_use_custom_server_xml: false
 tomcat_use_custom_web_xml: false
 # tomcat_custom_web_xml: Path
 tomcat_use_custom_context_xml: true
-tomcat_custom_context_xml: "{{ playbook_dir }}/src/main/WebContent/WEB-INF/TomCatConfig/context.xml"
+tomcat_custom_context_xml: "{{ playbook_dir }}/src/main/java/com/johnmcgrath/WebContent/WEB-INF/TomCatConfig/context.xml"
 tomcat_use_custom_tomcat_users_xml: false
 # tomcat_custom_tomcat_users_xml: Path
 tomcat_use_custom_manager_context_xml: false

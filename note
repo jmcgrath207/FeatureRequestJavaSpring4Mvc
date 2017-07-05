@@ -16,3 +16,4 @@ pkill -9 -f .*vagrant.*; pkill -9 -f .*virtualbox.*
 
 #Vagrant Ansible
 Added WAR file to ansible web once finished
+http://www.codejava.net/servers/tomcat/how-to-deploy-a-java-web-application-on-tomcat
