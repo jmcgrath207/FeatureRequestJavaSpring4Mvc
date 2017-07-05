@@ -33,6 +33,7 @@ DOMAIN="" # Warning causes SSH connect issue at build ex: .sample.com
 ROOT_PASSWORD = "root"
 UBUNTU_PASSWORD = "password" # default password for that is set at build time ubuntu NOTE: do not change useless needed
 
+ROOT_SSH_ACCESS = "yes" # allow root ssh access
 
 
 #NOTE:  the hostname needs to be set in ansible playbook file ex. - hosts: web
@@ -44,7 +45,7 @@ UBUNTU_PASSWORD = "password" # default password for that is set at build time ub
 HOSTNAME_1 = "web"
 HOSTNAME_1_DISABLE = false
 HOSTNAME_1_PLAYBOOK = "provisioning/web-playbook.yml"
-ANSIBLE_ENABLE_B1 = true # enables ables anisble provision
+ANSIBLE_ENABLE_B1 = false # enables ables anisble provision
 #SHELL_ENABLE_B1 = true # Enables shell provision   # Not working correctly
 DISTRO_B1 = "ubuntu/xenial64"
 VERSION_B1 = "20170626.0.0"
@@ -171,6 +172,14 @@ Vagrant.configure(VAGRANT_VERSION) do |config|
           s.args   = [ROOT_PASSWORD,UBUNTU_PASSWORD]
         end
       #end
+
+
+      #args is not working
+      config.vm.provision "shell" do |s|
+        s.inline = 'sed -i -e "/^PermitRootLogin/s/^.*$/PermitRootLogin yes/" /etc/ssh/sshd_config; service sshd restart'
+        s.args   = [ROOT_SSH_ACCESS]
+      end
+
 
 
     end

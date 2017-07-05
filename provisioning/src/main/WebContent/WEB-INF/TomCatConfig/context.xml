@@ -29,7 +29,7 @@
     <Resource name="jdbc/spring" auth="Container" type="javax.sql.DataSource"
               maxActive="100" maxIdle="30" maxWait="10000"
               username="root" password="password" driverClassName="com.mysql.jdbc.Driver"
-              url="jdbc:mysql://localhost:3306/springtutorial"/>
+              url="jdbc:mysql://db:3306/web"/>
 </Context>
 
 

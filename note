@@ -15,4 +15,4 @@ Model --> DAO --> DaoInterface --> Service ---> Controller
 pkill -9 -f .*vagrant.*; pkill -9 -f .*virtualbox.*
 
 #Vagrant Ansible
-https://www.vagrantup.com/docs/provisioning/ansible_intro.html
+Added WAR file to ansible web once finished
