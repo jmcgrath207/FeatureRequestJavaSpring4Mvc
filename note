@@ -24,6 +24,23 @@ Find out how to enable debugging port on tomcat in ubuntu
 
 
 
+JMX port 1009
+
+######JMX PORT ######
+
+http://blog.trifork.com/2014/07/14/how-to-remotely-debug-application-running-on-tomcat-from-within-intellij-idea/
+https://wiki.scn.sap.com/wiki/pages/viewpage.action?pageId=441453905
+https://stackoverflow.com/questions/11222365/catalina-opts-vs-java-opts-what-is-the-difference
+
+
+######JPDA INFO ##############
+
+-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n
+
+JPDA_TRANSPORT: to specify JPDA transport used
+JPDA_ADDRESS: to specify port for remote debugging
+JPDA_SUSPEND: to specify if to suspend JVM after startup
+
 set JPDA_ADDRESS=8000
 set JPDA_TRANSPORT=dt_socket
 to start server in debug mode:
