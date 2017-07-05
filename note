@@ -21,3 +21,18 @@ http://www.codejava.net/servers/tomcat/how-to-deploy-a-java-web-application-on-t
 
 
 Find out how to enable debugging port on tomcat in ubuntu
+
+
+
+set JPDA_ADDRESS=8000
+set JPDA_TRANSPORT=dt_socket
+to start server in debug mode:
+
+%TOMCAT_HOME%/bin/catalina.bat jpda start
+For unix first export variables:
+
+export JPDA_ADDRESS=8000
+export JPDA_TRANSPORT=dt_socket
+and to start server in debug mode:
+
+%TOMCAT_HOME%/bin/catalina.sh jpda start

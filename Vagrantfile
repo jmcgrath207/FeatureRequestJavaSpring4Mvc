@@ -1,7 +1,4 @@
 
-# array approach based on:
-#http://sysadm.pp.ua/linux/sistemy-virtualizacii/vagrantfile.html
-
 #Based on this directory structure
 #|-- Vagrantfile
 #|-- provisioning
@@ -13,7 +10,8 @@
 #|   |-- playbook.yml
 
 
-#NOTE: Intellj/jetbrains has not build all boxes from it's best to run vagrant command from the terminal
+#NOTE: Intellj/jetbrains does not build all boxes from it's best to run vagrant command from the terminal.
+# This is due provision occuring after first box is up instead of ensure all boxes are up.
 
 #####GLOBAL CONFIG########
 
@@ -33,7 +31,7 @@ DOMAIN="" # Warning causes SSH connect issue at build ex: .sample.com
 ROOT_PASSWORD = "root"
 UBUNTU_PASSWORD = "password" # default password for that is set at build time ubuntu NOTE: do not change useless needed
 
-ROOT_SSH_ACCESS = "yes" # allow root ssh access
+ROOT_SSH_ACCESS = "yes" # allow root ssh  # not working
 
 
 #NOTE:  the hostname needs to be set in ansible playbook file ex. - hosts: web
@@ -50,7 +48,7 @@ ANSIBLE_ENABLE_B1 = true # enables ables anisble provision
 DISTRO_B1 = "ubuntu/xenial64"
 VERSION_B1 = "20170626.0.0"
 RAM_B1 = 1000
-PORT_FOWARD_1 = [8080,8080]   #Vagrant box port first then local host port
+PORT_FOWARD_1 = [8080,8080,8000,8000]   #Vagrant box port first then local host port
 #PORT_FOWARD_1 = false   # set as false if port foward needs to be disabled
 
 
@@ -144,6 +142,12 @@ Vagrant.configure(VAGRANT_VERSION) do |config|
       node.vm.hostname = machine[:hostname]
       if machine[:port_forward]
       node.vm.network "forwarded_port", guest: machine[:port_forward][0], host: machine[:port_forward][1]
+      if machine[:port_forward][2]
+        node.vm.network "forwarded_port", guest: machine[:port_forward][2], host: machine[:port_forward][3]
+      end
+      if machine[:port_forward][4]
+        node.vm.network "forwarded_port", guest: machine[:port_forward][4], host: machine[:port_forward][5]
+      end
       end
       node.vm.network "public_network", ip: machine[:ip], bridge: BRIDGE_NAME # not working at this time
       node.vm.network "private_network", ip: machine[:ip_int], virtualbox__intnet: "intnet"
