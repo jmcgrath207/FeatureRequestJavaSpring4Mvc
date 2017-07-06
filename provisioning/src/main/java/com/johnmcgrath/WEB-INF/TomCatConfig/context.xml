@@ -11,12 +11,12 @@
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
-  limitations under the License.
+  limitations under the License.   debug="0"  path="" docBase="webapps/johnmcgrath" autoDeploy="true" reloadable="true"
 -->
 <!-- The contents of this file will be loaded for each web application -->
-<Context path="" docBase="/opt/tomcat/webapps/johnmcgrath/" debug="0" reloadable="true">
+<Context>
 
-    <Valve className="com.johnmcgrath.config.WebInitializer" />
+
 
     <!-- Default set of monitored resources. If one of these changes, the    -->
     <!-- web application will be reloaded.                                   -->
@@ -28,10 +28,11 @@
     <!--
     <Manager pathname="" />
     -->
-    <Resource name="jdbc/spring" auth="Container" type="javax.sql.DataSource"
+    <!--<Resource name="jdbc/spring" auth="Container" type="javax.sql.DataSource"
               maxActive="100" maxIdle="30" maxWait="10000"
               username="root" password="password" driverClassName="com.mysql.jdbc.Driver"
               url="jdbc:mysql://db:3306/web"/>
+      -->
 </Context>
 
 

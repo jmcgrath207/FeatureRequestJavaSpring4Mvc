@@ -19,9 +19,8 @@ Added WAR file to ansible web once finished
 http://www.codejava.net/servers/tomcat/how-to-deploy-a-java-web-application-on-tomcat
 
 
-
-Find out how to change the root context on tomcat with out deleting the ROOT folder
-working on context xml issue not loading doc base
+Need to Generate classes files for webapp to load directory is in the correct place
+https://www.mkyong.com/maven/how-to-create-a-web-application-project-with-maven/
 
 https://stackoverflow.com/questions/37954300/spring-javaconfig-and-tomcat-8
 https://stackoverflow.com/questions/13301882/deploy-war-file-in-tomcat-server
