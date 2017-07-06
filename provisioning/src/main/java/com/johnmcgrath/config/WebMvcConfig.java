@@ -20,7 +20,7 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import javax.sql.DataSource;
 
 @Configuration // adds the middle ware or the beans at startup ex.beans.xml
-@ComponentScan("com.johnmcgrath.*")
+@ComponentScan("com.johnmcgrath.controller")
 @EnableWebMvc
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 

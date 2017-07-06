@@ -87,8 +87,8 @@ tomcat_use_custom_server_xml: false
 # tomcat_custom_server_xml: Path
 tomcat_use_custom_web_xml: false
 # tomcat_custom_web_xml: Path
-tomcat_use_custom_context_xml: false
-#tomcat_custom_context_xml: "{{ playbook_dir }}/src/main/java/com/johnmcgrath/WebContent/WEB-INF/TomCatConfig/context.xml"
+tomcat_use_custom_context_xml: true
+tomcat_custom_context_xml: "{{ playbook_dir }}/src/main/WebContent/WEB-INF/TomCatConfig/context.xml"
 tomcat_use_custom_tomcat_users_xml: false
 # tomcat_custom_tomcat_users_xml: Path
 tomcat_use_custom_manager_context_xml: false

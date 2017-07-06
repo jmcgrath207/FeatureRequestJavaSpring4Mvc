@@ -21,4 +21,9 @@ http://www.codejava.net/servers/tomcat/how-to-deploy-a-java-web-application-on-t
 
 
 Find out how to change the root context on tomcat with out deleting the ROOT folder
+working on context xml issue not loading doc base
+
+https://stackoverflow.com/questions/37954300/spring-javaconfig-and-tomcat-8
+https://stackoverflow.com/questions/13301882/deploy-war-file-in-tomcat-server
+https://stackoverflow.com/questions/7276989/how-to-set-the-context-path-of-a-web-application-in-tomcat-7-0
 
