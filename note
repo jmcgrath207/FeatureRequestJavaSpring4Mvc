@@ -26,3 +26,6 @@ https://stackoverflow.com/questions/37954300/spring-javaconfig-and-tomcat-8
 https://stackoverflow.com/questions/13301882/deploy-war-file-in-tomcat-server
 https://stackoverflow.com/questions/7276989/how-to-set-the-context-path-of-a-web-application-in-tomcat-7-0
 
+
+# working on mirror remote tomcat config to local project folder
+#change ansible for add ROOT folder to /opt/tomcat/webapps/

@@ -50,15 +50,15 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         registry.addViewController("/").setViewName("index");
     }
 
-    @Autowired
-    private HeaderInterceptor headerInterceptor;
-
-    @Autowired
-    private ExecutionTimerInterceptor executionTimerInterceptor;
-
-    @Override // use generate to create override method; inject the custom HeaderInterceptor class
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(headerInterceptor);
-        registry.addInterceptor(executionTimerInterceptor).addPathPatterns("/location");
-    }
+    //@Autowired
+    //private HeaderInterceptor headerInterceptor;
+//
+    //@Autowired
+    //private ExecutionTimerInterceptor executionTimerInterceptor;
+//
+    //@Override // use generate to create override method; inject the custom HeaderInterceptor class
+    //public void addInterceptors(InterceptorRegistry registry) {
+    //    registry.addInterceptor(headerInterceptor);
+    //    registry.addInterceptor(executionTimerInterceptor).addPathPatterns("/location");
+    //}
 }

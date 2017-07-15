@@ -116,7 +116,8 @@
                     <artifactId>maven-war-plugin</artifactId>
                     <version>${maven.plugin.war}</version>
                     <configuration>
-                        <warSourceDirectory>provisioning/src/main/WebContent/WEB-INF</warSourceDirectory>
+                        <warSourceDirectory>provisioning/src/main/WebContent</warSourceDirectory>
+
                         <failOnMissingWebXml>false</failOnMissingWebXml>
                     </configuration>
                 </plugin>
