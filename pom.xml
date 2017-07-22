@@ -118,7 +118,7 @@
                     <version>${maven.plugin.war}</version>
                     <configuration>
                         <warSourceDirectory>src/main/WebContent</warSourceDirectory>
-                        <webappDirectory>provisioning/TomCatConfig/ROOT</webappDirectory>
+                        <webappDirectory>provisioning/TomCatWebAppContexts/ROOT</webappDirectory>
                         <failOnMissingWebXml>false</failOnMissingWebXml>
                     </configuration>
                 </plugin>
