@@ -5,10 +5,11 @@
 <!-- TODO## correct added verision varible to all dep -->
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
 
         <spring.name>FeatureRequestJavaSpring4Mvc</spring.name>
         <group.name>com.johnmcgrath</group.name>
-
 
         <spring.version>4.3.9.RELEASE</spring.version>
         <jstl.version>1.2</jstl.version>
@@ -21,7 +22,7 @@
 
         <maven.plugin.compiler>3.6.1</maven.plugin.compiler>
         <maven.plugin.war>3.1.0</maven.plugin.war>
-        <jdk.version>1.8</jdk.version>
+
 
     </properties>
 
@@ -107,8 +108,8 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>${maven.plugin.compiler}</version>
                     <configuration>
-                        <source>${jdk.version}</source>
-                        <target>${jdk.version}</target>
+                        <source>${maven.compiler.source}</source>
+                        <target>${maven.compiler.target}</target>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -116,8 +117,8 @@
                     <artifactId>maven-war-plugin</artifactId>
                     <version>${maven.plugin.war}</version>
                     <configuration>
-                        <warSourceDirectory>provisioning/src/main/WebContent</warSourceDirectory>
-
+                        <warSourceDirectory>src/main/WebContent</warSourceDirectory>
+                        <webappDirectory>provisioning/TomCatConfig/ROOT</webappDirectory>
                         <failOnMissingWebXml>false</failOnMissingWebXml>
                     </configuration>
                 </plugin>

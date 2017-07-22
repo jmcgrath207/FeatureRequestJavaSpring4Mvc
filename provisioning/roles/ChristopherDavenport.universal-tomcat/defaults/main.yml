@@ -33,10 +33,11 @@ tomcat_java_opts: "
                    -Dcom.sun.management.jmxremote.port=1099
                    -Dcom.sun.management.jmxremote.ssl=false
                    -Dcom.sun.management.jmxremote.authenticate=false
-                   -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000"
+                   -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000
+                   -Djava.awt.headless=true"
 
 
-                   #-Djava.awt.headless=true
+
 
 
 tomcat_catalina_opts: ""
