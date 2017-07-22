@@ -8,7 +8,7 @@
 # 8.5.6
 # 9.0.0.M18
 
-# web app on box is /opt/tomcat/webapps/johnmcgrath
+#
 
 tomcat_version: "8.5.6"
 

@@ -27,5 +27,41 @@ https://stackoverflow.com/questions/13301882/deploy-war-file-in-tomcat-server
 https://stackoverflow.com/questions/7276989/how-to-set-the-context-path-of-a-web-application-in-tomcat-7-0
 
 
-# working on mirror remote tomcat config to local project folder
-#change ansible for add ROOT folder to /opt/tomcat/webapps/
+####LOGS#####
+
+
+
+root@web:/opt/tomcat/logs# cat catalina.2017-07-22.log
+22-Jul-2017 00:35:44.751 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: /usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+22-Jul-2017 00:35:44.994 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8080"]
+22-Jul-2017 00:35:45.011 INFO [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+22-Jul-2017 00:35:45.016 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["ajp-nio-8009"]
+22-Jul-2017 00:35:45.019 INFO [main] org.apache.tomcat.util.net.NioSelectorPool.getSharedSelector Using a shared selector for servlet write/read
+22-Jul-2017 00:35:45.021 INFO [main] org.apache.catalina.startup.Catalina.load Initialization processed in 917 ms
+22-Jul-2017 00:35:45.095 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service Catalina
+22-Jul-2017 00:35:45.096 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet Engine: Apache Tomcat/8.5.6
+22-Jul-2017 00:35:45.121 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /opt/apache-tomcat-8.5.6/webapps/docs
+22-Jul-2017 00:35:45.803 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /opt/apache-tomcat-8.5.6/webapps/docs has finished in 681 ms
+22-Jul-2017 00:35:45.804 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /opt/apache-tomcat-8.5.6/webapps/examples
+22-Jul-2017 00:35:46.437 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /opt/apache-tomcat-8.5.6/webapps/examples has finished in 633 ms
+22-Jul-2017 00:35:46.437 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /opt/apache-tomcat-8.5.6/webapps/manager
+22-Jul-2017 00:35:46.533 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /opt/apache-tomcat-8.5.6/webapps/manager has finished in 96 ms
+22-Jul-2017 00:35:46.533 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /opt/apache-tomcat-8.5.6/webapps/ROOT.old
+22-Jul-2017 00:35:46.555 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /opt/apache-tomcat-8.5.6/webapps/ROOT.old has finished in 22 ms
+22-Jul-2017 00:35:46.555 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /opt/apache-tomcat-8.5.6/webapps/ROOT
+22-Jul-2017 00:35:47.934 INFO [localhost-startStop-1] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+22-Jul-2017 00:35:47.960 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /opt/apache-tomcat-8.5.6/webapps/ROOT has finished in 1,405 ms
+22-Jul-2017 00:35:47.960 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory /opt/apache-tomcat-8.5.6/webapps/host-manager
+22-Jul-2017 00:35:47.980 INFO [localhost-startStop-1] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory /opt/apache-tomcat-8.5.6/webapps/host-manager has finished in 19 ms
+22-Jul-2017 00:35:47.984 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler [http-nio-8080]
+22-Jul-2017 00:35:47.995 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler [ajp-nio-8009]
+22-Jul-2017 00:35:47.997 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in 2976 ms
+
+
+
+root@web:/opt/tomcat/logs# cat localhost.2017-07-22.log
+22-Jul-2017 00:35:46.417 INFO [localhost-startStop-1] org.apache.catalina.core.ApplicationContext.log ContextListener: contextInitialized()
+22-Jul-2017 00:35:46.419 INFO [localhost-startStop-1] org.apache.catalina.core.ApplicationContext.log SessionListener: contextInitialized()
+22-Jul-2017 00:35:47.939 INFO [localhost-startStop-1] org.apache.catalina.core.ApplicationContext.log No Spring WebApplicationInitializer types detected on classpath
+root@web:/opt/tomcat/logs#
+

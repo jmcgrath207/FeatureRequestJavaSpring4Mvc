@@ -20,20 +20,20 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import javax.sql.DataSource;
 
 @Configuration // adds the middle ware or the beans at startup ex.beans.xml
-@ComponentScan("com.johnmcgrath.controller")
+@ComponentScan("com.johnmcgrath.*")
 @EnableWebMvc
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
 
 
 
-    @Bean
-    public DataSource dataSource() {
-        final JndiDataSourceLookup dsLookup = new JndiDataSourceLookup();
-        dsLookup.setResourceRef(true);
-        DataSource dataSource = dsLookup.getDataSource("jdbc/springdb");
-        return dataSource;
-    }
+    // @Bean
+    // public DataSource dataSource() {
+    //     final JndiDataSourceLookup dsLookup = new JndiDataSourceLookup();
+    //     dsLookup.setResourceRef(true);
+    //     DataSource dataSource = dsLookup.getDataSource("jdbc/springdb");
+    //     return dataSource;
+    // }
 
 
     @Bean()
@@ -45,10 +45,10 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         return resolver;
     }
 
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry){
-        registry.addViewController("/").setViewName("index");
-    }
+    // @Override
+    // public void addViewControllers(ViewControllerRegistry registry){
+    //     registry.addViewController("/").setViewName("index");
+    // }
 
     //@Autowired
     //private HeaderInterceptor headerInterceptor;

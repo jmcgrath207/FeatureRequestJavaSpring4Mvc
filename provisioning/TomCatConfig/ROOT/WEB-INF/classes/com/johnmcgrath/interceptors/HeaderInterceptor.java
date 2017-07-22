@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
  * Created by root on 6/18/17.
  */
 
-@Service
+//@Service
 public class HeaderInterceptor extends HandlerInterceptorAdapter {
 
     @Override

@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
  * Created by root on 6/21/17.
  */
 
-@Service
+//@Service
 public class ExecutionTimerInterceptor extends HandlerInterceptorAdapter {
 
     private static Logger LOGGER = LoggerFactory.getLogger(ExecutionTimerInterceptor.class);
