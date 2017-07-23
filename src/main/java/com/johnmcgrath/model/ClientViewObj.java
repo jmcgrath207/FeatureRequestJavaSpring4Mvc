@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 //@Component("clientView")
-public class ClientView {
+public class ClientViewObj {
     //Model for the case view once the client logs in.
 
 

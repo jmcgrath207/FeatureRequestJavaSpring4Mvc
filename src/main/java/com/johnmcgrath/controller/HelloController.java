@@ -13,7 +13,7 @@ public class HelloController {
     @RequestMapping("/")
     public String showhello(ModelMap model) {
         model.addAttribute("message", "Hello BENNNNNNN!");
-        System.out.println("test test");
+        System.out.println("ClientViewPostgre ClientViewPostgre");
         return "index";
     }
 
