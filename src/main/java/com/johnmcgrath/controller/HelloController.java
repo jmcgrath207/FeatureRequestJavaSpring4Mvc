@@ -12,7 +12,8 @@ public class HelloController {
 
     @RequestMapping("/")
     public String showhello(ModelMap model) {
-        model.addAttribute("message", "Hello BE!");
+        model.addAttribute("message", "Hello BENNNNNNN!");
+        System.out.println("test test");
         return "index";
     }
 
