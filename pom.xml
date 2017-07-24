@@ -114,7 +114,7 @@
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-war-plugin</artifactId>
+                    <artifactId>${maven-war-plugin}</artifactId>
                     <version>${maven.plugin.war}</version>
                     <configuration>
                         <warSourceDirectory>src/main/WebContent</warSourceDirectory>
