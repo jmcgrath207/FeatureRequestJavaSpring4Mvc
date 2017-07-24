@@ -8,9 +8,12 @@ import org.springframework.stereotype.Repository;
  * Created by root on 6/28/17.
  */
 
-// @Repository
-// public class ClientViewDAO implements ClientViewMySql, ClientViewPostgre {
-//
-//
-//
-// }
+@Repository
+public class ClientViewDAO implements ClientViewMySql, ClientViewPostgre {
+
+
+
+
+
+
+}
