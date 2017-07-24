@@ -31,5 +31,6 @@ hs_err_pid*
 
 Ingore compiled output for ansible
 provisioning/TomCatWebAppContexts/ROOT/*
+
 target
 out
