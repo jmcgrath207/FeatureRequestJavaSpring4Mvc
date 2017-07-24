@@ -10,4 +10,8 @@ Database object abstractions
 Model --> DAO --> DaoInterface --> Service ---> Controller
 
 
-# need to work on remodel maven folder structure and remote tom cat development
+Start with the ClientViewObj
+
+
+#Working on Hibernate MYSQL intergration
+http://www.concretepage.com/spring-4/spring-mvc-4-security-hibernate-5-mysql-using-annotation-xml-example

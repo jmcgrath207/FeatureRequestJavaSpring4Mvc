@@ -8,6 +8,7 @@ import java.util.List;
 public interface ClientViewMySql {
     // create a abstraction for Mysql connections
 
-    // Retrieve all organizations from the table.
-    public List<ClientViewObj> getAllCase();
+    public void save(ClientViewObj p);
+
+    public List<ClientViewObj> list();
 }

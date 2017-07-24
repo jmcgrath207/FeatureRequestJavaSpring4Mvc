@@ -19,14 +19,8 @@ public class APIcontroller {
     private APIService apiService;
 
     @RequestMapping(value="/client_view", method = RequestMethod.GET, produces = "application/json")
-    public List<ClientViewObj> client_view(){
-
-
-        List<ClientViewObj> a = apiService.getAllCase();
-        return a;
-
-
-
+    public String client_view(){
+        return "test";
     }
 
     @RequestMapping(value="/client_view", method = RequestMethod.POST, produces = "application/json")

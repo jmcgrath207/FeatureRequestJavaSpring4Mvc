@@ -1,23 +1,29 @@
 package com.johnmcgrath.model;
 
 
-import org.springframework.stereotype.Component;
 
 
 
-
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GenerationType;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-//@Component("clientView")
+@Entity
+@Table(name="Person")
 public class ClientViewObj {
     //Model for the case view once the client logs in.
 
 
-
+    @Id
+    @Column(name="id")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
     @Size(min=5,max=100, message="Client Username must be between 5 and 100 characters")
