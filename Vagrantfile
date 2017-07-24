@@ -34,40 +34,34 @@ UBUNTU_PASSWORD = "password" # default password for that is set at build time ub
 ROOT_SSH_ACCESS = "yes" # allow root ssh  # not working
 
 
-#NOTE:  the hostname needs to be set in ansible playbook file ex. - hosts: web
-#NOTE: when vagrant provision command is ran, all boxes are loaded in the vagrant inventory file,
-# to disable a certian box use ANSIBLE_ENABLE_* = false. The same concept applies to SHELL_ENABLE_*
+## For single hostname vagrant provision {{host name}}
+## all host vagrant provision
+
 
 ####HOST CONFIGS###########
 
 HOSTNAME_1 = "web"
 HOSTNAME_1_DISABLE = false
 HOSTNAME_1_PLAYBOOK = "provisioning/web-playbook.yml"
-ANSIBLE_ENABLE_B1 = true # enables ables anisble provision
-#SHELL_ENABLE_B1 = true # Enables shell provision   # Not working correctly
 DISTRO_B1 = "ubuntu/xenial64"
 VERSION_B1 = "20170626.0.0"
 RAM_B1 = 1000
 PORT_FOWARD_1 = [8080,8080,5005,5005,1099,1099]   #Vagrant box port first then local host port
-#PORT_FOWARD_1 = false   # set as false if port foward needs to be disabled
+
 
 
 HOSTNAME_2 = "db"
 HOSTNAME_2_DISABLE = false
 HOSTNAME_2_PLAYBOOK = "provisioning/db-playbook.yml"
-ANSIBLE_ENABLE_B2 = false
-#SHELL_ENABLE_B2 = true # Enables shell provision   # Not working correctly
 DISTRO_B2 = "ubuntu/xenial64"
 VERSION_B2 = "20170626.0.0"
 RAM_B2 = 1000
-PORT_FOWARD_2 = false
+PORT_FOWARD_2 = [3306,3306]
 
 
 HOSTNAME_3 = ""
-HOSTNAME_3_DISABLE = true
 HOSTNAME_3_PLAYBOOK = ""
-ANSIBLE_ENABLE_B3 = false
-#SHELL_ENABLE_B3 = false # Enables shell provision   # Not working correctly
+HOSTNAME_3_DISABLE = false
 DISTRO_B3 = "ubuntu/xenial64"
 VERSION_B3 = "20170626.0.0"
 RAM_B3 = 1000
@@ -88,8 +82,8 @@ servers=[
         :box_version => VERSION_B1,
         :disable => HOSTNAME_1_DISABLE,
         :port_forward => PORT_FOWARD_1,
-        :ansible_enabled => ANSIBLE_ENABLE_B1,
-        #:shell_enabled => SHELL_ENABLE_B1
+
+
 
 
     },
@@ -102,8 +96,8 @@ servers=[
         :box_version => VERSION_B2,
         :disable => HOSTNAME_2_DISABLE,
         :port_forward => PORT_FOWARD_2,
-        :ansible_enabled => ANSIBLE_ENABLE_B2,
-        #:shell_enabled => SHELL_ENABLE_B2
+
+
 
     },
     {
@@ -115,7 +109,7 @@ servers=[
         :box_version => VERSION_B3,
         :disable => HOSTNAME_3_DISABLE,
         :port_forward => PORT_FOWARD_3,
-        #:shell_enabled => SHELL_ENABLE_B3
+
     },
 
 
@@ -154,7 +148,6 @@ Vagrant.configure(VAGRANT_VERSION) do |config|
 
 
 
-        if machine[:ansible_enabled]
         config.vm.provision "ansible_local" do |ansible|
           if node.vm.hostname == HOSTNAME_1
             ansible.playbook = HOSTNAME_1_PLAYBOOK
@@ -166,16 +159,14 @@ Vagrant.configure(VAGRANT_VERSION) do |config|
             ansible.playbook = HOSTNAME_3_PLAYBOOK
           end
         end
-        end
 
 
-      #if machine[:shell_enabled]
-        # added as a fix to https://github.com/mitchellh/vagrant/issues/7350
+
         config.vm.provision "shell" do |s|
           s.inline = 'echo "root:$1" | sudo chpasswd; echo "ubuntu:$2" | sudo chpasswd'
           s.args   = [ROOT_PASSWORD,UBUNTU_PASSWORD]
         end
-      #end
+
 
 
       #args is not working
