@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -42,7 +43,7 @@ public class DbConfig {
     @Bean
     public SessionFactory sessionFactory() {
         LocalSessionFactoryBean lsfb = new LocalSessionFactoryBean();
-        lsfb.setDataSource(getDataSource(DataSource));
+        lsfb.setDataSource(getDataSource());
         lsfb.setPackagesToScan("com.johnmcgrath.model");
         lsfb.setHibernateProperties(hibernateProperties());
         try {
@@ -53,7 +54,7 @@ public class DbConfig {
         return lsfb.getObject();
     }
 
-
+    // Grab data info from properties file
     // @Bean
     // public DataSource getDataSource() {
     //     BasicDataSource dataSource = new BasicDataSource();
@@ -66,12 +67,13 @@ public class DbConfig {
 
 
     // grabs JDNI from context.xml
-    @Autowired
-    public NamedParameterJdbcTemplate getDataSource(DataSource dataSource) {
-        namedParamJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-        return namedParamJdbcTemplate;
+    @Bean
+    public DataSource getDataSource() {
+        final JndiDataSourceLookup dsLookup = new JndiDataSourceLookup();
+        dsLookup.setResourceRef(true);
+        DataSource dataSource = dsLookup.getDataSource("jdbc/springdb");
+        return dataSource;
     }
-
 
 
     @Bean
