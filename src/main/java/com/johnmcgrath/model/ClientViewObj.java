@@ -20,6 +20,7 @@ public class ClientViewObj  implements Serializable {
 
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @Column(name="id")
     private int id;
@@ -78,11 +79,15 @@ public class ClientViewObj  implements Serializable {
         this.id = id;
     }
 
-    public int getClient_username() {
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getClient_username() {
         return client_username;
     }
 
-    public void setClient_username(int client_username) {
+    public void setClient_username(String client_username) {
         this.client_username = client_username;
     }
 
