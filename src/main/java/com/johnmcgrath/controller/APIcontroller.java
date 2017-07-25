@@ -3,9 +3,7 @@ package com.johnmcgrath.controller;
 
 import com.johnmcgrath.model.ClientViewObj;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.johnmcgrath.service.APIService;
 
@@ -18,13 +16,15 @@ public class APIcontroller {
     @Autowired
     private APIService apiService;
 
-    @RequestMapping(value="/client_view", method = RequestMethod.GET, produces = "application/json")
+    @GetMapping(value="/client_view", produces = "application/json")
     public String client_view(){
-        List<ClientViewObj> =  apiService.getAllClientView("test");
+        ClientViewObj a =  apiService.getAllClientView("test");
+        String b = a.toString();
+        return b;
     }
 
-    @RequestMapping(value="/client_view", method = RequestMethod.POST, produces = "application/json")
-    public String client_view(){
+    @PostMapping(value="/client_view",produces = "application/json")
+    public void client_view(String a){
 
     }
 
