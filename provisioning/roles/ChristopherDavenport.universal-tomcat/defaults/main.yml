@@ -78,11 +78,16 @@ tomcat_configure_webapps: "{{ tomcat_configure }}"
 tomcat_extra_libs_path: []
 tomcat_webapps_path: ["{{ playbook_dir }}/TomCatWebAppContexts/ROOT"]
 
+#Removes ROOT webapp Context if false
+tomcat_root_context: false
+
+
 # Strings That Allow you to modify your
 # tomcat instance in a predictable fashion.
 tomcat_extra_global_naming_resources: ""
 tomcat_context_xml_header_extra: ""
 tomcat_context_xml_extra: ""
+
 
 
 # Disable or enable session persistence

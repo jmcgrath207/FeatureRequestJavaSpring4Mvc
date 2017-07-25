@@ -10,7 +10,7 @@ Database object abstractions
 Model --> DAO --> DaoInterface --> Service ---> ServiceInterface --> Controller
 
 
-Start with the ClientViewObj
+pkill -f .*vagrant.*; pkill -f .*vbox.*
 
 
 #Working on Hibernate MYSQL intergration
