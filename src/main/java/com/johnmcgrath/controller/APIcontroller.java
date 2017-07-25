@@ -20,7 +20,7 @@ public class APIcontroller {
 
     @RequestMapping(value="/client_view", method = RequestMethod.GET, produces = "application/json")
     public String client_view(){
-        return "test";
+        List<ClientViewObj> =  apiService.getAllClientView("test");
     }
 
     @RequestMapping(value="/client_view", method = RequestMethod.POST, produces = "application/json")

@@ -7,7 +7,7 @@ http://viralpatel.net/blogs/spring-4-mvc-rest-example-json/
 
 #Beginning to End
 Database object abstractions
-Model --> DAO --> DaoInterface --> Service ---> Controller
+Model --> DAO --> DaoInterface --> Service ---> ServiceInterface --> Controller
 
 
 Start with the ClientViewObj
