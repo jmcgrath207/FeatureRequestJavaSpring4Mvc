@@ -12,6 +12,7 @@
         <group.name>com.johnmcgrath</group.name>
 
         <spring.version>4.3.9.RELEASE</spring.version>
+        <spring_security.version>4.2.3.RELEASE</spring_security.version>
         <jstl.version>1.2</jstl.version>
         <hibernate.version>5.2.10.Final</hibernate.version>
 
@@ -79,6 +80,20 @@
             <artifactId>spring-orm</artifactId>
             <version>${spring.version}</version>
         </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring_security.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring_security.version}</version>
+        </dependency>
+
 
 
 

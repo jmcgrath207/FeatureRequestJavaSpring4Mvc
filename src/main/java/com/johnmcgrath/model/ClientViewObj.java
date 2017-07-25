@@ -4,54 +4,71 @@ package com.johnmcgrath.model;
 
 
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Table;
 import javax.persistence.Id;
-import javax.persistence.GenerationType;
+import javax.persistence.Table;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name="Person")
-public class ClientViewObj {
-    //Model for the case view once the client logs in.
+@Table(name="ClientView")
+public class ClientViewObj  implements Serializable {
 
 
+    private static final long serialVersionUID = 1L;
     @Id
     @Column(name="id")
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
+
+
+    @Column(name="client_username")
     @Size(min=5,max=100, message="Client Username must be between 5 and 100 characters")
     @NotNull
-    private int client_username;
+    private String client_username;
 
+
+    @Column(name="case_name")
     @Size(min=5,max=100, message="Case Name must be between 5 and 100 characters")
     @NotNull
     private String case_name;
 
+
+
+    @Column(name="priority")
     @NotNull
     private int priority;
 
+
+    @Column(name="target_date")
     @Future(message = "Date must be in the Future") //must be date in the future
     @NotNull
     private String target_date;
 
+
+    @Column(name="product_area")
     @Size(min=5,max=100, message="Product Area must be between 5 and 100 characters")
     @NotNull
     private String product_area;
 
+
+    @Column(name="status")
     @Size(min=5,max=100, message="Status must be between 5 and 100 characters")
     @NotNull
     private String status;
 
+
+    @Column(name="description")
     @Size(min=5,max=255, message="Description must be between 5 and 100 characters")
     @NotNull
     private String description;
+
+
+
 
     public int getId() {
         return id;

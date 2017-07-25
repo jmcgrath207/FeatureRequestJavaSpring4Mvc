@@ -9,11 +9,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 @Configuration // adds the middle ware or the beans at startup ex.beans.xml
-@ComponentScan("com.johnmcgrath.*")
+@ComponentScan("com.johnmcgrath")
 @EnableWebMvc
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
@@ -30,11 +31,10 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
 
     @Bean()
-    public UrlBasedViewResolver urlBasedViewResolver() {
-        UrlBasedViewResolver  resolver = new UrlBasedViewResolver();
+    public InternalResourceViewResolver viewResolver() {
+        InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setPrefix("/WEB-INF/views/");
         resolver.setSuffix(".jsp");
-        resolver.setViewClass(JstlView.class);
         return resolver;
     }
 
