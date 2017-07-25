@@ -26,8 +26,8 @@
     <Manager pathname="" />
     -->
 
-    <Resource name="jdbc/spring" auth="Container" type="javax.sql.DataSource"
+    <Resource name="jdbc/spring" auth="Container" type="javax.sql.testtest"
               maxActive="100" maxIdle="30" maxWait="10000"
               username="root" password="password" driverClassName="com.mysql.jdbc.Driver"
-              url="jdbc:mysql://localhost:3306/webapp"/>
+              url="jdbc:mysql://localhost:3306/web"/>
 </Context>
