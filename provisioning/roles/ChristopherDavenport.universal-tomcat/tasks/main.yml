@@ -177,12 +177,12 @@
     group: "{{ tomcat_user_group }}"
     mode: 0640
 
-- name: Remove ROOT Webapp Context
+- name: Removes All default  webapps
   file:
     state: absent
-    path: "{{ tomcat_instance_path }}/webapps/ROOT/"
+    path: "{{ tomcat_instance_path }}/webapps/"
   when:
-    - not tomcat_root_context
+    - tomcat_remove_default_webapps
 
 
 - name: Install WebApps

@@ -46,7 +46,7 @@ HOSTNAME_1_PLAYBOOK = "provisioning/web-playbook.yml"
 DISTRO_B1 = "ubuntu/xenial64"
 VERSION_B1 = "20170626.0.0"
 RAM_B1 = 1000
-PORT_FOWARD_1 = [8080,8080,5005,5005,1099,1099]   #Vagrant box port first then local host port
+PORT_FOWARD_1 = [8080,8080,5005,5005,1099,1099,8009,8009]   #Vagrant box port first then local host port
 
 
 
@@ -141,6 +141,9 @@ Vagrant.configure(VAGRANT_VERSION) do |config|
       end
       if machine[:port_forward][4]
         node.vm.network "forwarded_port", guest: machine[:port_forward][4], host: machine[:port_forward][5]
+      end
+      if machine[:port_forward][6]
+        node.vm.network "forwarded_port", guest: machine[:port_forward][6], host: machine[:port_forward][7]
       end
       end
       node.vm.network "public_network", ip: machine[:ip], bridge: BRIDGE_NAME # not working at this time
