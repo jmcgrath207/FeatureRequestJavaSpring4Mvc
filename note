@@ -19,3 +19,8 @@ pkill -f .*vagrant.*; pkill -f .*vbox.*
 
 #Working on Hibernate MYSQL intergration
 http://www.concretepage.com/spring-4/spring-mvc-4-security-hibernate-5-mysql-using-annotation-xml-example
+
+
+
+
+### Troubshooting Tomcat Memory issue ####

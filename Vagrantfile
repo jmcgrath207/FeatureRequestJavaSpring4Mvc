@@ -45,7 +45,7 @@ HOSTNAME_1_DISABLE = false
 HOSTNAME_1_PLAYBOOK = "provisioning/web-playbook.yml"
 DISTRO_B1 = "ubuntu/xenial64"
 VERSION_B1 = "20170626.0.0"
-RAM_B1 = 1000
+RAM_B1 = 2048
 PORT_FOWARD_1 = [8080,8080,5005,5005,1099,1099,8009,8009]   #Vagrant box port first then local host port
 
 
@@ -124,7 +124,9 @@ servers.each do |machine|
 end
 
 
-
+#(machine[:port_forward].length).step(2) do |it|
+#  node.vm.network "forwarded_port", guest: machine[:port_forward][0], host: machine[:port_forward][7]
+#end
 
 
 Vagrant.configure(VAGRANT_VERSION) do |config|
@@ -148,6 +150,11 @@ Vagrant.configure(VAGRANT_VERSION) do |config|
       end
       node.vm.network "public_network", ip: machine[:ip], bridge: BRIDGE_NAME # not working at this time
       node.vm.network "private_network", ip: machine[:ip_int], virtualbox__intnet: "intnet"
+
+      node.vm.provider "virtualbox" do |setup|
+        setup.name = machine[:hostname]
+        setup.memory = machine[:ram]
+        end
 
 
 

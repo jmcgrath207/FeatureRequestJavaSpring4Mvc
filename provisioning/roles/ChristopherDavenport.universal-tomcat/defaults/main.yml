@@ -40,7 +40,7 @@ tomcat_java_opts: "
 
 
 
-tomcat_catalina_opts: ""
+tomcat_catalina_opts: "-Xms512M -Xmx2048M -server -XX:+UseParallelGC"
 
 tomcat_base_dir: /opt
 tomcat_catalina_home: "{{ tomcat_base_dir }}/tomcat"
