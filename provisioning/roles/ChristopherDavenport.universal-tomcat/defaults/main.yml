@@ -34,7 +34,8 @@ tomcat_java_opts: "
                    -Dcom.sun.management.jmxremote.authenticate=false
                    -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
                    -Djava.rmi.server.hostname=172.28.128.3
-                   -Djava.awt.headless=true"
+                   -Djava.awt.headless=true
+                   -Djava.net.preferIPv4Stack=true"
 
 
 

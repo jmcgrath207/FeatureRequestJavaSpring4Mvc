@@ -19,6 +19,7 @@ pkill -f .*vagrant.*; pkill -f .*vbox.*
 
 #Working on Hibernate MYSQL intergration
 http://www.concretepage.com/spring-4/spring-mvc-4-security-hibernate-5-mysql-using-annotation-xml-example
+https://www.boraji.com/spring-4-hibernate-5-integration-example-with-zero-xml
 
 
 
@@ -30,6 +31,7 @@ http://www.concretepage.com/spring-4/spring-mvc-4-security-hibernate-5-mysql-usi
 http://172.28.128.3:8080/api/client_view
 
 
+### Need to find out how to tell if hibernate has a active sessions.
 
 type Exception report
 

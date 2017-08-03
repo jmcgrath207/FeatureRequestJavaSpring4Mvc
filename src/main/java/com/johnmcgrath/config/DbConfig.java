@@ -64,7 +64,7 @@ public class DbConfig {
 
 
     @Bean
-    public SessionFactory sessionFactory() {
+    public SessionFactory getsessionFactory() {
         LocalSessionFactoryBean lsfb = new LocalSessionFactoryBean();
         lsfb.setDataSource(getDataSource());
         lsfb.setPackagesToScan("com.johnmcgrath.model");
@@ -80,15 +80,11 @@ public class DbConfig {
 
 
 
-    @Bean
-    public HibernateTemplate hibernateTemplate() {
-        return new HibernateTemplate(sessionFactory());
-    }
 
 
     @Bean
     public HibernateTransactionManager hibernateTransactionManager(){
-        return new HibernateTransactionManager(sessionFactory());
+        return new HibernateTransactionManager(getsessionFactory());
     }
 
 

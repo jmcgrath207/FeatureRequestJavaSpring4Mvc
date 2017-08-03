@@ -22,9 +22,8 @@ public class ClientViewDao implements ClientViewDaoMysqlInt {
 
     public ClientViewObj getClientView(String userName) {
         ClientViewObj ClientViewInfo = new ClientViewObj();
-        short enabled = 1;
-        List<?> list = hibernateTemplate.find(" FROM ClientViewObj WHERE userName=? and enabled=?",
-                userName, enabled);
+        List<?> list = hibernateTemplate.find(" FROM ClientViewObj WHERE client_username=?",
+                userName);
         if(!list.isEmpty()) {
             ClientViewInfo = (ClientViewObj)list.get(0);
         }
