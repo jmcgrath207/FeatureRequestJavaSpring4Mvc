@@ -24,3 +24,15 @@ http://www.concretepage.com/spring-4/spring-mvc-4-security-hibernate-5-mysql-usi
 
 
 ### Troubshooting Tomcat Memory issue ####
+
+
+
+http://172.28.128.3:8080/api/client_view
+
+
+
+type Exception report
+
+message Request processing failed; nested exception is org.springframework.orm.hibernate5.HibernateJdbcException: JDBC exception on Hibernate data access: SQLException for SQL [n/a]; SQL state [null]; error code [0]; Unable to acquire JDBC Connection; nested exception is org.hibernate.exception.GenericJDBCException: Unable to acquire JDBC Connection
+
+description The server encountered an internal error that prevented it from fulfilling this request.

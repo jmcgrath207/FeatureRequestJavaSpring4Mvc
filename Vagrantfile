@@ -21,7 +21,7 @@ VAGRANT_VERSION = 2
 BRIDGE_NAME = "wlp3s0"
 BRIDGE_NET="192.168.1."
 # Prefix for Internal Network
-INTERNAL_NET="192.168.15."
+INTERNAL_NET="192.168.200."
 # The domain that we will use for the entire site
 DOMAIN="" # Warning causes SSH connect issue at build ex: .sample.com
 
@@ -148,8 +148,11 @@ Vagrant.configure(VAGRANT_VERSION) do |config|
         node.vm.network "forwarded_port", guest: machine[:port_forward][6], host: machine[:port_forward][7]
       end
       end
-      node.vm.network "public_network", ip: machine[:ip], bridge: BRIDGE_NAME # not working at this time
-      node.vm.network "private_network", ip: machine[:ip_int], virtualbox__intnet: "intnet"
+      #node.vm.network "public_network", ip: machine[:ip], bridge: BRIDGE_NAME # not working at this time
+      #node.vm.network "private_network", ip: machine[:ip_int], virtualbox__intnet: "intnet"
+      node.vm.network "private_network", type: "dhcp"
+      #node.vm.network "private_network", ip: machine[:ip_int], netmask: "255.240.0.0"
+
 
       node.vm.provider "virtualbox" do |setup|
         setup.name = machine[:hostname]
