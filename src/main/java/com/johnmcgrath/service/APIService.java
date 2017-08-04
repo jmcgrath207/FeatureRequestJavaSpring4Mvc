@@ -18,10 +18,13 @@ public class APIService implements APIServiceInt {
     @Autowired
     private ClientViewDaoMysqlInt clientViewDaoMysqlInt;
 
+
+
     public List<ClientViewObj> getAllClientView(String userName) {
         return clientViewDaoMysqlInt.getClientView(userName);
 
-
     }
+
+
 
 }

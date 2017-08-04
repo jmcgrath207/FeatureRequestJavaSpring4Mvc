@@ -16,7 +16,7 @@ public class APIcontroller {
     @Autowired
     private APIService apiService;
 
-    @GetMapping(value="/client_view")
+    @GetMapping(value="/client_view",produces="application/json")
     public @ResponseBody List<ClientViewObj> client_view(){
         // Returns Json List of Cases that are owned by the user
 
@@ -25,8 +25,15 @@ public class APIcontroller {
         return a;
     }
 
-    @PostMapping(value="/client_view")
-    public void client_view(String a){
+    @PostMapping(value="/client_view",consumes="application/json")
+    public void client_view(@RequestBody ClientViewObj cases){
+
+        System.out.println("something");
+        System.out.println(cases);
+
+
+
+
 
     }
 

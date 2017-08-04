@@ -21,12 +21,12 @@ public class ClientViewDao implements ClientViewDaoMysqlInt {
     @Autowired
     private SessionFactory sessionFactory;
 
-    //@Override
-    //public void add(User user) {
-    //    sessionFactory.getCurrentSession().save(user);
-    //}
 
+    public void setClientView(ClientViewObj ClientViewObj) {
+        sessionFactory.getCurrentSession().save(ClientViewObj);
+    }
 
+    @Transactional(readOnly = true)
     public List<ClientViewObj> getClientView(String userName) {
         System.out.println("test");
         @SuppressWarnings("unchecked")

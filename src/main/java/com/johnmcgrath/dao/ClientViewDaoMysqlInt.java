@@ -9,4 +9,6 @@ public interface ClientViewDaoMysqlInt {
     // create a abstraction for Mysql connections
 
     List<ClientViewObj> getClientView(String userName);
+
+    void setClientView(ClientViewObj ClientViewObj);
 }
