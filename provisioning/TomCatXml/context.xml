@@ -29,5 +29,5 @@
     <Resource name="jdbc/springdb" auth="Container" type="javax.sql.DataSource"
               maxActive="100" maxIdle="30" maxWait="10000"
               username="root" password="root" driverClassName="com.mysql.jdbc.Driver"
-              url="jdbc:mysql://localhost:3306/web"/>
+              url="jdbc:mysql://172.28.128.4:3306/web"/>
 </Context>

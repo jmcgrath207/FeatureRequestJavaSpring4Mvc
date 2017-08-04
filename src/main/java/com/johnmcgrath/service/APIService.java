@@ -8,6 +8,7 @@ import com.johnmcgrath.dao.ClientViewDaoMysqlInt;
 
 import com.johnmcgrath.model.ClientViewObj;
 
+import java.util.List;
 
 
 @Service
@@ -17,7 +18,7 @@ public class APIService implements APIServiceInt {
     @Autowired
     private ClientViewDaoMysqlInt clientViewDaoMysqlInt;
 
-    public ClientViewObj getAllClientView(String userName) {
+    public List<ClientViewObj> getAllClientView(String userName) {
         return clientViewDaoMysqlInt.getClientView(userName);
 
 
