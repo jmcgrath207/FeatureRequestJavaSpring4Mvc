@@ -24,9 +24,9 @@ public class ClientViewApiController {
     }
 
     @PostMapping(value="/client_view",consumes="application/json")
-    public void ClientViewPost(@RequestBody ClientViewObj cases){
-        System.out.println("asdfasdf");
+    public String client_view(@RequestBody ClientViewObj cases){
         apiService.setCliewView(cases);
+        return "success: Data has been successful POST";
     }
 
 
