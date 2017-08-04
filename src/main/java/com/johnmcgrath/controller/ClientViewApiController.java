@@ -11,30 +11,22 @@ import java.util.List;
 
 @RequestMapping(value = "/api")
 @RestController
-public class APIcontroller {
+public class ClientViewApiController {
 
     @Autowired
     private APIService apiService;
 
-    @GetMapping(value="/client_view",produces="application/json")
+    @GetMapping(value="/client_view")
     public @ResponseBody List<ClientViewObj> client_view(){
         // Returns Json List of Cases that are owned by the user
 
-
-        List<ClientViewObj> a =  apiService.getAllClientView("something");
-        return a;
+        return apiService.getAllClientView("test");
     }
 
     @PostMapping(value="/client_view",consumes="application/json")
-    public void client_view(@RequestBody ClientViewObj cases){
-
-        System.out.println("something");
-        System.out.println(cases);
-
-
-
-
-
+    public void ClientViewPost(@RequestBody ClientViewObj cases){
+        System.out.println("asdfasdf");
+        apiService.setCliewView(cases);
     }
 
 

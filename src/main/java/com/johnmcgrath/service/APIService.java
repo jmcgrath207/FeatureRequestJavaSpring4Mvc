@@ -19,6 +19,10 @@ public class APIService implements APIServiceInt {
     private ClientViewDaoMysqlInt clientViewDaoMysqlInt;
 
 
+    public void setCliewView(ClientViewObj clientViewObj) {
+        clientViewDaoMysqlInt.setClientView(clientViewObj);
+    }
+
 
     public List<ClientViewObj> getAllClientView(String userName) {
         return clientViewDaoMysqlInt.getClientView(userName);

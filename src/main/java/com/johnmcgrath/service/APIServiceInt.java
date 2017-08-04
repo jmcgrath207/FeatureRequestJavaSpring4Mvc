@@ -8,4 +8,6 @@ public interface APIServiceInt {
 
 
     List<ClientViewObj> getAllClientView(String userName);
+
+    void setCliewView(ClientViewObj clientViewObj);
 }
