@@ -18,8 +18,15 @@ pkill -f .*vagrant.*; pkill -f .*vbox.*
 
 
 #Working on Hibernate MYSQL intergration
+
+
 http://www.concretepage.com/spring-4/spring-mvc-4-security-hibernate-5-mysql-using-annotation-xml-example
+
+#security##
 https://www.boraji.com/spring-4-hibernate-5-integration-example-with-zero-xml
+
+##json##
+http://www.journaldev.com/2552/spring-rest-example-tutorial-spring-restful-web-services
 
 
 

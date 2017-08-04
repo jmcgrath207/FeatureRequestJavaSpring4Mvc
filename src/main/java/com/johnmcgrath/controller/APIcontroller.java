@@ -16,13 +16,16 @@ public class APIcontroller {
     @Autowired
     private APIService apiService;
 
-    @GetMapping(value="/client_view", produces = "application/json")
-    public List<ClientViewObj> client_view(){
+    @GetMapping(value="/client_view")
+    public @ResponseBody List<ClientViewObj> client_view(){
+        // Returns Json List of Cases that are owned by the user
+
+
         List<ClientViewObj> a =  apiService.getAllClientView("test");
         return a;
     }
 
-    @PostMapping(value="/client_view",produces = "application/json")
+    @PostMapping(value="/client_view")
     public void client_view(String a){
 
     }
