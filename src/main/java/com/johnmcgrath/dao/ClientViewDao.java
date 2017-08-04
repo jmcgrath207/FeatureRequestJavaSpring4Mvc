@@ -30,7 +30,8 @@ public class ClientViewDao implements ClientViewDaoMysqlInt {
     public List<ClientViewObj> getClientView(String userName) {
         System.out.println("test");
         @SuppressWarnings("unchecked")
-        TypedQuery<ClientViewObj> query=sessionFactory.getCurrentSession().createQuery("from ClientViewObj");
+        TypedQuery<ClientViewObj> query=sessionFactory.getCurrentSession().createQuery("from ClientViewObj where client_username=:client_username");
+        query.setParameter("client_username",userName);
         return query.getResultList();
     }
 

@@ -21,7 +21,7 @@ public class APIcontroller {
         // Returns Json List of Cases that are owned by the user
 
 
-        List<ClientViewObj> a =  apiService.getAllClientView("test");
+        List<ClientViewObj> a =  apiService.getAllClientView("something");
         return a;
     }
 
