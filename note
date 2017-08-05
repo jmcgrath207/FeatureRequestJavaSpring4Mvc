@@ -1,8 +1,3 @@
-Work on vagrant mysql DB
-
-find java layer mapping programming for app doc
-
-http://viralpatel.net/blogs/spring-4-mvc-rest-example-json/
 
 
 #Beginning to End
@@ -10,14 +5,13 @@ Database object abstractions
 Model --> DAO --> DaoInterface --> Service ---> ServiceInterface --> Controller
 
 
-### JAVA OPTS Notes ####
--Djava.rmi.server.hostname=x.x.x.x needs to be the IP address of the Vagrant Outside Interface
+
 
 
 pkill -f .*vagrant.*; pkill -f .*vbox.*
 
 
-#Working on Hibernate MYSQL intergration
+
 
 #security##
 http://www.concretepage.com/spring-4/spring-mvc-4-security-hibernate-5-mysql-using-annotation-xml-example
@@ -30,16 +24,15 @@ http://www.journaldev.com/2552/spring-rest-example-tutorial-spring-restful-web-s
 
 
 
-
 ### Troubshooting Tomcat Memory issue ####
 
 
 
 http://172.28.128.3:8080/api/client_view
 
-### Work on POST Method
+### Work On user Logins via API####
 
-##Working Rest
-curl -H "Content-Type: application/json" \
--X POST -d '{"client_username": "test", "case_name": "This is a case", "description": "About the Case", "priority": 1, "product_area": "sales", "target_date": "10/21/2017", "status": "10/21/2017"}' \
-http://172.28.128.3:8080/api/client_view
+
+
+
+
