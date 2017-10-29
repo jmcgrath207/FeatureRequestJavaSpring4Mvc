@@ -31,17 +31,6 @@ Sql command Path: provisioning/mysqlconfig/mysql_config.sql
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 ##API
 
 ####POST
