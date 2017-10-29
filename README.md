@@ -1,18 +1,21 @@
 
 
 
-Build steps
+## Local Build steps with maven
 
 
-vagrant up
+mvn install
 
-maven clean
+mvn clean
 
-maven compile
+mvn compile
 
-maven war: explode
+mvn war:exploded
 
-vagrant provision
+sudo vagrant up
+
+##### If the build, use this to rerun the ansible provision
+sudo vagrant provision
 
 
 

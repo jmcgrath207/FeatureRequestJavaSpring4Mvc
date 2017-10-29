@@ -19,14 +19,14 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 public class SecurityConfig {
 
 
-    public SecurityJavaConfig() {
+     SecurityConfig() {
         super();
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
     }
 
     //
 
-    @Override
+//    @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("temporary")
@@ -36,7 +36,7 @@ public class SecurityConfig {
                 roles("USER");
     }
 
-    @Override
+//    @Override
     protected void configure(final HttpSecurity http) throws Exception {// @formatter:off
         http
                 .csrf().disable()
