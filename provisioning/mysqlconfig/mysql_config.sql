@@ -1,3 +1,5 @@
+CREATE DATABASE web;
+
 CREATE TABLE web.ClientView
 (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -9,3 +11,6 @@ CREATE TABLE web.ClientView
     status TEXT NOT NULL,
     description TEXT NOT NULL
 );
+
+
+RENAME USER 'root'@'localhost' TO 'root'@'%';

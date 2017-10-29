@@ -17,6 +17,24 @@ sudo vagrant up
 ##### If the build, use this to rerun the ansible provision
 sudo vagrant provision
 
+#
+sudo vagrant ssh db
+mysql -u root -p
+
+##### Tomcat Context - DB info ###
+
+Tomcat Context Path: provisioning/TomCatXml/context.xml
+
+#####Create table
+
+Sql command Path: provisioning/mysqlconfig/mysql_config.sql
+
+
+
+
+
+
+
 
 
 
