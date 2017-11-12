@@ -11,7 +11,7 @@ public class HelloController {
 
     @RequestMapping("/")
     public String showhello(ModelMap model) {
-        model.addAttribute("message", "Hello BEEEzzzzzzzzzzzzzzzzzzzzzzzzzzEE!");
+        model.addAttribute("message", "Hello BEEEzzzzzzzzzzzzzzzzzzzzzzzzzzEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!");
         System.out.println("ClientViewPostgre ClientViewPostgre");
         return "index";
     }
