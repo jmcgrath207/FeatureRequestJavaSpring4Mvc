@@ -8,7 +8,7 @@ import java.util.List;
 public interface ClientViewDaoInterface {
     // create a abstraction for Mysql connections
 
-    List<TicketTableObj> getClientView(String userName);
+    List<TicketTableObj> getClientView(int userId);
 
     void setClientView(TicketTableObj ticketTableObj);
 }

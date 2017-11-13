@@ -20,7 +20,7 @@ public class ClientViewApiController {
     public @ResponseBody List<TicketTableObj> client_view(){
         // Returns Json List of Cases that are owned by the user
 
-        return apiService.getAllClientView("test");
+        return apiService.getAllClientView(1);
     }
 
     @PostMapping(value="/client_view",consumes="application/json")

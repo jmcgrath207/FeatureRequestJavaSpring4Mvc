@@ -5,130 +5,102 @@ package com.johnmcgrath.model;
 
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name="ClientView")
+@Table(name="TicketTable")
 public class TicketTableObj implements Serializable {
 
 
-    private static final long serialVersionUID = 1L;
+    //private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name="id")
-    private int id;
+    @Column(name = "TicketId")
+    private int ticketId;
 
 
-
-    @Column(name="client_username")
-    @Size(min=5,max=100, message="Client Username must be between 5 and 100 characters")
+    @Column(name = "Title")
+    @Size(min = 5, max = 255, message = "Title must be between 5 and 100 characters")
     @NotNull
-    private String client_username;
+    private String title;
 
 
-    @Column(name="case_name")
-    @Size(min=5,max=100, message="Case Name must be between 5 and 100 characters")
+    @Column(name = "UserId")
     @NotNull
-    private String case_name;
+    private int userId;
 
 
-
-    @Column(name="priority")
-    @NotNull
-    private int priority;
-
-
-    @Column(name="target_date")
-    @Future(message = "Date must be in the Future") //must be date in the future
-    @NotNull
-    private String target_date;
-
-
-    @Column(name="product_area")
-    @Size(min=5,max=100, message="Product Area must be between 5 and 100 characters")
-    @NotNull
-    private String product_area;
-
-
-    @Column(name="status")
-    @Size(min=5,max=100, message="Status must be between 5 and 100 characters")
-    @NotNull
-    private String status;
-
-
-    @Column(name="description")
-    @Size(min=5,max=255, message="Description must be between 5 and 100 characters")
+    @Column(name = "Description")
+    @Size(min = 5, message = "Title must be between 5 and 100 characters")
     @NotNull
     private String description;
 
 
+    @Column(name = "CreationDate", columnDefinition="DATETIME")
+    @Temporal(TemporalType.TIMESTAMP)
+    @Future
+    private Date creationDate;
+
+    @Column(name = "UpdateDate", columnDefinition="DATETIME")
+    @Temporal(TemporalType.TIMESTAMP)
+    @Future
+    private Date updateDate;
+
+    @Column(name = "TargetDate", columnDefinition="DATETIME")
+    @Temporal(TemporalType.TIMESTAMP)
+    @Future
+    private Date targetDate;
 
 
-    public int getId() {
-        return id;
-    }
+    @Column(name = "DepartmentId")
+    @NotNull
+    private int departmentId;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @Column(name = "StatusId")
+    @NotNull
+    private int statusId;
 
-    public static long getSerialVersionUID() {
+
+    @Column(name = "PriorityId")
+    @NotNull
+    private int PriorityId;
+
+
+/*    public static long getSerialVersionUID() {
         return serialVersionUID;
+    }*/
+
+    public int getTicketId() {
+        return ticketId;
     }
 
-    public String getClient_username() {
-        return client_username;
+    public void setTicketId(int ticketId) {
+        this.ticketId = ticketId;
     }
 
-    public void setClient_username(String client_username) {
-        this.client_username = client_username;
+    public String getTitle() {
+        return title;
     }
 
-    public String getCase_name() {
-        return case_name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public void setCase_name(String case_name) {
-        this.case_name = case_name;
+    public int getUserId() {
+        return userId;
     }
 
-    public int getPriority() {
-        return priority;
-    }
-
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
-
-    public String getTarget_date() {
-        return target_date;
-    }
-
-    public void setTarget_date(String target_date) {
-        this.target_date = target_date;
-    }
-
-    public String getProduct_area() {
-        return product_area;
-    }
-
-    public void setProduct_area(String product_area) {
-        this.product_area = product_area;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getDescription() {
@@ -138,4 +110,57 @@ public class TicketTableObj implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public Date getTargetDate() {
+        return targetDate;
+    }
+
+    public void setTargetDate(Date targetDate) {
+        this.targetDate = targetDate;
+    }
+
+    public int getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public int getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
+    }
+
+    public int getPriorityId() {
+        return PriorityId;
+    }
+
+    public void setPriorityId(int priorityId) {
+        PriorityId = priorityId;
+    }
 }
+
+
+
+
+

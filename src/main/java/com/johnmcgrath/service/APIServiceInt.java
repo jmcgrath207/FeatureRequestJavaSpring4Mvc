@@ -7,7 +7,7 @@ import java.util.List;
 public interface APIServiceInt {
 
 
-    List<TicketTableObj> getAllClientView(String userName);
+    List<TicketTableObj> getAllClientView(int userId);
 
     void setCliewView(TicketTableObj ticketTableObj);
 }

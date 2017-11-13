@@ -4,7 +4,7 @@ package com.johnmcgrath.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.johnmcgrath.dao.ClientViewDaoInterface;;
+import com.johnmcgrath.dao.ClientViewDaoInterface;
 
 import com.johnmcgrath.model.TicketTableObj;
 
@@ -24,8 +24,8 @@ public class APIService implements APIServiceInt {
     }
 
 
-    public List<TicketTableObj> getAllClientView(String userName) {
-        return clientViewDaoInterface.getClientView(userName);
+    public List<TicketTableObj> getAllClientView(int userId) {
+        return clientViewDaoInterface.getClientView(userId);
     }
 
 
