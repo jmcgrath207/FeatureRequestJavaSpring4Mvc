@@ -1,7 +1,7 @@
 package com.johnmcgrath.controller;
 
 
-import com.johnmcgrath.model.ClientViewObj;
+import com.johnmcgrath.model.TicketTableObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,15 +17,15 @@ public class ClientViewApiController {
     private APIService apiService;
 
     @GetMapping(value="/client_view")
-    public @ResponseBody List<ClientViewObj> client_view(){
+    public @ResponseBody List<TicketTableObj> client_view(){
         // Returns Json List of Cases that are owned by the user
 
         return apiService.getAllClientView("test");
     }
 
     @PostMapping(value="/client_view",consumes="application/json")
-    public String client_view(@RequestBody ClientViewObj cases){
-        apiService.setCliewView(cases);
+    public String client_view(@RequestBody TicketTableObj ticketTableObj){
+        apiService.setCliewView(ticketTableObj);
         return "success: Data has been successful POST";
     }
 

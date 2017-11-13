@@ -2,7 +2,7 @@ package com.johnmcgrath.dao;
 
 import java.util.List;
 
-import com.johnmcgrath.model.ClientViewObj;
+import com.johnmcgrath.model.TicketTableObj;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -22,15 +22,15 @@ public class ClientViewDao implements ClientViewDaoInterface {
     private SessionFactory sessionFactory;
 
 
-    public void setClientView(ClientViewObj ClientViewObj) {
-        sessionFactory.getCurrentSession().save(ClientViewObj);
+    public void setClientView(TicketTableObj ticketTableObj) {
+        sessionFactory.getCurrentSession().save(ticketTableObj);
     }
 
     @Transactional(readOnly = true)
-    public List<ClientViewObj> getClientView(String userName) {
+    public List<TicketTableObj> getClientView(String userName) {
         System.out.println("test");
         @SuppressWarnings("unchecked")
-        TypedQuery<ClientViewObj> query=sessionFactory.getCurrentSession().createQuery("from ClientViewObj where client_username=:client_username");
+        TypedQuery<TicketTableObj> query=sessionFactory.getCurrentSession().createQuery("from TicketTableObj where client_username=:client_username");
         query.setParameter("client_username",userName);
         return query.getResultList();
     }

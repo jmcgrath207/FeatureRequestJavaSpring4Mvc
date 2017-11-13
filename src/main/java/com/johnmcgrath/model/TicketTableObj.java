@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="ClientView")
-public class ClientViewObj  implements Serializable {
+public class TicketTableObj implements Serializable {
 
 
     private static final long serialVersionUID = 1L;

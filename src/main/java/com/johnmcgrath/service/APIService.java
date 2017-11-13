@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.johnmcgrath.dao.ClientViewDaoInterface;;
 
-import com.johnmcgrath.model.ClientViewObj;
+import com.johnmcgrath.model.TicketTableObj;
 
 import java.util.List;
 
@@ -19,12 +19,12 @@ public class APIService implements APIServiceInt {
     private ClientViewDaoInterface clientViewDaoInterface;
 
 
-    public void setCliewView(ClientViewObj clientViewObj) {
-        clientViewDaoInterface.setClientView(clientViewObj);
+    public void setCliewView(TicketTableObj ticketTableObj) {
+        clientViewDaoInterface.setClientView(ticketTableObj);
     }
 
 
-    public List<ClientViewObj> getAllClientView(String userName) {
+    public List<TicketTableObj> getAllClientView(String userName) {
         return clientViewDaoInterface.getClientView(userName);
     }
 

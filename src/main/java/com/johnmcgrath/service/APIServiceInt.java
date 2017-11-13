@@ -1,13 +1,13 @@
 package com.johnmcgrath.service;
 
-import com.johnmcgrath.model.ClientViewObj;
+import com.johnmcgrath.model.TicketTableObj;
 
 import java.util.List;
 
 public interface APIServiceInt {
 
 
-    List<ClientViewObj> getAllClientView(String userName);
+    List<TicketTableObj> getAllClientView(String userName);
 
-    void setCliewView(ClientViewObj clientViewObj);
+    void setCliewView(TicketTableObj ticketTableObj);
 }
