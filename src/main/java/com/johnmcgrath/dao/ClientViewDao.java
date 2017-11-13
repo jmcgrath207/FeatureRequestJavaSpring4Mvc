@@ -13,7 +13,7 @@ import javax.persistence.TypedQuery;
 
 @Repository
 @Transactional
-public class ClientViewDao implements ClientViewDaoMysqlInt {
+public class ClientViewDao implements ClientViewDaoInterface {
 
 
 

@@ -5,7 +5,7 @@ import com.johnmcgrath.model.ClientViewObj;
 
 import java.util.List;
 
-public interface ClientViewDaoMysqlInt {
+public interface ClientViewDaoInterface {
     // create a abstraction for Mysql connections
 
     List<ClientViewObj> getClientView(String userName);
