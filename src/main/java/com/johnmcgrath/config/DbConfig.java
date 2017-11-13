@@ -57,6 +57,7 @@ public class DbConfig {
         properties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
         properties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
         properties.put("hibernate.format_sql", env.getProperty("hibernate.format_sql"));
+        properties.put("hibernate.jdbc.time_zone", env.getProperty("hibernate.jdbc.time_zone"));
         return properties;
     }
 

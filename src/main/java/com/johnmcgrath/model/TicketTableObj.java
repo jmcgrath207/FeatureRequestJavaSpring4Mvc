@@ -5,7 +5,13 @@ package com.johnmcgrath.model;
 
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.TimeZone;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -47,7 +53,6 @@ public class TicketTableObj implements Serializable {
 
     @Column(name = "CreationDate", columnDefinition="DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
-    @Future
     private Date creationDate;
 
     @Column(name = "UpdateDate", columnDefinition="DATETIME")
@@ -111,8 +116,13 @@ public class TicketTableObj implements Serializable {
         this.description = description;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
+    public String getCreationDate() {
+        // TODO: Create Helper Class for Time Converstion
+        Date date = new Date(creationDate.getTime());
+        DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        format.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
+        String formatted = format.format(date);
+        return formatted;
     }
 
     public void setCreationDate(Date creationDate) {
