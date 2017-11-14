@@ -82,10 +82,6 @@ public class TicketTableObj implements Serializable {
     private int PriorityId;
 
 
-/*    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }*/
-
     public int getTicketId() {
         return ticketId;
     }
