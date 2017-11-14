@@ -5,11 +5,9 @@ package com.johnmcgrath.model;
 
 
 import java.io.Serializable;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.TimeZone;
 import javax.persistence.Column;
@@ -26,8 +24,12 @@ import javax.validation.constraints.Size;
 @Table(name="TicketTable")
 public class TicketTableObj implements Serializable {
 
-
-    //private static final long serialVersionUID = 1L;
+    private String epochToUtc(Date date) {
+        Date epochTime = new Date(date.getTime());
+        DateFormat utcPattern = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        utcPattern.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
+        return utcPattern.format(epochTime);
+    }
 
     @Id
     @Column(name = "TicketId")
@@ -117,28 +119,23 @@ public class TicketTableObj implements Serializable {
     }
 
     public String getCreationDate() {
-        // TODO: Create Helper Class for Time Converstion
-        Date date = new Date(creationDate.getTime());
-        DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        format.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
-        String formatted = format.format(date);
-        return formatted;
+        return epochToUtc(creationDate);
     }
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
 
-    public Date getUpdateDate() {
-        return updateDate;
+    public String getUpdateDate() {
+        return epochToUtc(updateDate);
     }
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
     }
 
-    public Date getTargetDate() {
-        return targetDate;
+    public String getTargetDate() {
+        return epochToUtc(targetDate);
     }
 
     public void setTargetDate(Date targetDate) {
