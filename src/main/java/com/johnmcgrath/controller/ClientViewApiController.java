@@ -16,6 +16,7 @@ public class ClientViewApiController {
     @Autowired
     private APIService apiService;
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(value="/client_view")
     public @ResponseBody List<TicketTableObj> client_view(){
         // Returns Json List of Cases that are owned by the user
