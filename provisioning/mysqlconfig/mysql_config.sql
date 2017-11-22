@@ -125,4 +125,4 @@ INSERT INTO web.PriorityTable (PriorityId, Description) VALUES (
 
 
 INSERT INTO web.TicketTable ( Title, UserId, Description, CreationDate, UpdateDate, TargetDate, DepartmentId,  StatusId, PriorityId) VALUES
-  ('Fixed Print Statement',1,'Fix Print Statement on Function FOO','2017-11-07 12:00:12','2017-11-07 12:00:12', '2017-11-30 12:00:12',1,1,1)
+  ('Fixed Print Statement',1,'Fix Print Statement on Function FOO','2017-11-07 12:00:12','2017-11-07 12:00:12', '2017-11-30 12:00:12',1,1,1);

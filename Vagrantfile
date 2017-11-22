@@ -21,7 +21,7 @@ VAGRANT_VERSION = 2
 BRIDGE_NAME = "wlp3s0"
 BRIDGE_NET="192.168.1."
 # Prefix for Internal Network
-INTERNAL_NET="192.168.200."
+INTERNAL_NET="172.28.128."
 # The domain that we will use for the entire site
 DOMAIN="" # Warning causes SSH connect issue at build ex: .sample.com
 
@@ -75,8 +75,8 @@ PORT_FOWARD_3 = [80,8082]
 servers=[
     {
         :hostname => HOSTNAME_1 + DOMAIN,
-        :ip => BRIDGE_NET + "150",
-        :ip_int => INTERNAL_NET + "150",
+        :ip => BRIDGE_NET + "3",
+        :ip_int => INTERNAL_NET + "3",
         :ram => RAM_B1,
         :main_distro => DISTRO_B1,
         :box_version => VERSION_B1,
@@ -89,8 +89,8 @@ servers=[
     },
     {
         :hostname => HOSTNAME_2 + DOMAIN,
-        :ip => BRIDGE_NET + "151",
-        :ip_int => INTERNAL_NET+ "151",
+        :ip => BRIDGE_NET + "4",
+        :ip_int => INTERNAL_NET+ "4",
         :ram => RAM_B2,
         :main_distro => DISTRO_B2,
         :box_version => VERSION_B2,
@@ -150,8 +150,8 @@ Vagrant.configure(VAGRANT_VERSION) do |config|
       end
       #node.vm.network "public_network", ip: machine[:ip], bridge: BRIDGE_NAME # not working at this time
       #node.vm.network "private_network", ip: machine[:ip_int], virtualbox__intnet: "intnet"
-      node.vm.network "private_network", type: "dhcp"
-      #node.vm.network "private_network", ip: machine[:ip_int], netmask: "255.240.0.0"
+      #node.vm.network "private_network", type: "dhcp"
+      node.vm.network "private_network", ip: machine[:ip_int], netmask: "255.240.0.0"
 
 
       node.vm.provider "virtualbox" do |setup|
