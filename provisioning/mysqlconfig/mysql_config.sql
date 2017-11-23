@@ -80,23 +80,48 @@ CREATE TABLE web.PriorityTable (
 CREATE TABLE web.TicketTable
 (
   TicketId INT NOT NULL AUTO_INCREMENT,
+  TicketOrignalId INT,
+  TickerOwnerId INT,
   Title VARCHAR(255),
-  UserId INT,
   Description TEXT,
   CreationDate DATETIME,
+  CreationUserId INT,
   UpdateDate DATETIME,
+  UpdateUserId INT,
   TargetDate DATETIME,
-  DepartmentId Int,
+  DepartmentId INT,
   StatusId  INT,
   PriorityId  INT,
-  FOREIGN KEY (UserId) REFERENCES web.UserTable(UserId),
+  FOREIGN KEY (TicketOrignalId) REFERENCES web.TicketTable(TicketId),
+  FOREIGN KEY (TickerOwnerId) REFERENCES web.UserTable(UserId),
+  FOREIGN KEY (CreationUserId) REFERENCES web.UserTable(UserId),
+  FOREIGN KEY (UpdateUserId) REFERENCES web.UserTable(UserId),
   FOREIGN KEY (StatusId) REFERENCES web.TicketStatusTable(StatusId),
   FOREIGN KEY (DepartmentId) REFERENCES web.DepartmentTable(DepartmentId),
   FOREIGN KEY (PriorityId) REFERENCES web.PriorityTable(PriorityId),
   PRIMARY KEY (TicketId)
-
 );
 
+
+### Create Index On Ticket Orignal ID
+CREATE INDEX Index_TicketOrignalId
+  ON web.TicketTable (TicketOrignalId);
+
+
+CREATE TABLE web.CommentTable (
+
+  CommentId INT NOT NULL AUTO_INCREMENT,
+  TicketOrignalId INT,
+  Description TEXT,
+  CreationDate DATETIME,
+  CreationUserId INT,
+  UpdateDate DATETIME,
+  UpdateUserId INT,
+  FOREIGN KEY (TicketOrignalId) REFERENCES web.TicketTable(TicketOrignalId),
+  PRIMARY KEY (CommentId)
+
+
+);
 
 #### Create Info ####
 
@@ -123,6 +148,69 @@ INSERT INTO web.PriorityTable (PriorityId, Description) VALUES (
   1, 'Normal'
 );
 
+### First Ticket ### Note: Orignal Value Will be Null
+INSERT INTO web.TicketTable ( TickerOwnerId,
+                              Title, Description,
+                              CreationDate, CreationUserId,
+                              UpdateDate, UpdateUserId,
+                              TargetDate, DepartmentId,
+                              StatusId, PriorityId)
+VALUES (1,
+  'Fix Function Foo','Fix Function Foo issue',
+  '2017-11-07 12:00:12',1,
+  '2017-11-07 12:00:12',1,
+  '2017-11-07 12:00:12',1,
+  1,1);
 
-INSERT INTO web.TicketTable ( Title, UserId, Description, CreationDate, UpdateDate, TargetDate, DepartmentId,  StatusId, PriorityId) VALUES
-  ('Fixed Print Statement',1,'Fix Print Statement on Function FOO','2017-11-07 12:00:12','2017-11-07 12:00:12', '2017-11-30 12:00:12',1,1,1);
+
+
+
+
+### Updated Ticket 1 ###
+
+INSERT INTO web.TicketTable (TicketOrignalId, TickerOwnerId,
+                             Title, Description,
+                             CreationDate, CreationUserId,
+                             UpdateDate, UpdateUserId,
+                             TargetDate, DepartmentId,
+                             StatusId, PriorityId)
+VALUES (1,1,
+          'Fix Function Foo','Fix Function Foo issue',
+          '2017-11-07 12:00:12',1,
+          '2017-11-07 12:00:12',1,
+          '2017-11-07 12:00:12',1,
+          1,1);
+
+
+### Updated Ticket 2 ###
+
+INSERT INTO web.TicketTable (TicketOrignalId, TickerOwnerId,
+                             Title, Description,
+                             CreationDate, CreationUserId,
+                             UpdateDate, UpdateUserId,
+                             TargetDate, DepartmentId,
+                             StatusId, PriorityId)
+VALUES (1,1,
+          'Fix Function Foo','Fix Function Foo issue',
+          '2017-11-07 12:00:12',1,
+          '2017-11-07 12:00:12',1,
+          '2017-11-07 12:00:12',1,
+          1,1);
+
+
+
+
+### Pull Last Ticket Info
+SELECT * FROM web.TicketTable
+WHERE TicketOrignalId = 1 ORDER BY TicketId DESC
+LIMIT 1;
+
+
+
+
+INSERT INTO web.CommentTable (TicketOrignalId, Description, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (1,'Something Happened','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',1)
+
+
+
+
