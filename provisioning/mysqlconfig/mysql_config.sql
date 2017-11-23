@@ -81,7 +81,7 @@ CREATE TABLE web.TicketTable
 (
   TicketId INT NOT NULL AUTO_INCREMENT,
   TicketOriginalId INT,
-  TickerOwnerId INT,
+  TicketOwnerId INT,
   Title VARCHAR(255),
   Description TEXT,
   CreationDate DATETIME,
@@ -93,7 +93,7 @@ CREATE TABLE web.TicketTable
   StatusId  INT,
   PriorityId  INT,
   FOREIGN KEY (TicketOriginalId) REFERENCES web.TicketTable(TicketId),
-  FOREIGN KEY (TickerOwnerId) REFERENCES web.UserTable(UserId),
+  FOREIGN KEY (TicketOwnerId) REFERENCES web.UserTable(UserId),
   FOREIGN KEY (CreationUserId) REFERENCES web.UserTable(UserId),
   FOREIGN KEY (UpdateUserId) REFERENCES web.UserTable(UserId),
   FOREIGN KEY (StatusId) REFERENCES web.TicketStatusTable(StatusId),
@@ -148,43 +148,32 @@ INSERT INTO web.PriorityTable (PriorityId, Description) VALUES (
   1, 'Normal'
 );
 
-### First Ticket ### Note: Orignal Value Will be Null
-INSERT INTO web.TicketTable ( TickerOwnerId,
-                              Title, Description,
-                              CreationDate, CreationUserId,
-                              UpdateDate, UpdateUserId,
-                              TargetDate, DepartmentId,
-                              StatusId, PriorityId)
-VALUES (1,
-  'Fix Function Foo','Fix Function Foo issue',
-  '2017-11-07 12:00:12',1,
-  '2017-11-07 12:00:12',1,
-  '2017-11-07 12:00:12',1,
-  1,1);
 
 
+### New Ticket 1 ###
 
+SELECT `AUTO_INCREMENT` INTO @ai
+FROM  INFORMATION_SCHEMA.TABLES
+WHERE TABLE_SCHEMA = 'web'
+      AND   TABLE_NAME   = 'TicketTable';
+
+INSERT INTO web.TicketTable (TicketOriginalId, TicketOwnerId,
+                             Title, Description,
+                             CreationDate, CreationUserId,
+                             UpdateDate, UpdateUserId,
+                             TargetDate, DepartmentId,
+                             StatusId, PriorityId)
+VALUES (@ai,1,
+            'Fix Function Foo','Fix Function Foo issue',
+            '2017-11-07 12:00:12',1,
+            '2017-11-07 12:00:12',1,
+            '2017-11-07 12:00:12',1,
+            1,1);
 
 
 ### Updated Ticket 1 ###
 
-INSERT INTO web.TicketTable (TicketOriginalId, TickerOwnerId,
-                             Title, Description,
-                             CreationDate, CreationUserId,
-                             UpdateDate, UpdateUserId,
-                             TargetDate, DepartmentId,
-                             StatusId, PriorityId)
-VALUES (1,1,
-          'Fix Function Foo','Fix Function Foo issue',
-          '2017-11-07 12:00:12',1,
-          '2017-11-07 12:00:12',1,
-          '2017-11-07 12:00:12',1,
-          1,1);
-
-
-### Updated Ticket 2 ###
-
-INSERT INTO web.TicketTable (TicketOriginalId, TickerOwnerId,
+INSERT INTO web.TicketTable (TicketOriginalId, TicketOwnerId,
                              Title, Description,
                              CreationDate, CreationUserId,
                              UpdateDate, UpdateUserId,
@@ -200,12 +189,34 @@ VALUES (1,1,
 
 
 
+### New Ticket 2 ###
+
+SELECT `AUTO_INCREMENT` INTO @ai
+FROM  INFORMATION_SCHEMA.TABLES
+WHERE TABLE_SCHEMA = 'web'
+      AND   TABLE_NAME   = 'TicketTable';
+
+INSERT INTO web.TicketTable (TicketOriginalId, TicketOwnerId,
+                             Title, Description,
+                             CreationDate, CreationUserId,
+                             UpdateDate, UpdateUserId,
+                             TargetDate, DepartmentId,
+                             StatusId, PriorityId)
+VALUES (@ai,1,
+            'Fix Function Foo','Fix Function Foo issue',
+            '2017-11-07 12:00:12',1,
+            '2017-11-07 12:00:12',1,
+            '2017-11-07 12:00:12',1,
+            1,1);
+
+
+
+## TODO: Work on Pull the Last Ticket Original ID
 ### Pull Last Ticket Info
-SELECT * FROM web.TicketTable
-WHERE TicketOriginalId = 1 ORDER BY TicketId DESC
-LIMIT 1;
+SELECT  tt.Description, tt.TicketOriginalId FROM web.TicketTable AS tt
+GROUP BY tt.TicketOriginalId;
 
-
+### Add Comment Table
 
 
 INSERT INTO web.CommentTable (TicketOriginalId, Description, CreationDate, CreationUserId, UpdateDate, UpdateUserId)

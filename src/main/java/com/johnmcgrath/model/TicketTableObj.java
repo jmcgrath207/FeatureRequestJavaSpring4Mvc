@@ -36,11 +36,12 @@ public class TicketTableObj implements Serializable {
     private int ticketId;
 
     @Id
+
     @Column(name = "TicketOriginalId")
     private int ticketOriginalId;
 
     @Id
-    @Column(name = "TickerOwnerId")
+    @Column(name = "TicketOwnerId")
     private int ticketOwnerId;
 
 
