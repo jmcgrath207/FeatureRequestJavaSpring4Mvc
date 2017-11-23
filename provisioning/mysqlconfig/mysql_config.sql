@@ -80,7 +80,7 @@ CREATE TABLE web.PriorityTable (
 CREATE TABLE web.TicketTable
 (
   TicketId INT NOT NULL AUTO_INCREMENT,
-  TicketOrignalId INT,
+  TicketOriginalId INT,
   TickerOwnerId INT,
   Title VARCHAR(255),
   Description TEXT,
@@ -92,7 +92,7 @@ CREATE TABLE web.TicketTable
   DepartmentId INT,
   StatusId  INT,
   PriorityId  INT,
-  FOREIGN KEY (TicketOrignalId) REFERENCES web.TicketTable(TicketId),
+  FOREIGN KEY (TicketOriginalId) REFERENCES web.TicketTable(TicketId),
   FOREIGN KEY (TickerOwnerId) REFERENCES web.UserTable(UserId),
   FOREIGN KEY (CreationUserId) REFERENCES web.UserTable(UserId),
   FOREIGN KEY (UpdateUserId) REFERENCES web.UserTable(UserId),
@@ -104,20 +104,20 @@ CREATE TABLE web.TicketTable
 
 
 ### Create Index On Ticket Orignal ID
-CREATE INDEX Index_TicketOrignalId
-  ON web.TicketTable (TicketOrignalId);
+CREATE INDEX Index_TicketOriginalId
+  ON web.TicketTable (TicketOriginalId);
 
 
 CREATE TABLE web.CommentTable (
 
   CommentId INT NOT NULL AUTO_INCREMENT,
-  TicketOrignalId INT,
+  TicketOriginalId INT,
   Description TEXT,
   CreationDate DATETIME,
   CreationUserId INT,
   UpdateDate DATETIME,
   UpdateUserId INT,
-  FOREIGN KEY (TicketOrignalId) REFERENCES web.TicketTable(TicketOrignalId),
+  FOREIGN KEY (TicketOriginalId) REFERENCES web.TicketTable(TicketOriginalId),
   PRIMARY KEY (CommentId)
 
 
@@ -168,7 +168,7 @@ VALUES (1,
 
 ### Updated Ticket 1 ###
 
-INSERT INTO web.TicketTable (TicketOrignalId, TickerOwnerId,
+INSERT INTO web.TicketTable (TicketOriginalId, TickerOwnerId,
                              Title, Description,
                              CreationDate, CreationUserId,
                              UpdateDate, UpdateUserId,
@@ -184,7 +184,7 @@ VALUES (1,1,
 
 ### Updated Ticket 2 ###
 
-INSERT INTO web.TicketTable (TicketOrignalId, TickerOwnerId,
+INSERT INTO web.TicketTable (TicketOriginalId, TickerOwnerId,
                              Title, Description,
                              CreationDate, CreationUserId,
                              UpdateDate, UpdateUserId,
@@ -202,13 +202,13 @@ VALUES (1,1,
 
 ### Pull Last Ticket Info
 SELECT * FROM web.TicketTable
-WHERE TicketOrignalId = 1 ORDER BY TicketId DESC
+WHERE TicketOriginalId = 1 ORDER BY TicketId DESC
 LIMIT 1;
 
 
 
 
-INSERT INTO web.CommentTable (TicketOrignalId, Description, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+INSERT INTO web.CommentTable (TicketOriginalId, Description, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
 VALUES (1,'Something Happened','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',1)
 
 
