@@ -2,7 +2,7 @@
 ### Edit Root account for access from any IP address ###
 
 #RENAME USER 'root'@'localhost' TO 'root'@'%';
-
+## GRANT ALTER ROUTINE, CREATE ROUTINE, EXECUTE ON *.* TO 'root'@'%';
 ## Create Tables #####
 
 CREATE DATABASE web;
@@ -180,7 +180,7 @@ INSERT INTO web.TicketTable (TicketOriginalId, TicketOwnerId,
                              TargetDate, DepartmentId,
                              StatusId, PriorityId)
 VALUES (1,1,
-          'Fix Function Foo','Fix Function Foo issue',
+          'Fix Function Foo aaa','Fix Function Foo issue aaa',
           '2017-11-07 12:00:12',1,
           '2017-11-07 12:00:12',1,
           '2017-11-07 12:00:12',1,
@@ -211,10 +211,45 @@ VALUES (@ai,1,
 
 
 
-## TODO: Work on Pull the Last Ticket Original ID
-### Pull Last Ticket Info
-SELECT  tt.Description, tt.TicketOriginalId FROM web.TicketTable AS tt
-GROUP BY tt.TicketOriginalId;
+
+### Working Stored PROCEDURE For returning Latest Tickets
+
+DROP PROCEDURE IF EXISTS return_latest_tickets;
+
+CREATE PROCEDURE return_latest_tickets ()
+  BEGIN
+    DECLARE toi INT;
+    DECLARE end_interate INT;
+    DECLARE start_interate INT;
+
+    DECLARE cur1 CURSOR FOR SELECT DISTINCT TicketOriginalId FROM  web.TicketTable;
+
+    SET start_interate = 0;
+    SET end_interate = (SELECT Count(DISTINCT TicketOriginalId) FROM  web.TicketTable);
+
+    DROP TABLE IF EXISTS temp_ticket_table;
+    CREATE TEMPORARY TABLE temp_ticket_table LIKE web.TicketTable;
+    OPEN cur1;
+
+    WHILE start_interate < end_interate DO
+      FETCH cur1 INTO toi;
+      INSERT INTO temp_ticket_table
+        SELECT *  FROM web.TicketTable WHERE  TicketId = (SELECT MAX(TicketId) FROM web.TicketTable WHERE TicketOriginalID = toi);
+      SET start_interate = start_interate + 1;
+    END WHILE;
+
+    select * from temp_ticket_table;
+    CLOSE cur1;
+  END;
+
+
+Call return_latest_tickets();
+
+
+
+
+
+SELECT * FROM web.TicketTable
 
 ### Add Comment Table
 
