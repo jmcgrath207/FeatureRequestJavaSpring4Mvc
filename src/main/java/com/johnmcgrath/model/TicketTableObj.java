@@ -47,33 +47,34 @@ public class TicketTableObj implements Serializable {
     private int ticketId;
 
     @Id
-
     @Column(name = "TicketOriginalId")
     private int ticketOriginalId;
 
 
-    @Column(name = "Title")
+    @Column(name = "TicketTitle")
     @Size(min = 5, max = 255, message = "Title must be between 5 and 100 characters")
     @NotNull
-    private String title;
+    private String ticketTitle;
 
-    @Id
-    @Column(name = "TicketOwnerId")
-    private int ticketOwnerId;
-
-    @Column(name = "Description")
-    @Size(min = 5, message = "Title must be between 5 and 100 characters")
+    @Column(name = "TicketDescription")
     @NotNull
-    private String description;
+    private String ticketDescription;
+
+    @Column(name = "StatusDescription")
+    @NotNull
+    private String statusDescription;
+
+    @Column(name = "DepartmentDescription")
+    @NotNull
+    private String departmentDescription;
+
+    @Column(name = "PriorityDescription")
+    @NotNull
+    private String priorityDescription;
 
     @Column(name = "CreationDate", columnDefinition="DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
-
-
-    @Id
-    @Column(name = "CreationUserId")
-    private int creationUserId;
 
 
     @Column(name = "UpdateDate", columnDefinition="DATETIME")
@@ -82,30 +83,22 @@ public class TicketTableObj implements Serializable {
     private Date updateDate;
 
 
-    @Column(name = "UpdateUserId")
-    @NotNull
-    private int updateUserId;
-
-
     @Column(name = "TargetDate", columnDefinition="DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
     @Future
     private Date targetDate;
 
-
-    @Column(name = "DepartmentId")
+    @Column(name = "TicketOwner")
     @NotNull
-    private int departmentId;
+    private String ticketOwner;
 
-    @Column(name = "StatusId")
+    @Column(name = "CreationUser")
     @NotNull
-    private int statusId;
+    private String creationUser;
 
-
-    @Column(name = "PriorityId")
+    @Column(name = "UpdateUser")
     @NotNull
-    private int PriorityId;
-
+    private String updateUser;
 
     public int getTicketId() {
         return ticketId;
@@ -123,28 +116,44 @@ public class TicketTableObj implements Serializable {
         this.ticketOriginalId = ticketOriginalId;
     }
 
-    public int getTicketOwnerId() {
-        return ticketOwnerId;
+    public String getTicketTitle() {
+        return ticketTitle;
     }
 
-    public void setTicketOwnerId(int ticketOwnerId) {
-        this.ticketOwnerId = ticketOwnerId;
+    public void setTicketTitle(String ticketTitle) {
+        this.ticketTitle = ticketTitle;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTicketDescription() {
+        return ticketDescription;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTicketDescription(String ticketDescription) {
+        this.ticketDescription = ticketDescription;
     }
 
-    public String getDescription() {
-        return description;
+    public String getStatusDescription() {
+        return statusDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setStatusDescription(String statusDescription) {
+        this.statusDescription = statusDescription;
+    }
+
+    public String getDepartmentDescription() {
+        return departmentDescription;
+    }
+
+    public void setDepartmentDescription(String departmentDescription) {
+        this.departmentDescription = departmentDescription;
+    }
+
+    public String getPriorityDescription() {
+        return priorityDescription;
+    }
+
+    public void setPriorityDescription(String priorityDescription) {
+        this.priorityDescription = priorityDescription;
     }
 
     public String getCreationDate() {
@@ -155,28 +164,12 @@ public class TicketTableObj implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public int getCreationUserId() {
-        return creationUserId;
-    }
-
-    public void setCreationUserId(int creationUserId) {
-        this.creationUserId = creationUserId;
-    }
-
     public String getUpdateDate() {
         return epochToUtc(updateDate);
     }
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
-    }
-
-    public int getUpdateUserId() {
-        return updateUserId;
-    }
-
-    public void setUpdateUserId(int updateUserId) {
-        this.updateUserId = updateUserId;
     }
 
     public String getTargetDate() {
@@ -187,28 +180,28 @@ public class TicketTableObj implements Serializable {
         this.targetDate = targetDate;
     }
 
-    public int getDepartmentId() {
-        return departmentId;
+    public String getTicketOwner() {
+        return ticketOwner;
     }
 
-    public void setDepartmentId(int departmentId) {
-        this.departmentId = departmentId;
+    public void setTicketOwner(String ticketOwner) {
+        this.ticketOwner = ticketOwner;
     }
 
-    public int getStatusId() {
-        return statusId;
+    public String getCreationUser() {
+        return creationUser;
     }
 
-    public void setStatusId(int statusId) {
-        this.statusId = statusId;
+    public void setCreationUser(String creationUser) {
+        this.creationUser = creationUser;
     }
 
-    public int getPriorityId() {
-        return PriorityId;
+    public String getUpdateUser() {
+        return updateUser;
     }
 
-    public void setPriorityId(int priorityId) {
-        PriorityId = priorityId;
+    public void setUpdateUser(String updateUser) {
+        this.updateUser = updateUser;
     }
 }
 
