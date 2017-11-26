@@ -1,8 +1,8 @@
 package com.johnmcgrath.model;
 
 
-
-
+import org.hibernate.annotations.NamedNativeQueries;
+import org.hibernate.annotations.NamedNativeQuery;
 
 import java.io.Serializable;
 
@@ -19,6 +19,17 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+
+
+@NamedNativeQueries({
+        @NamedNativeQuery(
+                name = "return_latest_tickets",
+                query = "CALL return_latest_tickets()",
+                resultClass = TicketTableObj.class
+        )
+})
+
 
 @Entity
 @Table(name="TicketTable")
