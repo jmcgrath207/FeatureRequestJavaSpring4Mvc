@@ -82,7 +82,7 @@ CREATE TABLE web.TicketTable
   TicketId INT NOT NULL AUTO_INCREMENT,
   TicketOriginalId INT,
   TicketOwnerId INT,
-  Title VARCHAR(255),
+  TicketTitle VARCHAR(255),
   TicketDescription TEXT,
   CreationDate DATETIME,
   CreationUserId INT,
@@ -161,7 +161,7 @@ WHERE TABLE_SCHEMA = 'web'
       AND   TABLE_NAME   = 'TicketTable';
 
 INSERT INTO web.TicketTable (TicketOriginalId, TicketOwnerId,
-                             Title, TicketDescription,
+                             TicketTitle, TicketDescription,
                              CreationDate, CreationUserId,
                              UpdateDate, UpdateUserId,
                              TargetDate, DepartmentId,
@@ -177,7 +177,7 @@ VALUES (@ai,1,
 ### Updated Ticket 1 ###
 
 INSERT INTO web.TicketTable (TicketOriginalId, TicketOwnerId,
-                             Title, TicketDescription,
+                             TicketTitle, TicketDescription,
                              CreationDate, CreationUserId,
                              UpdateDate, UpdateUserId,
                              TargetDate, DepartmentId,
@@ -200,7 +200,7 @@ WHERE TABLE_SCHEMA = 'web'
       AND   TABLE_NAME   = 'TicketTable';
 
 INSERT INTO web.TicketTable (TicketOriginalId, TicketOwnerId,
-                             Title, TicketDescription,
+                             TicketTitle, TicketDescription,
                              CreationDate, CreationUserId,
                              UpdateDate, UpdateUserId,
                              TargetDate, DepartmentId,
@@ -212,6 +212,15 @@ VALUES (@ai,1,
             '2017-11-07 12:00:12',1,
             1,1);
 
+
+
+
+
+### Insert into Comment Table
+
+
+INSERT INTO web.CommentTable (TicketOriginalId, Description, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (1,'Something Happened','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',1);
 
 
 
@@ -234,7 +243,7 @@ CREATE PROCEDURE return_latest_tickets ()
     CREATE TEMPORARY TABLE temp_ticket_table (
       TicketId INT,
       TicketOriginalId INT,
-      Title VARCHAR(255),
+      TicketTitle VARCHAR(255),
       TicketDescription TEXT,
       StatusDescription TEXT,
       DepartmentDescription TEXT,
@@ -251,11 +260,11 @@ CREATE PROCEDURE return_latest_tickets ()
 
     WHILE start_interate < end_interate DO
       FETCH cur1 INTO toi;
-      INSERT INTO temp_ticket_table (TicketId, TicketOriginalId, Title, TicketDescription, StatusDescription,
+      INSERT INTO temp_ticket_table (TicketId, TicketOriginalId, TicketTitle, TicketDescription, StatusDescription,
                                      DepartmentDescription, PriorityDescription, CreationDate,
                                      UpdateDate, TargetDate, TicketOwner, CreationUser, UpdateUser)
 
-        SELECT TT.TicketId,TT.TicketOriginalId, TT.Title, TT.TicketDescription, ST.StatusDescription,
+        SELECT TT.TicketId,TT.TicketOriginalId, TT.TicketTitle, TT.TicketDescription, ST.StatusDescription,
           DT.DepartmentDescription, PT.PriorityDescription, TT.CreationDate, TT.UpdateDate, TT.TargetDate,
 
           ## SELECT USER FOR TicketOwnerId
@@ -287,11 +296,6 @@ Call return_latest_tickets();
 
 
 
-### Add Comment Table
-
-
-INSERT INTO web.CommentTable (TicketOriginalId, Description, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (1,'Something Happened','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',1)
 
 
 

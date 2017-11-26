@@ -51,15 +51,15 @@ public class TicketTableObj implements Serializable {
     @Column(name = "TicketOriginalId")
     private int ticketOriginalId;
 
-    @Id
-    @Column(name = "TicketOwnerId")
-    private int ticketOwnerId;
-
 
     @Column(name = "Title")
     @Size(min = 5, max = 255, message = "Title must be between 5 and 100 characters")
     @NotNull
     private String title;
+
+    @Id
+    @Column(name = "TicketOwnerId")
+    private int ticketOwnerId;
 
     @Column(name = "Description")
     @Size(min = 5, message = "Title must be between 5 and 100 characters")
