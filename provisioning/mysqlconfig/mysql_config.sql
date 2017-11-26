@@ -233,6 +233,7 @@ CREATE PROCEDURE return_latest_tickets ()
     DROP TABLE IF EXISTS temp_ticket_table;
     CREATE TEMPORARY TABLE temp_ticket_table (
       TicketId INT,
+      TicketOriginalId INT,
       Title VARCHAR(255),
       TicketDescription TEXT,
       StatusDescription TEXT,
@@ -250,11 +251,11 @@ CREATE PROCEDURE return_latest_tickets ()
 
     WHILE start_interate < end_interate DO
       FETCH cur1 INTO toi;
-      INSERT INTO temp_ticket_table (TicketId, Title, TicketDescription, StatusDescription,
+      INSERT INTO temp_ticket_table (TicketId, TicketOriginalId, Title, TicketDescription, StatusDescription,
                                      DepartmentDescription, PriorityDescription, CreationDate,
                                      UpdateDate, TargetDate, TicketOwner, CreationUser, UpdateUser)
 
-        SELECT TT.TicketOriginalId, TT.Title, TT.TicketDescription, ST.StatusDescription,
+        SELECT TT.TicketId,TT.TicketOriginalId, TT.Title, TT.TicketDescription, ST.StatusDescription,
           DT.DepartmentDescription, PT.PriorityDescription, TT.CreationDate, TT.UpdateDate, TT.TargetDate,
 
           ## SELECT USER FOR TicketOwnerId
