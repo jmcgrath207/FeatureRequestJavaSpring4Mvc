@@ -14,7 +14,7 @@ CREATE TABLE web.RoleTable
 (
 
   RoleId  INT,
-  Description TEXT,
+  RoleDescription TEXT,
   PRIMARY KEY (RoleId)
 
 
@@ -57,21 +57,21 @@ CREATE TABLE web.ApprovedIPAddress
 CREATE TABLE web.TicketStatusTable (
 
   StatusId  INT,
-  Description TEXT,
+  StatusDescription TEXT,
   PRIMARY KEY (StatusId)
 );
 
 CREATE TABLE web.DepartmentTable (
 
   DepartmentId  INT,
-  Description TEXT,
+  DepartmentDescription TEXT,
   PRIMARY KEY (DepartmentId)
 );
 
 CREATE TABLE web.PriorityTable (
 
   PriorityId  INT,
-  Description TEXT,
+  PriorityDescription TEXT,
   PRIMARY KEY (PriorityId)
 );
 
@@ -83,7 +83,7 @@ CREATE TABLE web.TicketTable
   TicketOriginalId INT,
   TicketOwnerId INT,
   Title VARCHAR(255),
-  Description TEXT,
+  TicketDescription TEXT,
   CreationDate DATETIME,
   CreationUserId INT,
   UpdateDate DATETIME,
@@ -125,7 +125,7 @@ CREATE TABLE web.CommentTable (
 
 #### Create Info ####
 
-INSERT INTO web.RoleTable (RoleId, Description) VALUES (
+INSERT INTO web.RoleTable (RoleId, RoleDescription) VALUES (
   1, 'User'
 );
 
@@ -133,18 +133,21 @@ INSERT INTO web.UserTable (UserName, FirstName, LastName, EmailAddress, Password
   'jmcgrath','john','mcgrath','john.mcgrath207@gmail.com','test', 1
 );
 
+INSERT INTO web.UserTable (UserName, FirstName, LastName, EmailAddress, Password, RoleId) VALUES (
+  'jsmith','john','smith','john.smith@gmail.com','test', 1
+);
 
 
-INSERT INTO web.TicketStatusTable (StatusId, Description) VALUES (
+INSERT INTO web.TicketStatusTable (StatusId, StatusDescription) VALUES (
   1, 'In Progress'
 );
 
-INSERT INTO web.DepartmentTable (DepartmentId, Description) VALUES (
+INSERT INTO web.DepartmentTable (DepartmentId, DepartmentDescription) VALUES (
   1, 'Development'
 );
 
 
-INSERT INTO web.PriorityTable (PriorityId, Description) VALUES (
+INSERT INTO web.PriorityTable (PriorityId, PriorityDescription) VALUES (
   1, 'Normal'
 );
 
@@ -158,7 +161,7 @@ WHERE TABLE_SCHEMA = 'web'
       AND   TABLE_NAME   = 'TicketTable';
 
 INSERT INTO web.TicketTable (TicketOriginalId, TicketOwnerId,
-                             Title, Description,
+                             Title, TicketDescription,
                              CreationDate, CreationUserId,
                              UpdateDate, UpdateUserId,
                              TargetDate, DepartmentId,
@@ -174,7 +177,7 @@ VALUES (@ai,1,
 ### Updated Ticket 1 ###
 
 INSERT INTO web.TicketTable (TicketOriginalId, TicketOwnerId,
-                             Title, Description,
+                             Title, TicketDescription,
                              CreationDate, CreationUserId,
                              UpdateDate, UpdateUserId,
                              TargetDate, DepartmentId,
@@ -182,7 +185,7 @@ INSERT INTO web.TicketTable (TicketOriginalId, TicketOwnerId,
 VALUES (1,1,
           'Fix Function Foo aaa','Fix Function Foo issue aaa',
           '2017-11-07 12:00:12',1,
-          '2017-11-07 12:00:12',1,
+          '2017-11-07 12:00:12',2,
           '2017-11-07 12:00:12',1,
           1,1);
 
@@ -197,7 +200,7 @@ WHERE TABLE_SCHEMA = 'web'
       AND   TABLE_NAME   = 'TicketTable';
 
 INSERT INTO web.TicketTable (TicketOriginalId, TicketOwnerId,
-                             Title, Description,
+                             Title, TicketDescription,
                              CreationDate, CreationUserId,
                              UpdateDate, UpdateUserId,
                              TargetDate, DepartmentId,
@@ -228,13 +231,49 @@ CREATE PROCEDURE return_latest_tickets ()
     SET end_interate = (SELECT Count(DISTINCT TicketOriginalId) FROM  web.TicketTable);
 
     DROP TABLE IF EXISTS temp_ticket_table;
-    CREATE TEMPORARY TABLE temp_ticket_table LIKE web.TicketTable;
+    CREATE TEMPORARY TABLE temp_ticket_table (
+      TicketId INT,
+      Title VARCHAR(255),
+      TicketDescription TEXT,
+      StatusDescription TEXT,
+      DepartmentDescription TEXT,
+      PriorityDescription TEXT,
+      CreationDate DATETIME,
+      UpdateDate DATETIME,
+      TargetDate DATETIME,
+      TicketOwner VARCHAR(255),
+      CreationUser VARCHAR(255),
+      UpdateUser VARCHAR(255)
+    );
+
     OPEN cur1;
 
     WHILE start_interate < end_interate DO
       FETCH cur1 INTO toi;
-      INSERT INTO temp_ticket_table
-        SELECT *  FROM web.TicketTable WHERE  TicketId = (SELECT MAX(TicketId) FROM web.TicketTable WHERE TicketOriginalID = toi);
+      INSERT INTO temp_ticket_table (TicketId, Title, TicketDescription, StatusDescription,
+                                     DepartmentDescription, PriorityDescription, CreationDate,
+                                     UpdateDate, TargetDate, TicketOwner, CreationUser, UpdateUser)
+
+        SELECT TT.TicketOriginalId, TT.Title, TT.TicketDescription, ST.StatusDescription,
+          DT.DepartmentDescription, PT.PriorityDescription, TT.CreationDate, TT.UpdateDate, TT.TargetDate,
+
+          ## SELECT USER FOR TicketOwnerId
+          (SELECT UserName FROM web.UserTable AS UT JOIN web.TicketTable AS TT2 ON TT2.TicketOwnerId = UT.UserId
+          WHERE  TicketId = (SELECT MAX(TicketId) FROM web.TicketTable WHERE TicketOriginalID = toi)),
+
+          ## SELECT USER FOR CreationUserId
+          (SELECT UserName FROM web.UserTable AS UT JOIN web.TicketTable AS TT2 ON TT2.CreationUserId = UT.UserId
+          WHERE  TicketId = (SELECT MAX(TicketId) FROM web.TicketTable WHERE TicketOriginalID = toi)),
+
+          ## SELECT USER FOR UpdateUserId
+          (SELECT UserName FROM web.UserTable AS UT JOIN web.TicketTable AS TT2 ON TT2.UpdateUserId = UT.UserId
+          WHERE  TicketId = (SELECT MAX(TicketId) FROM web.TicketTable WHERE TicketOriginalID = toi))
+
+        FROM web.TicketTable AS TT
+          JOIN web.DepartmentTable AS DT USING (DepartmentId)
+          JOIN web.PriorityTable AS PT USING (PriorityId)
+          JOIN web.TicketStatusTable AS ST USING (StatusId)
+        WHERE  TicketId = (SELECT MAX(TicketId) FROM web.TicketTable WHERE TicketOriginalID = toi);
       SET start_interate = start_interate + 1;
     END WHILE;
 
@@ -246,10 +285,6 @@ CREATE PROCEDURE return_latest_tickets ()
 Call return_latest_tickets();
 
 
-
-
-
-SELECT * FROM web.TicketTable
 
 ### Add Comment Table
 
