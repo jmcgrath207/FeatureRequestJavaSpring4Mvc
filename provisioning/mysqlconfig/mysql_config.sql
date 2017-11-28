@@ -112,7 +112,7 @@ CREATE TABLE web.CommentTable (
 
   CommentId INT NOT NULL AUTO_INCREMENT,
   TicketOriginalId INT,
-  Description TEXT,
+  CommentDescription TEXT,
   CreationDate DATETIME,
   CreationUserId INT,
   UpdateDate DATETIME,
@@ -218,9 +218,26 @@ VALUES (@ai,1,
 
 ### Insert into Comment Table
 
-
-INSERT INTO web.CommentTable (TicketOriginalId, Description, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+# Ticket One
+INSERT INTO web.CommentTable (TicketOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
 VALUES (1,'Something Happened','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',1);
+
+INSERT INTO web.CommentTable (TicketOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (1,'Something Happened 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
+
+INSERT INTO web.CommentTable (TicketOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (1,'Something Happened 3','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',2);
+
+
+# Ticket Three
+INSERT INTO web.CommentTable (TicketOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (3,'Something Happened','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',1);
+
+INSERT INTO web.CommentTable (TicketOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (3,'Something Happened 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
+
+INSERT INTO web.CommentTable (TicketOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (3,'Something Happened 3','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',2);
 
 
 
@@ -297,6 +314,77 @@ Call return_latest_tickets();
 
 
 
+## Working Return Commments based on ticketoriginalid
+
+DROP PROCEDURE IF EXISTS return_comments_by_ticketoriginalid;
+
+CREATE PROCEDURE return_comments_by_ticketoriginalid (IN TOIVAR INT)
+  BEGIN
+
+    DECLARE end_interate INT;
+    DECLARE start_interate INT;
+
+    # CURSOR 1
+    DECLARE TOI INT; ## TicketOriginalId
+    DECLARE COMDESC TEXT; ## CommentDescription
+    DECLARE CREDATE DATETIME; ## CreationDate
+    DECLARE UD DATETIME; ## UpdateDate
+
+    # CURSOR 2
+    DECLARE CU VARCHAR(255); ## CreationUserId
+
+    # CURSOR 3
+    DECLARE UU VARCHAR(255); ## UpdateUserId
 
 
+    DECLARE cur1 CURSOR FOR
+      SELECT TicketOriginalId, CommentDescription, CreationDate, UpdateDate FROM web.CommentTable WHERE TicketOriginalId = TOIVAR;
 
+    DECLARE cur2 CURSOR FOR
+      # Creation User Name
+      SELECT UT.UserName FROM web.CommentTable AS CT
+        JOIN web.UserTable AS UT ON CT.CreationUserId = UT.UserId
+      WHERE TicketOriginalId = TOIVAR;
+    DECLARE cur3 CURSOR FOR
+      # Update User Name
+      SELECT UT.UserName FROM web.CommentTable AS CT
+        JOIN web.UserTable AS UT ON CT.UpdateUserId = UT.UserId
+      WHERE TicketOriginalId = TOIVAR;
+
+    SET start_interate = 0;
+    SET end_interate = (SELECT Count(TicketOriginalId) FROM  web.CommentTable WHERE TicketOriginalId = TOIVAR);
+
+
+    DROP TABLE IF EXISTS temp_comment_table;
+    CREATE TEMPORARY TABLE temp_comment_table (
+      TicketOriginalId INT,
+      CommentDescription TEXT,
+      CreationDate DATETIME,
+      UpdateDate DATETIME,
+      CreationUser VARCHAR(255),
+      UpdateUser VARCHAR(255)
+    );
+
+    OPEN cur1;
+    OPEN cur2;
+    OPEN cur3;
+
+    WHILE start_interate < end_interate DO
+      FETCH cur1 INTO TOI,COMDESC,CREDATE,UD;
+      FETCH cur2 INTO CU;
+      FETCH cur3 INTO UU;
+      INSERT  INTO temp_comment_table (TicketOriginalId, CommentDescription, CreationDate, UpdateDate, CreationUser, UpdateUser)
+      VALUES (TOI,COMDESC,CREDATE,UD,CU,UU);
+      SET start_interate = start_interate + 1;
+    END WHILE;
+
+    select * from temp_comment_table;
+
+    CLOSE cur1;
+    CLOSE cur2;
+    CLOSE cur3;
+
+  END;
+
+
+Call return_comments_by_ticketoriginalid(1);
