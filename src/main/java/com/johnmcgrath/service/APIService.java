@@ -24,8 +24,8 @@ public class APIService implements APIServiceInt {
     }
 
 
-    public List<TicketTableObj> getAllClientView(int userId) {
-        return clientViewDaoInterface.getClientView(userId);
+    public List<TicketTableObj> getLatestTicketsApiService() {
+        return clientViewDaoInterface.getLatestTicketsDao();
     }
 
 

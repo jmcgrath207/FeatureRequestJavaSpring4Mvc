@@ -17,11 +17,11 @@ public class ClientViewApiController {
     private APIService apiService;
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @GetMapping(value="/client_view")
+    @GetMapping(value="/getlatesttickets")
     public @ResponseBody List<TicketTableObj> client_view(){
         // Returns Json List of Cases that are owned by the user
 
-        return apiService.getAllClientView(1);
+        return apiService.getLatestTicketsApiService();
     }
 
     @PostMapping(value="/client_view",consumes="application/json")

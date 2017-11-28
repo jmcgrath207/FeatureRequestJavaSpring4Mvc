@@ -27,7 +27,7 @@ public class ClientViewDao implements ClientViewDaoInterface {
     }
 
     @Transactional()
-    public List<TicketTableObj> getClientView(int userId) {
+    public List<TicketTableObj> getLatestTicketsDao() {
         System.out.println("test");
         @SuppressWarnings("unchecked")
 /*        TypedQuery<TicketTableObj> query=sessionFactory.getCurrentSession().createQuery("from TicketTableObj where userId=:userId");
