@@ -2,6 +2,7 @@ package com.johnmcgrath.dao;
 
 import java.util.List;
 
+import com.johnmcgrath.model.CommentTableObj;
 import com.johnmcgrath.model.TicketTableObj;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +29,19 @@ public class ClientViewDao implements ClientViewDaoInterface {
 
     @Transactional()
     public List<TicketTableObj> getLatestTicketsDao() {
-        System.out.println("test");
         @SuppressWarnings("unchecked")
 /*        TypedQuery<TicketTableObj> query=sessionFactory.getCurrentSession().createQuery("from TicketTableObj where userId=:userId");
         query.setParameter("userId",userId);*/
         TypedQuery<TicketTableObj> query=sessionFactory.getCurrentSession().getNamedQuery("return_latest_tickets");
+        return query.getResultList();
+    }
+
+    @Transactional()
+    public List<CommentTableObj> getCommentsByTicketOriginalIdDao(int ticketOriginalId) {
+        @SuppressWarnings("unchecked")
+                TypedQuery<CommentTableObj> query=sessionFactory.getCurrentSession()
+                                                               .getNamedQuery("return_comments_by_ticketoriginalid")
+                                                               .setParameter("ticketOriginalId", ticketOriginalId);
         return query.getResultList();
     }
 

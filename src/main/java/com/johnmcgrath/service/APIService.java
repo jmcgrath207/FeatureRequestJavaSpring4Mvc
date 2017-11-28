@@ -1,6 +1,7 @@
 package com.johnmcgrath.service;
 
 
+import com.johnmcgrath.model.CommentTableObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,9 @@ public class APIService implements APIServiceInt {
         return clientViewDaoInterface.getLatestTicketsDao();
     }
 
-
+    public List<CommentTableObj> getCommentsByTicketOriginalIdApiService(int ticketOriginalId) {
+/*        int ticketOriginalIdInt = Integer.parseInt(ticketOriginalId);*/
+        return clientViewDaoInterface.getCommentsByTicketOriginalIdDao(ticketOriginalId);
+    }
 
 }

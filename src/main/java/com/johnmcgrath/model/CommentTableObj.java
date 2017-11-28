@@ -25,7 +25,7 @@ import javax.validation.constraints.NotNull;
 @NamedNativeQueries({
         @NamedNativeQuery(
                 name = "return_comments_by_ticketoriginalid",
-                query = "CALL return_comments_by_ticketoriginalid(1)",
+                query = "CALL return_comments_by_ticketoriginalid(:ticketOriginalId)",
                 resultClass = CommentTableObj.class
         )
 })
