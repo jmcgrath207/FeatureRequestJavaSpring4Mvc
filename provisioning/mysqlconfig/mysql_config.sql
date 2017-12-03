@@ -231,13 +231,13 @@ VALUES (1,'Something Happened 3','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',2
 
 # Ticket Three
 INSERT INTO web.CommentTable (TicketOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (3,'Something Happened','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',1);
+VALUES (3,'Something Happened','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
 
 INSERT INTO web.CommentTable (TicketOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
 VALUES (3,'Something Happened 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
 
 INSERT INTO web.CommentTable (TicketOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (3,'Something Happened 3','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',2);
+VALUES (3,'Something Happened 3','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',2);
 
 
 
@@ -325,6 +325,7 @@ CREATE PROCEDURE return_comments_by_ticketoriginalid (IN TOIVAR INT)
     DECLARE start_interate INT;
 
     # CURSOR 1
+    DECLARE COI INT; ## CommentId
     DECLARE TOI INT; ## TicketOriginalId
     DECLARE COMDESC TEXT; ## CommentDescription
     DECLARE CREDATE DATETIME; ## CreationDate
@@ -338,7 +339,7 @@ CREATE PROCEDURE return_comments_by_ticketoriginalid (IN TOIVAR INT)
 
 
     DECLARE cur1 CURSOR FOR
-      SELECT TicketOriginalId, CommentDescription, CreationDate, UpdateDate FROM web.CommentTable WHERE TicketOriginalId = TOIVAR;
+      SELECT CommentId,TicketOriginalId, CommentDescription, CreationDate, UpdateDate FROM web.CommentTable WHERE TicketOriginalId = TOIVAR;
 
     DECLARE cur2 CURSOR FOR
       # Creation User Name
@@ -357,6 +358,7 @@ CREATE PROCEDURE return_comments_by_ticketoriginalid (IN TOIVAR INT)
 
     DROP TABLE IF EXISTS temp_comment_table;
     CREATE TEMPORARY TABLE temp_comment_table (
+      CommentId INT,
       TicketOriginalId INT,
       CommentDescription TEXT,
       CreationDate DATETIME,
@@ -370,11 +372,11 @@ CREATE PROCEDURE return_comments_by_ticketoriginalid (IN TOIVAR INT)
     OPEN cur3;
 
     WHILE start_interate < end_interate DO
-      FETCH cur1 INTO TOI,COMDESC,CREDATE,UD;
+      FETCH cur1 INTO COI,TOI,COMDESC,CREDATE,UD;
       FETCH cur2 INTO CU;
       FETCH cur3 INTO UU;
-      INSERT  INTO temp_comment_table (TicketOriginalId, CommentDescription, CreationDate, UpdateDate, CreationUser, UpdateUser)
-      VALUES (TOI,COMDESC,CREDATE,UD,CU,UU);
+      INSERT  INTO temp_comment_table (CommentId, TicketOriginalId, CommentDescription, CreationDate, UpdateDate, CreationUser, UpdateUser)
+      VALUES (COI,TOI,COMDESC,CREDATE,UD,CU,UU);
       SET start_interate = start_interate + 1;
     END WHILE;
 
@@ -387,4 +389,4 @@ CREATE PROCEDURE return_comments_by_ticketoriginalid (IN TOIVAR INT)
   END;
 
 
-Call return_comments_by_ticketoriginalid(1);
+Call return_comments_by_ticketoriginalid(3);
