@@ -380,7 +380,7 @@ CREATE PROCEDURE return_comments_by_ticketoriginalid (IN TOIVAR INT)
       SET start_interate = start_interate + 1;
     END WHILE;
 
-    select * from temp_comment_table;
+    select * from temp_comment_table  AS tt Order By tt.CommentId Desc;
 
     CLOSE cur1;
     CLOSE cur2;
