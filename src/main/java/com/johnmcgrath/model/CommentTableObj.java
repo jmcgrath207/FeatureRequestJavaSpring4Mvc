@@ -48,6 +48,12 @@ public class CommentTableObj implements Serializable {
     @Column(name = "CommentId")
     private int commentId;
 
+
+    @Id
+    @Column(name = "CommentOriginalId")
+    private int commentOriginalId;
+
+
     @Id
     @Column(name = "TicketOriginalId")
     private int ticketOriginalId;
@@ -74,6 +80,17 @@ public class CommentTableObj implements Serializable {
     @Column(name = "UpdateUser")
     @NotNull
     private String updateUser;
+
+
+
+    public int getCommentOriginalId() {
+        return commentOriginalId;
+    }
+
+    public void setCommentOriginalId(int commentOriginalId) {
+        this.commentOriginalId = commentOriginalId;
+    }
+
 
     public int getCommentId() {
         return commentId;
