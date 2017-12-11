@@ -111,6 +111,7 @@ CREATE INDEX Index_TicketOriginalId
 CREATE TABLE web.CommentTable (
 
   CommentId INT NOT NULL AUTO_INCREMENT,
+  CommentOriginalId INT,
   TicketOriginalId INT,
   CommentDescription TEXT,
   CreationDate DATETIME,
@@ -219,33 +220,45 @@ VALUES (@ai,1,
 ### Insert into Comment Table
 
 # Ticket One
-INSERT INTO web.CommentTable (TicketOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (1,'Something Happened','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',1);
 
-INSERT INTO web.CommentTable (TicketOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (1,'Something Happened 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
+SELECT `AUTO_INCREMENT` INTO @ai
+FROM  INFORMATION_SCHEMA.TABLES
+WHERE TABLE_SCHEMA = 'web'
+      AND   TABLE_NAME   = 'CommentTable';
 
-INSERT INTO web.CommentTable (TicketOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (1,'Something Happened 3','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',2);
+INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (1, @ai ,'Something Happened','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',1);
+
+
+INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (1,@ai,'Something Happened 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
+
+INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (1,@ai,'Something Happened 3','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',2);
 
 
 # Ticket Three
-INSERT INTO web.CommentTable (TicketOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (3,'Something Happened','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
+SELECT `AUTO_INCREMENT` INTO @ai
+FROM  INFORMATION_SCHEMA.TABLES
+WHERE TABLE_SCHEMA = 'web'
+      AND   TABLE_NAME   = 'CommentTable';
 
-INSERT INTO web.CommentTable (TicketOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (3,'Something Happened 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
+INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId,CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (3, @ai, 'Something Happened','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
 
-INSERT INTO web.CommentTable (TicketOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (3,'Something Happened 3','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',2);
+INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (3, @ai,'Something Happened 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
+
+INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (3,@ai,'Something Happened 3','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',2);
 
 
 
 ### Working Stored PROCEDURE For returning Latest Tickets
 
-DROP PROCEDURE IF EXISTS return_latest_tickets;
+DROP PROCEDURE IF EXISTS web.return_latest_tickets;
 
-CREATE PROCEDURE return_latest_tickets ()
+CREATE PROCEDURE web.return_latest_tickets ()
   BEGIN
     DECLARE toi INT;
     DECLARE end_interate INT;
@@ -309,16 +322,16 @@ CREATE PROCEDURE return_latest_tickets ()
   END;
 
 
-Call return_latest_tickets();
+Call web.return_latest_tickets();
 
 
 
 
 ## Working Return Commments based on ticketoriginalid
 
-DROP PROCEDURE IF EXISTS return_comments_by_ticketoriginalid;
+DROP PROCEDURE IF EXISTS web.return_comments_by_ticketoriginalid;
 
-CREATE PROCEDURE return_comments_by_ticketoriginalid (IN TOIVAR INT)
+CREATE PROCEDURE web.return_comments_by_ticketoriginalid (IN TOIVAR INT)
   BEGIN
 
     DECLARE end_interate INT;
@@ -326,10 +339,12 @@ CREATE PROCEDURE return_comments_by_ticketoriginalid (IN TOIVAR INT)
 
     # CURSOR 1
     DECLARE COI INT; ## CommentId
+    DECLARE COMI INT; ## CommentOriginalId
     DECLARE TOI INT; ## TicketOriginalId
     DECLARE COMDESC TEXT; ## CommentDescription
     DECLARE CREDATE DATETIME; ## CreationDate
     DECLARE UD DATETIME; ## UpdateDate
+
 
     # CURSOR 2
     DECLARE CU VARCHAR(255); ## CreationUserId
@@ -339,7 +354,7 @@ CREATE PROCEDURE return_comments_by_ticketoriginalid (IN TOIVAR INT)
 
 
     DECLARE cur1 CURSOR FOR
-      SELECT CommentId,TicketOriginalId, CommentDescription, CreationDate, UpdateDate FROM web.CommentTable WHERE TicketOriginalId = TOIVAR;
+      SELECT CommentId,CommentOriginalId,TicketOriginalId, CommentDescription, CreationDate, UpdateDate FROM web.CommentTable WHERE TicketOriginalId = TOIVAR;
 
     DECLARE cur2 CURSOR FOR
       # Creation User Name
@@ -359,6 +374,7 @@ CREATE PROCEDURE return_comments_by_ticketoriginalid (IN TOIVAR INT)
     DROP TABLE IF EXISTS temp_comment_table;
     CREATE TEMPORARY TABLE temp_comment_table (
       CommentId INT,
+      CommentOriginalId INT,
       TicketOriginalId INT,
       CommentDescription TEXT,
       CreationDate DATETIME,
@@ -372,11 +388,11 @@ CREATE PROCEDURE return_comments_by_ticketoriginalid (IN TOIVAR INT)
     OPEN cur3;
 
     WHILE start_interate < end_interate DO
-      FETCH cur1 INTO COI,TOI,COMDESC,CREDATE,UD;
+      FETCH cur1 INTO COI,COMI,TOI,COMDESC,CREDATE,UD;
       FETCH cur2 INTO CU;
       FETCH cur3 INTO UU;
-      INSERT  INTO temp_comment_table (CommentId, TicketOriginalId, CommentDescription, CreationDate, UpdateDate, CreationUser, UpdateUser)
-      VALUES (COI,TOI,COMDESC,CREDATE,UD,CU,UU);
+      INSERT  INTO temp_comment_table (CommentId,CommentOriginalId, TicketOriginalId, CommentDescription, CreationDate, UpdateDate, CreationUser, UpdateUser)
+      VALUES (COI,COMI,TOI,COMDESC,CREDATE,UD,CU,UU);
       SET start_interate = start_interate + 1;
     END WHILE;
 
@@ -389,4 +405,4 @@ CREATE PROCEDURE return_comments_by_ticketoriginalid (IN TOIVAR INT)
   END;
 
 
-Call return_comments_by_ticketoriginalid(3);
+Call web.return_comments_by_ticketoriginalid(3);
