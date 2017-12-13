@@ -124,6 +124,10 @@ CREATE TABLE web.CommentTable (
 
 );
 
+### Create Index On CommentOriginalId
+CREATE INDEX Index_CommentOriginalId
+  ON web.CommentTable (CommentOriginalId);
+
 #### Create Info ####
 
 INSERT INTO web.RoleTable (RoleId, RoleDescription) VALUES (
@@ -219,7 +223,7 @@ VALUES (@ai,1,
 
 ### Insert into Comment Table
 
-# Ticket One
+# Ticket One COMMENT ONE
 
 SELECT `AUTO_INCREMENT` INTO @ai
 FROM  INFORMATION_SCHEMA.TABLES
@@ -237,7 +241,52 @@ INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescri
 VALUES (1,@ai,'Something Happened 3','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',2);
 
 
-# Ticket Three
+
+# Ticket One COMMENT TWO
+
+
+SELECT `AUTO_INCREMENT` INTO @ai
+FROM  INFORMATION_SCHEMA.TABLES
+WHERE TABLE_SCHEMA = 'web'
+      AND   TABLE_NAME   = 'CommentTable';
+
+INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (1, @ai ,'Something Happened','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',1);
+
+
+INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (1,@ai,'Something Happened 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
+
+INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (1,@ai,'Something Happened 3','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',2);
+
+
+
+# Ticket One COMMENT Three
+
+
+SELECT `AUTO_INCREMENT` INTO @ai
+FROM  INFORMATION_SCHEMA.TABLES
+WHERE TABLE_SCHEMA = 'web'
+      AND   TABLE_NAME   = 'CommentTable';
+
+INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (1, @ai ,'Something Happened','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',1);
+
+
+INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (1,@ai,'Something Happened 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
+
+INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (1,@ai,'Something Happened 3','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',2);
+
+
+
+
+
+# Ticket Three COMMENT ONE
+
+
 SELECT `AUTO_INCREMENT` INTO @ai
 FROM  INFORMATION_SCHEMA.TABLES
 WHERE TABLE_SCHEMA = 'web'
@@ -251,6 +300,49 @@ VALUES (3, @ai,'Something Happened 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:
 
 INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
 VALUES (3,@ai,'Something Happened 3','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',2);
+
+
+
+
+# Ticket Three COMMENT TWO
+
+
+SELECT `AUTO_INCREMENT` INTO @ai
+FROM  INFORMATION_SCHEMA.TABLES
+WHERE TABLE_SCHEMA = 'web'
+      AND   TABLE_NAME   = 'CommentTable';
+
+INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId,CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (3, @ai, 'Something Happened','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
+
+INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (3, @ai,'Something Happened 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
+
+INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (3,@ai,'Something Happened 3','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',2);
+
+
+
+
+
+# Ticket Three COMMENT THREE
+
+
+SELECT `AUTO_INCREMENT` INTO @ai
+FROM  INFORMATION_SCHEMA.TABLES
+WHERE TABLE_SCHEMA = 'web'
+      AND   TABLE_NAME   = 'CommentTable';
+
+INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId,CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (3, @ai, 'Something Happened','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
+
+INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (3, @ai,'Something Happened 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
+
+INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
+VALUES (3,@ai,'Something Happened 3','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',2);
+
+
 
 
 
@@ -334,41 +426,20 @@ DROP PROCEDURE IF EXISTS web.return_comments_by_ticketoriginalid;
 CREATE PROCEDURE web.return_comments_by_ticketoriginalid (IN TOIVAR INT)
   BEGIN
 
-    DECLARE end_interate INT;
-    DECLARE start_interate INT;
+
+    # Error Handler
+    DECLARE done INT DEFAULT 0;
 
     # CURSOR 1
-    DECLARE COI INT; ## CommentId
     DECLARE COMI INT; ## CommentOriginalId
-    DECLARE TOI INT; ## TicketOriginalId
-    DECLARE COMDESC TEXT; ## CommentDescription
-    DECLARE CREDATE DATETIME; ## CreationDate
-    DECLARE UD DATETIME; ## UpdateDate
 
 
-    # CURSOR 2
-    DECLARE CU VARCHAR(255); ## CreationUserId
+    # CURSOR 1
+    DECLARE cur1 CURSOR FOR SELECT DISTINCT CommentOriginalId FROM  web.CommentTable WHERE TicketOriginalId = TOIVAR;
 
-    # CURSOR 3
-    DECLARE UU VARCHAR(255); ## UpdateUserId
+    # Error Handler
 
-
-    DECLARE cur1 CURSOR FOR
-      SELECT CommentId,CommentOriginalId,TicketOriginalId, CommentDescription, CreationDate, UpdateDate FROM web.CommentTable WHERE TicketOriginalId = TOIVAR;
-
-    DECLARE cur2 CURSOR FOR
-      # Creation User Name
-      SELECT UT.UserName FROM web.CommentTable AS CT
-        JOIN web.UserTable AS UT ON CT.CreationUserId = UT.UserId
-      WHERE TicketOriginalId = TOIVAR;
-    DECLARE cur3 CURSOR FOR
-      # Update User Name
-      SELECT UT.UserName FROM web.CommentTable AS CT
-        JOIN web.UserTable AS UT ON CT.UpdateUserId = UT.UserId
-      WHERE TicketOriginalId = TOIVAR;
-
-    SET start_interate = 0;
-    SET end_interate = (SELECT Count(TicketOriginalId) FROM  web.CommentTable WHERE TicketOriginalId = TOIVAR);
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
 
 
     DROP TABLE IF EXISTS temp_comment_table;
@@ -384,25 +455,47 @@ CREATE PROCEDURE web.return_comments_by_ticketoriginalid (IN TOIVAR INT)
     );
 
     OPEN cur1;
-    OPEN cur2;
-    OPEN cur3;
 
-    WHILE start_interate < end_interate DO
-      FETCH cur1 INTO COI,COMI,TOI,COMDESC,CREDATE,UD;
-      FETCH cur2 INTO CU;
-      FETCH cur3 INTO UU;
+    -- Start our for loop
+    forLoop: LOOP
+
+      FETCH cur1 INTO COMI;
+      IF done = 1 THEN
+        LEAVE forLoop;
+      END IF;
       INSERT  INTO temp_comment_table (CommentId,CommentOriginalId, TicketOriginalId, CommentDescription, CreationDate, UpdateDate, CreationUser, UpdateUser)
-      VALUES (COI,COMI,TOI,COMDESC,CREDATE,UD,CU,UU);
-      SET start_interate = start_interate + 1;
-    END WHILE;
+
+        SELECT CommentId,
+          CommentOriginalId,
+          TicketOriginalId,
+          CommentDescription,
+          CreationDate,
+          UpdateDate,
+
+          # Creation User Name
+          (SELECT UT.UserName FROM web.CommentTable AS CT
+            JOIN web.UserTable AS UT ON CT.CreationUserId = UT.UserId
+          WHERE  CommentId = (SELECT MAX(CommentId) FROM web.CommentTable WHERE CommentOriginalId = COMI)),
+
+          # Update User Name
+          (SELECT UT.UserName FROM web.CommentTable AS CT
+            JOIN web.UserTable AS UT ON CT.UpdateUserId = UT.UserId
+          WHERE  CommentId = (SELECT MAX(CommentId) FROM web.CommentTable WHERE CommentOriginalId = COMI))
+        FROM web.CommentTable WHERE  CommentId = (SELECT MAX(CommentId) FROM web.CommentTable WHERE CommentOriginalId = COMI);
+
+      -- End our for loop
+    END LOOP forLoop;
+
+
 
     select * from temp_comment_table  AS tt Order By tt.CommentId Desc;
 
     CLOSE cur1;
-    CLOSE cur2;
-    CLOSE cur3;
 
   END;
 
 
 Call web.return_comments_by_ticketoriginalid(3);
+
+
+
