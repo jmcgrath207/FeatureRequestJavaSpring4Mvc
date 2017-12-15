@@ -13,5 +13,7 @@ public interface ClientViewDaoInterface {
 
     List<CommentTableObj> getCommentsByTicketOriginalIdDao(int ticketOriginalId);
 
+    List<CommentTableObj> getCommentHistoryByCommentOriginalIdDao(int commentOriginalId);
+
     void setClientView(TicketTableObj ticketTableObj);
 }

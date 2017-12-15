@@ -30,8 +30,11 @@ public class APIService implements APIServiceInt {
     }
 
     public List<CommentTableObj> getCommentsByTicketOriginalIdApiService(int ticketOriginalId) {
-/*        int ticketOriginalIdInt = Integer.parseInt(ticketOriginalId);*/
         return clientViewDaoInterface.getCommentsByTicketOriginalIdDao(ticketOriginalId);
+    }
+
+    public List<CommentTableObj> getCommentHistoryByCommentOriginalIdApiService(int commentOriginalId) {
+        return clientViewDaoInterface.getCommentHistoryByCommentOriginalIdDao(commentOriginalId);
     }
 
 }

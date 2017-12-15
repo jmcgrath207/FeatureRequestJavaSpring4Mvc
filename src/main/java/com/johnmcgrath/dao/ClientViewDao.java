@@ -46,5 +46,15 @@ public class ClientViewDao implements ClientViewDaoInterface {
     }
 
 
+    @Transactional()
+    public List<CommentTableObj> getCommentHistoryByCommentOriginalIdDao(int commentOriginalId) {
+        @SuppressWarnings("unchecked")
+        TypedQuery<CommentTableObj> query=sessionFactory.getCurrentSession()
+                .getNamedQuery("return_comment_history_by_commentoriginalid")
+                .setParameter("commentOriginalId", commentOriginalId);
+        return query.getResultList();
+    }
+
+
 
 }

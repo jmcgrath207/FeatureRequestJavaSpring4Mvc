@@ -32,6 +32,13 @@ public class ClientViewApiController {
     }
 
 
+    @GetMapping(value="/getcommenthistorybycommentoriginalid/{commentOriginalId}")
+    public @ResponseBody List<CommentTableObj>
+    getCommentHistoryByCommentOriginalIdController(@PathVariable("commentOriginalId") int commentOriginalId) {
+        return apiService.getCommentHistoryByCommentOriginalIdApiService(commentOriginalId);
+    }
+
+
     @PostMapping(value="/client_view",consumes="application/json")
     public String client_view(@RequestBody TicketTableObj ticketTableObj){
         apiService.setCliewView(ticketTableObj);

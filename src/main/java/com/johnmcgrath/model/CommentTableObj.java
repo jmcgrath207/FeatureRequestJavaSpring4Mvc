@@ -27,6 +27,12 @@ import javax.validation.constraints.NotNull;
                 name = "return_comments_by_ticketoriginalid",
                 query = "CALL return_comments_by_ticketoriginalid(:ticketOriginalId)",
                 resultClass = CommentTableObj.class
+        ),
+
+        @NamedNativeQuery(
+                name = "return_comment_history_by_commentoriginalid",
+                query = "CALL return_comment_history_by_commentoriginalid(:commentOriginalId)",
+                resultClass = CommentTableObj.class
         )
 })
 
