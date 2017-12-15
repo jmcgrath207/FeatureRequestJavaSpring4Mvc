@@ -231,14 +231,14 @@ WHERE TABLE_SCHEMA = 'web'
       AND   TABLE_NAME   = 'CommentTable';
 
 INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (1, @ai ,'Something Happened','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',1);
+VALUES (1, @ai ,'COMMENT 1 ENTRY 1','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',1);
 
 
 INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (1,@ai,'Something Happened 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
+VALUES (1,@ai,'COMMENT 1 ENTRY 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
 
 INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (1,@ai,'Something Happened 3','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',2);
+VALUES (1,@ai,'COMMENT 1 ENTRY 3','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',2);
 
 
 
@@ -251,14 +251,14 @@ WHERE TABLE_SCHEMA = 'web'
       AND   TABLE_NAME   = 'CommentTable';
 
 INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (1, @ai ,'Something Happened','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',1);
+VALUES (1, @ai ,'COMMENT 2 ENTRY 1','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',1);
 
 
 INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (1,@ai,'Something Happened 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
+VALUES (1,@ai,'COMMENT 2 ENTRY 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
 
 INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (1,@ai,'Something Happened 3','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',2);
+VALUES (1,@ai,'COMMENT 2 ENTRY 3','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',2);
 
 
 
@@ -271,14 +271,14 @@ WHERE TABLE_SCHEMA = 'web'
       AND   TABLE_NAME   = 'CommentTable';
 
 INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (1, @ai ,'Something Happened','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',1);
+VALUES (1, @ai ,'COMMENT 3 ENTRY 1','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',1);
 
 
 INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (1,@ai,'Something Happened 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
+VALUES (1,@ai,'COMMENT 3 ENTRY 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
 
 INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (1,@ai,'Something Happened 3','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',2);
+VALUES (1,@ai,'COMMENT 3 ENTRY 3','2017-11-07 12:00:12',1,'2017-11-07 12:00:12',2);
 
 
 
@@ -293,13 +293,13 @@ WHERE TABLE_SCHEMA = 'web'
       AND   TABLE_NAME   = 'CommentTable';
 
 INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId,CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (3, @ai, 'Something Happened','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
+VALUES (3, @ai, 'COMMENT 1 ENTRY 1','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
 
 INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (3, @ai,'Something Happened 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
+VALUES (3, @ai,'COMMENT 1 ENTRY 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
 
 INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (3,@ai,'Something Happened 3','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',2);
+VALUES (3,@ai,'COMMENT 1 ENTRY 3','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',2);
 
 
 
@@ -313,13 +313,13 @@ WHERE TABLE_SCHEMA = 'web'
       AND   TABLE_NAME   = 'CommentTable';
 
 INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId,CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (3, @ai, 'Something Happened','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
+VALUES (3, @ai, 'COMMENT 2 ENTRY 1','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
 
 INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (3, @ai,'Something Happened 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
+VALUES (3, @ai,'COMMENT 2 ENTRY 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
 
 INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (3,@ai,'Something Happened 3','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',2);
+VALUES (3,@ai,'COMMENT 2 ENTRY 3','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',2);
 
 
 
@@ -334,13 +334,13 @@ WHERE TABLE_SCHEMA = 'web'
       AND   TABLE_NAME   = 'CommentTable';
 
 INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId,CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (3, @ai, 'Something Happened','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
+VALUES (3, @ai, 'COMMENT 3 ENTRY 1','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
 
 INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (3, @ai,'Something Happened 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
+VALUES (3, @ai,'COMMENT 3 ENTRY 2','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',1);
 
 INSERT INTO web.CommentTable (TicketOriginalId, CommentOriginalId, CommentDescription, CreationDate, CreationUserId, UpdateDate, UpdateUserId)
-VALUES (3,@ai,'Something Happened 3','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',2);
+VALUES (3,@ai,'COMMENT 3 ENTRY 3','2017-11-07 12:00:12',2,'2017-11-07 12:00:12',2);
 
 
 
