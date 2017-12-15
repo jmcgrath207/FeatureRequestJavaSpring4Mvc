@@ -499,3 +499,93 @@ Call web.return_comments_by_ticketoriginalid(3);
 
 
 
+
+
+
+
+
+
+
+
+
+## Working Return Commment History based on CommentOriginalId
+
+DROP PROCEDURE IF EXISTS web.return_comment_history_by_commentoriginalid;
+
+CREATE PROCEDURE web.return_comment_history_by_commentoriginalid (IN COMI INT)
+  BEGIN
+
+
+    # Error Handler
+    DECLARE done INT DEFAULT 0;
+
+    # CURSOR 1
+    DECLARE CID INT; ## CommentOriginalId
+
+
+    # CURSOR 1
+    DECLARE cur1 CURSOR FOR SELECT CommentId FROM  web.CommentTable WHERE CommentOriginalId = COMI
+                                                                          AND NOT CommentId = (SELECT MAX(CommentId) FROM web.CommentTable WHERE CommentOriginalId = COMI);
+
+    # Error Handler
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+
+    DROP TABLE IF EXISTS temp_comment_table;
+    CREATE TEMPORARY TABLE temp_comment_table (
+      CommentId INT,
+      CommentOriginalId INT,
+      TicketOriginalId INT,
+      CommentDescription TEXT,
+      CreationDate DATETIME,
+      UpdateDate DATETIME,
+      CreationUser VARCHAR(255),
+      UpdateUser VARCHAR(255)
+    );
+
+    OPEN cur1;
+
+    -- Start our for loop
+    forLoop: LOOP
+
+      FETCH cur1 INTO CID;
+      IF done = 1 THEN
+        LEAVE forLoop;
+      END IF;
+      INSERT  INTO temp_comment_table (CommentId,CommentOriginalId, TicketOriginalId, CommentDescription, CreationDate, UpdateDate, CreationUser, UpdateUser)
+
+        SELECT CommentId,
+          CommentOriginalId,
+          TicketOriginalId,
+          CommentDescription,
+          CreationDate,
+          UpdateDate,
+
+          # Creation User Name
+          (SELECT UT.UserName FROM web.CommentTable AS CT
+            JOIN web.UserTable AS UT ON CT.CreationUserId = UT.UserId
+          WHERE  CommentId = CID),
+
+          # Update User Name
+          (SELECT UT.UserName FROM web.CommentTable AS CT
+            JOIN web.UserTable AS UT ON CT.UpdateUserId = UT.UserId
+          WHERE  CommentId = CID)
+        FROM web.CommentTable WHERE  CommentId = CID;
+
+      -- End our for loop
+    END LOOP forLoop;
+
+
+
+    select * from temp_comment_table  AS tt Order By tt.CommentId Desc;
+
+    CLOSE cur1;
+
+  END;
+
+
+Call web.return_comment_history_by_commentoriginalid(1);
+
+
+
