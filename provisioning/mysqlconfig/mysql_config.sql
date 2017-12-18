@@ -105,6 +105,7 @@ CREATE TABLE web.Ticket
 CREATE TABLE web.TransactionType (
 
   TypeId INT NOT NULL AUTO_INCREMENT,
+  Tag VARCHAR(255),
   Description TEXT,
   PRIMARY KEY (TypeId)
 
@@ -112,12 +113,12 @@ CREATE TABLE web.TransactionType (
 
 CREATE TABLE web.Transaction (
 
-  TranId INT NOT NULL AUTO_INCREMENT,
+  TransactionId INT NOT NULL AUTO_INCREMENT,
   TicketId INT,
   TypeId INT,
   FOREIGN KEY (TicketId) REFERENCES web.Ticket(TicketId),
   FOREIGN KEY (TypeId) REFERENCES web.TransactionType(TypeId),
-  PRIMARY KEY (TranId,TicketId,TypeId)
+  PRIMARY KEY (TransactionId,TicketId,TypeId)
 
 
 );
@@ -126,50 +127,50 @@ CREATE TABLE web.Transaction (
 
 CREATE TABLE web.TransactionValueText (
 
-  TranValueId INT NOT NULL AUTO_INCREMENT,
-  TranId INT,
+  TransactionValueId INT NOT NULL AUTO_INCREMENT,
+  TransactionId INT,
   TypeId INT,
   Value TEXT,
   FOREIGN KEY (TypeId) REFERENCES web.TransactionType(TypeId),
-  FOREIGN KEY (TranId) REFERENCES web.Transaction(TranId),
-  PRIMARY KEY (TranValueId)
+  FOREIGN KEY (TransactionId) REFERENCES web.Transaction(TransactionId),
+  PRIMARY KEY (TransactionValueId)
 
 );
 
 CREATE TABLE web.TransactionValueVarChar (
 
-  TranValueId INT NOT NULL AUTO_INCREMENT,
-  TranId INT,
+  TransactionValueId INT NOT NULL AUTO_INCREMENT,
+  TransactionId INT,
   TypeId INT,
   Value VARCHAR(255),
   FOREIGN KEY (TypeId) REFERENCES web.TransactionType(TypeId),
-  FOREIGN KEY (TranId) REFERENCES web.Transaction(TranId),
-  PRIMARY KEY (TranValueId)
+  FOREIGN KEY (TransactionId) REFERENCES web.Transaction(TransactionId),
+  PRIMARY KEY (TransactionValueId)
 
 );
 
 
 CREATE TABLE web.TransactionValueInt (
 
-  TranValueId INT NOT NULL AUTO_INCREMENT,
-  TranId INT,
+  TransactionValueId INT NOT NULL AUTO_INCREMENT,
+  TransactionId INT,
   TypeId INT,
   Value INT,
   FOREIGN KEY (TypeId) REFERENCES web.TransactionType(TypeId),
-  FOREIGN KEY (TranId) REFERENCES web.Transaction(TranId),
-  PRIMARY KEY (TranValueId)
+  FOREIGN KEY (TransactionId) REFERENCES web.Transaction(TransactionId),
+  PRIMARY KEY (TransactionValueId)
 
 );
 
 CREATE TABLE web.TransactionValueDateTime (
 
-  TranValueId INT NOT NULL AUTO_INCREMENT,
-  TranId INT,
+  TransactionValueId INT NOT NULL AUTO_INCREMENT,
+  TransactionId INT,
   TypeId INT,
   Value DATETIME,
   FOREIGN KEY (TypeId) REFERENCES web.TransactionType(TypeId),
-  FOREIGN KEY (TranId) REFERENCES web.Transaction(TranId),
-  PRIMARY KEY (TranValueId)
+  FOREIGN KEY (TransactionId) REFERENCES web.Transaction(TransactionId),
+  PRIMARY KEY (TransactionValueId)
 
 );
 
@@ -188,3 +189,76 @@ CREATE TABLE web.Comment (
 
 
 );
+
+##### Defining Types #####
+
+## TransactionType For Tickets
+INSERT INTO web.TransactionType (Tag, Description) VALUES ('TicketOwnerId','Owner ID of ticket');
+INSERT INTO web.TransactionType (Tag, Description) VALUES ('TicketTitle','Title of the ticket');
+INSERT INTO web.TransactionType (Tag, Description) VALUES ('TicketDescription','Description of the ticket');
+INSERT INTO web.TransactionType (Tag, Description) VALUES ('CreationDate','Creation date of ticket');
+INSERT INTO web.TransactionType (Tag, Description) VALUES ('CreationUserId','Creation User Id of the ticket');
+INSERT INTO web.TransactionType (Tag, Description) VALUES ('UpdateDate','Update Date of the ticket');
+INSERT INTO web.TransactionType (Tag, Description) VALUES ('UpdateUserId','Update User Id of the ticket');
+INSERT INTO web.TransactionType (Tag, Description) VALUES ('TargetDate','Target Date of the ticket');
+INSERT INTO web.TransactionType (Tag, Description) VALUES ('DepartmentId','Department Id of the ticket');
+INSERT INTO web.TransactionType (Tag, Description) VALUES ('StatusId','Status Id of the ticket');
+INSERT INTO web.TransactionType (Tag, Description) VALUES ('PriorityId','Priority Id of the ticket');
+
+
+## TransactionType For Comment
+INSERT INTO web.TransactionType (Tag, Description) VALUES ('CommentDescription','Comment Description of a comment');
+INSERT INTO web.TransactionType (Tag, Description) VALUES ('CreationDate','Creation Date of a comment');
+INSERT INTO web.TransactionType (Tag, Description) VALUES ('CreationUserId','Creation User Id of a comment');
+INSERT INTO web.TransactionType (Tag, Description) VALUES ('UpdateUserId','Update User Id of a comment');
+
+
+
+
+
+## Role ID Type
+
+INSERT INTO web.Role (RoleId, RoleDescription) VALUES (
+  1, 'User'
+);
+
+
+
+## Status Type
+
+INSERT INTO web.TicketStatus (StatusId, StatusDescription) VALUES (
+  1, 'In Progress'
+);
+
+
+
+## Department Type
+
+INSERT INTO web.Department (DepartmentId, DepartmentDescription) VALUES (
+  1, 'Development'
+);
+
+
+## Priority Type
+INSERT INTO web.Priority (PriorityId, PriorityDescription) VALUES (
+  1, 'Normal'
+);
+
+
+#### Create User Info ####
+
+
+INSERT INTO web.User (UserName, FirstName, LastName, EmailAddress, Password, RoleId) VALUES (
+  'jmcgrath','john','mcgrath','john.mcgrath207@gmail.com','test', 1
+);
+
+INSERT INTO web.User (UserName, FirstName, LastName, EmailAddress, Password, RoleId) VALUES (
+  'jsmith','john','smith','john.smith@gmail.com','test', 1
+);
+
+
+
+
+
+
+
