@@ -1,6 +1,6 @@
 
 ### Edit Root account for access from any IP address ###
-procure USER 'root'@'localhost' TO 'root'@'%';
+#USER 'root'@'localhost' TO 'root'@'%';
 ## GRANT ALTER ROUTINE, CREATE ROUTINE, EXECUTE ON *.* TO 'root'@'%';
 ## Create Tables #####
 
