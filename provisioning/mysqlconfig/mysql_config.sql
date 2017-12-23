@@ -106,14 +106,28 @@ CREATE TABLE web.Ticket
 
 
 
+CREATE TABLE web.TicketTransactionCategory (
+
+  CategoryId INT NOT NULL AUTO_INCREMENT,
+  Category VARCHAR(255) NOT NULL,
+  Description TEXT NOT NULL,
+  PRIMARY KEY (CategoryId)
+
+);
+
+
+
 CREATE TABLE web.TicketTransactionType (
 
   TypeId INT NOT NULL AUTO_INCREMENT,
   Transaction VARCHAR(255) NOT NULL,
   Description TEXT NOT NULL,
+  CategoryId INT NOT NULL,
+  FOREIGN KEY (CategoryId) REFERENCES web.TicketTransactionCategory(CategoryId),
   PRIMARY KEY (TypeId)
 
 );
+
 
 CREATE TABLE web.TicketTransaction (
 
@@ -193,6 +207,15 @@ CREATE TABLE web.Comment (
 
 
 
+CREATE TABLE web.CommentTransactionCategory (
+
+  CategoryId INT NOT NULL AUTO_INCREMENT,
+  Category VARCHAR(255) NOT NULL,
+  Description TEXT NOT NULL,
+  PRIMARY KEY (CategoryId)
+
+);
+
 
 
 CREATE TABLE web.CommentTransactionType (
@@ -200,6 +223,8 @@ CREATE TABLE web.CommentTransactionType (
   TypeId INT NOT NULL AUTO_INCREMENT,
   Transaction VARCHAR(255) NOT NULL,
   Description TEXT NOT NULL,
+  CategoryId INT NOT NULL,
+  FOREIGN KEY (CategoryId) REFERENCES web.CommentTransactionCategory(CategoryId),
   PRIMARY KEY (TypeId)
 
 );
@@ -266,45 +291,63 @@ CREATE TABLE web.CommentTransactionValueDateTime (
 
 
 
+### Defining Categories ####
+
+INSERT INTO web.TicketTransactionCategory (Category, Description) VALUES ('InitialTickets','Category for Initial Tickets');
+INSERT INTO web.TicketTransactionCategory (Category, Description) VALUES ('AlteredTickets','Category for Altered Tickets');
+
+INSERT INTO web.CommentTransactionCategory (Category, Description) VALUES ('InitialComments','Category for Initial Comments');
+INSERT INTO web.CommentTransactionCategory (Category, Description) VALUES ('AlteredComments','Category for Altered Comments');
+
 
 ##### Defining Types #####
 
-## TransactionType For Tickets
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('InitialTicketOwnerId','Initial Owner ID of ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('InitialTicketTitle','Initial Title of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('InitialTicketDescription','Initial Description of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('InitialCreationDate','Initial Creation date of ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('InitialCreationUserId','Initial Creation User Id of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('InitialUpdateDate','Initial Update Date of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('InitialUpdateUserId','Initial Update User Id of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('InitialTargetDate','Initial Target Date of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('InitialDepartmentId','Initial Department Id of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('InitialStatusId','Initial Status Id of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('InitialPriorityId','Initial Priority Id of the ticket');
+#### TransactionType For Tickets ###
 
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('AlteredTicketOwnerId','Altered Owner ID of ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('AlteredTicketTitle','Altered Title of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('AlteredTicketDescription','Altered Description of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('AlteredCreationDate','Altered Creation date of ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('AlteredCreationUserId','Altered Creation User Id of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('AlteredUpdateDate','Altered Update Date of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('AlteredUpdateUserId','Altered Update User Id of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('AlteredTargetDate','Altered Target Date of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('AlteredDepartmentId','Altered Department Id of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('AlteredStatusId','Altered Status Id of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('AlteredPriorityId','Altered Priority Id of the ticket');
+SELECT CategoryId INTO @ci FROM web.TicketTransactionCategory WHERE Category = 'InitialTickets';
+
+INSERT INTO web.TicketTransactionType (Transaction, Description, CategoryId) VALUES ('InitialTicketOwnerId','Initial Owner ID of ticket', @ci);
+INSERT INTO web.TicketTransactionType (Transaction, Description, CategoryId) VALUES ('InitialTicketTitle','Initial Title of the ticket', @ci);
+INSERT INTO web.TicketTransactionType (Transaction, Description, CategoryId) VALUES ('InitialTicketDescription','Initial Description of the ticket', @ci);
+INSERT INTO web.TicketTransactionType (Transaction, Description, CategoryId) VALUES ('InitialCreationDate','Initial Creation date of ticket', @ci);
+INSERT INTO web.TicketTransactionType (Transaction, Description, CategoryId) VALUES ('InitialCreationUserId','Initial Creation User Id of the ticket', @ci);
+INSERT INTO web.TicketTransactionType (Transaction, Description, CategoryId) VALUES ('InitialUpdateDate','Initial Update Date of the ticket', @ci);
+INSERT INTO web.TicketTransactionType (Transaction, Description, CategoryId) VALUES ('InitialUpdateUserId','Initial Update User Id of the ticket', @ci);
+INSERT INTO web.TicketTransactionType (Transaction, Description, CategoryId) VALUES ('InitialTargetDate','Initial Target Date of the ticket', @ci);
+INSERT INTO web.TicketTransactionType (Transaction, Description, CategoryId) VALUES ('InitialDepartmentId','Initial Department Id of the ticket', @ci);
+INSERT INTO web.TicketTransactionType (Transaction, Description, CategoryId) VALUES ('InitialStatusId','Initial Status Id of the ticket', @ci);
+INSERT INTO web.TicketTransactionType (Transaction, Description, CategoryId) VALUES ('InitialPriorityId','Initial Priority Id of the ticket', @ci);
+
+SELECT CategoryId INTO @ci FROM web.TicketTransactionCategory WHERE Category = 'AlteredTickets';
+
+INSERT INTO web.TicketTransactionType (Transaction, Description, CategoryId) VALUES ('AlteredTicketOwnerId','Altered Owner ID of ticket', @ci);
+INSERT INTO web.TicketTransactionType (Transaction, Description, CategoryId) VALUES ('AlteredTicketTitle','Altered Title of the ticket', @ci);
+INSERT INTO web.TicketTransactionType (Transaction, Description, CategoryId) VALUES ('AlteredTicketDescription','Altered Description of the ticket', @ci);
+INSERT INTO web.TicketTransactionType (Transaction, Description, CategoryId) VALUES ('AlteredCreationDate','Altered Creation date of ticket', @ci);
+INSERT INTO web.TicketTransactionType (Transaction, Description, CategoryId) VALUES ('AlteredCreationUserId','Altered Creation User Id of the ticket', @ci);
+INSERT INTO web.TicketTransactionType (Transaction, Description, CategoryId) VALUES ('AlteredUpdateDate','Altered Update Date of the ticket', @ci);
+INSERT INTO web.TicketTransactionType (Transaction, Description, CategoryId) VALUES ('AlteredUpdateUserId','Altered Update User Id of the ticket', @ci);
+INSERT INTO web.TicketTransactionType (Transaction, Description, CategoryId) VALUES ('AlteredTargetDate','Altered Target Date of the ticket', @ci);
+INSERT INTO web.TicketTransactionType (Transaction, Description, CategoryId) VALUES ('AlteredDepartmentId','Altered Department Id of the ticket', @ci);
+INSERT INTO web.TicketTransactionType (Transaction, Description, CategoryId) VALUES ('AlteredStatusId','Altered Status Id of the ticket', @ci);
+INSERT INTO web.TicketTransactionType (Transaction, Description, CategoryId) VALUES ('AlteredPriorityId','Altered Priority Id of the ticket', @ci);
 
 
-## TransactionType For Comment
-INSERT INTO web.CommentTransactionType (Transaction, Description) VALUES ('InitialCommentDescription','Initial Comment Description of a comment');
-INSERT INTO web.CommentTransactionType (Transaction, Description) VALUES ('InitialCreationDate','Initial Creation Date of a comment');
-INSERT INTO web.CommentTransactionType (Transaction, Description) VALUES ('InitialCreationUserId','Initial Creation User Id of a comment');
-INSERT INTO web.CommentTransactionType (Transaction, Description) VALUES ('InitialUpdateUserId','Initial Update User Id of a comment');
+#### TransactionType For Comment ###
 
-INSERT INTO web.CommentTransactionType (Transaction, Description) VALUES ('AlteredCommentDescription','Altered Comment Description of a comment');
-INSERT INTO web.CommentTransactionType (Transaction, Description) VALUES ('AlteredCreationDate','Altered Creation Date of a comment');
-INSERT INTO web.CommentTransactionType (Transaction, Description) VALUES ('AlteredCreationUserId','Altered Creation User Id of a comment');
-INSERT INTO web.CommentTransactionType (Transaction, Description) VALUES ('AlteredUpdateUserId','Altered Update User Id of a comment');
+SELECT CategoryId INTO @ci FROM web.CommentTransactionCategory WHERE Category = 'InitialComments';
+
+INSERT INTO web.CommentTransactionType (Transaction, Description, CategoryId) VALUES ('InitialCommentDescription','Initial Comment Description of a comment', @ci);
+INSERT INTO web.CommentTransactionType (Transaction, Description, CategoryId) VALUES ('InitialCreationDate','Initial Creation Date of a comment', @ci);
+INSERT INTO web.CommentTransactionType (Transaction, Description, CategoryId) VALUES ('InitialCreationUserId','Initial Creation User Id of a comment', @ci);
+INSERT INTO web.CommentTransactionType (Transaction, Description, CategoryId) VALUES ('InitialUpdateUserId','Initial Update User Id of a comment', @ci);
+
+SELECT CategoryId INTO @ci FROM web.CommentTransactionCategory WHERE Category = 'AlteredComments';
+
+INSERT INTO web.CommentTransactionType (Transaction, Description, CategoryId) VALUES ('AlteredCommentDescription','Altered Comment Description of a comment', @ci);
+INSERT INTO web.CommentTransactionType (Transaction, Description, CategoryId) VALUES ('AlteredCreationDate','Altered Creation Date of a comment', @ci);
+INSERT INTO web.CommentTransactionType (Transaction, Description, CategoryId) VALUES ('AlteredCreationUserId','Altered Creation User Id of a comment', @ci);
+INSERT INTO web.CommentTransactionType (Transaction, Description, CategoryId) VALUES ('AlteredUpdateUserId','Altered Update User Id of a comment', @ci);
 
 
 
