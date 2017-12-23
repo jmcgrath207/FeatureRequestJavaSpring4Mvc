@@ -1,6 +1,7 @@
 
 ### Edit Root account for access from any IP address ###
-#USER 'root'@'localhost' TO 'root'@'%';
+
+#RENAME USER 'root'@'localhost' TO 'root'@'%';
 ## GRANT ALTER ROUTINE, CREATE ROUTINE, EXECUTE ON *.* TO 'root'@'%';
 ## Create Tables #####
 
@@ -267,24 +268,41 @@ CREATE TABLE web.CommentTransactionValueDateTime (
 ##### Defining Types #####
 
 ## TransactionType For Tickets
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('TicketOwnerId','Owner ID of ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('TicketTitle','Title of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('TicketDescription','Description of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('CreationDate','Creation date of ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('CreationUserId','Creation User Id of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('UpdateDate','Update Date of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('UpdateUserId','Update User Id of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('TargetDate','Target Date of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('DepartmentId','Department Id of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('StatusId','Status Id of the ticket');
-INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('PriorityId','Priority Id of the ticket');
+INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('InitialTicketOwnerId','Initial Owner ID of ticket');
+INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('InitialTicketTitle','Initial Title of the ticket');
+INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('InitialTicketDescription','Initial Description of the ticket');
+INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('InitialCreationDate','Initial Creation date of ticket');
+INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('InitialCreationUserId','Initial Creation User Id of the ticket');
+INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('InitialUpdateDate','Initial Update Date of the ticket');
+INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('InitialUpdateUserId','Initial Update User Id of the ticket');
+INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('InitialTargetDate','Initial Target Date of the ticket');
+INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('InitialDepartmentId','Initial Department Id of the ticket');
+INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('InitialStatusId','Initial Status Id of the ticket');
+INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('InitialPriorityId','Initial Priority Id of the ticket');
+
+INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('AlteredTicketOwnerId','Altered Owner ID of ticket');
+INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('AlteredTicketTitle','Altered Title of the ticket');
+INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('AlteredTicketDescription','Altered Description of the ticket');
+INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('AlteredCreationDate','Altered Creation date of ticket');
+INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('AlteredCreationUserId','Altered Creation User Id of the ticket');
+INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('AlteredUpdateDate','Altered Update Date of the ticket');
+INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('AlteredUpdateUserId','Altered Update User Id of the ticket');
+INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('AlteredTargetDate','Altered Target Date of the ticket');
+INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('AlteredDepartmentId','Altered Department Id of the ticket');
+INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('AlteredStatusId','Altered Status Id of the ticket');
+INSERT INTO web.TicketTransactionType (Transaction, Description) VALUES ('AlteredPriorityId','Altered Priority Id of the ticket');
 
 
 ## TransactionType For Comment
-INSERT INTO web.CommentTransactionType (Transaction, Description) VALUES ('CommentDescription','Comment Description of a comment');
-INSERT INTO web.CommentTransactionType (Transaction, Description) VALUES ('CreationDate','Creation Date of a comment');
-INSERT INTO web.CommentTransactionType (Transaction, Description) VALUES ('CreationUserId','Creation User Id of a comment');
-INSERT INTO web.CommentTransactionType (Transaction, Description) VALUES ('UpdateUserId','Update User Id of a comment');
+INSERT INTO web.CommentTransactionType (Transaction, Description) VALUES ('InitialCommentDescription','Initial Comment Description of a comment');
+INSERT INTO web.CommentTransactionType (Transaction, Description) VALUES ('InitialCreationDate','Initial Creation Date of a comment');
+INSERT INTO web.CommentTransactionType (Transaction, Description) VALUES ('InitialCreationUserId','Initial Creation User Id of a comment');
+INSERT INTO web.CommentTransactionType (Transaction, Description) VALUES ('InitialUpdateUserId','Initial Update User Id of a comment');
+
+INSERT INTO web.CommentTransactionType (Transaction, Description) VALUES ('AlteredCommentDescription','Altered Comment Description of a comment');
+INSERT INTO web.CommentTransactionType (Transaction, Description) VALUES ('AlteredCreationDate','Altered Creation Date of a comment');
+INSERT INTO web.CommentTransactionType (Transaction, Description) VALUES ('AlteredCreationUserId','Altered Creation User Id of a comment');
+INSERT INTO web.CommentTransactionType (Transaction, Description) VALUES ('AlteredUpdateUserId','Altered Update User Id of a comment');
 
 
 
@@ -335,41 +353,36 @@ INSERT INTO web.User (UserName, FirstName, LastName, EmailAddress, Password, Rol
 ## New Ticket ###
 
 
-
-CREATE TABLE web.Ticket
-(
-  TicketId          INT NOT NULL AUTO_INCREMENT,
-  TicketOwnerId     INT,
-  TicketTitle       VARCHAR(255),
-  TicketDescription TEXT,
-  CreationDate      DATETIME,
-  CreationUserId    INT,
-  UpdateDate        DATETIME,
-  UpdateUserId      INT,
-  TargetDate        DATETIME,
-  DepartmentId      INT,
-  StatusId          INT,
-  PriorityId        INT
-);
-
 DROP PROCEDURE IF EXISTS web.create_new_Ticket;
 
-CREATE PROCEDURE web.create_new_Ticket (TicketOwnerId VARCHAR(255),
-                                        TicketTitle VARCHAR(255),
-                                        TicketDescription TEXT,
-                                        CreationDate DATETIME,
-                                        CreationUserId VARCHAR(255),
-                                        UpdateDate DATETIME,
-                                        UpdateUserId VARCHAR(255),
-                                        TargetDate DATETIME,
-                                        DepartmentId VARCHAR(255),
-                                        StatusId VARCHAR(255),
-                                        PriorityId VARCHAR(255))
+CREATE PROCEDURE web.create_new_Ticket (TOS VARCHAR(255),      # TicketOwnerString
+                                        TT VARCHAR(255),       # TicketTitle
+                                        TDesc TEXT,            # TicketDescription
+                                        CD DATETIME,           # CreationDate
+                                        CUS VARCHAR(255),      # CreationUserString
+                                        UD DATETIME,           # UpdateDate
+                                        UUS VARCHAR(255),      # UpdateUserString
+                                        TDate DATETIME,        # TargetDate
+                                        DS VARCHAR(255),       # DepartmentString
+                                        SS VARCHAR(255),       # StatusString
+                                        PS VARCHAR(255))       # PriorityString
   BEGIN
 
-    SET TicketOwnerId = (SELECT UserId FROM web.User WHERE UserName = TicketOwnerId);
-    SET CreationUserId = (SELECT UserId FROM web.User WHERE UserName = CreationUserId);
-    SET UpdateUserId = (SELECT UserId FROM web.User WHERE UserName = UpdateUserId);
+    DECLARE TOI INT;        # TicketOwnerId
+    DECLARE CUI INT;        # CreationUserId
+    DECLARE UUI INT;        # UpdateUserId
+    DECLARE DI INT;         # DepartmentId
+    DECLARE SI INT;         # StatusId
+    DECLARE PI INT;         # PriorityId
+
+    SET TOI = (SELECT UserId FROM web.User WHERE UserName = TOS);
+    SET CUI = (SELECT UserId FROM web.User WHERE UserName = CUS);
+    SET UUI = (SELECT UserId FROM web.User WHERE UserName = UUS);
+    SET DI = (SELECT DepartmentId FROM web.Department WHERE Department = DS);
+    SET SI = (SELECT StatusId FROM web.TicketStatus WHERE Status = SS);
+    SET PI = (SELECT PriorityId FROM web.Priority WHERE Priority = PS);
+
+    SET autocommit=0;
 
     START TRANSACTION;
 
@@ -380,12 +393,29 @@ CREATE PROCEDURE web.create_new_Ticket (TicketOwnerId VARCHAR(255),
                             UpdateDate, UpdateUserId,
                             TargetDate, DepartmentId,
                             StatusId, PriorityId)
-    VALUES (1,
-      'Fix Function Foo','Fix Function Foo issue',
-      '2017-11-07 12:00:12',1,
-      '2017-11-08 13:00:12',1,
-      '2017-11-09 14:00:12',1,
-      1,1);
+
+    VALUES (TOI,
+      TT,TDesc,
+      CD,CUI,
+      UD,UUI,
+      TDate,DI,
+      SI,PI);
+
+    ## Add TicketOwnerId to Ticket Transaction Table
+    INSERT INTO web.TicketTransaction (TicketId, TypeId)
+
+    VALUES(   ## Select Ticket ID just created
+              (SELECT TicketId FROM web.Ticket
+              WHERE TicketOwnerId = TOI
+                    AND TicketTitle = TT AND TicketDescription = TDesc
+                    AND CreationDate = CD AND CreationUserId = CUI
+                    AND UpdateDate = UD AND UpdateUserId = UUI
+                    AND TargetDate = TDate AND DepartmentId = DI
+                    AND StatusId = SI AND PriorityId = PI),
+
+              ## Select Transction Type
+              (SELECT * FROM web.TicketTransactionType WHERE Transaction = 'InitialTicketOwnerId')
+    );
 
 
     COMMIT;
@@ -393,9 +423,9 @@ CREATE PROCEDURE web.create_new_Ticket (TicketOwnerId VARCHAR(255),
 
 call web.create_new_Ticket('jmcgrath',
                            'Fix Function Foo','Fix Function Foo issue',
-                           '2017-11-07 12:00:12',1,
-                           '2017-11-08 13:00:12',1,
-                           '2017-11-09 14:00:12',1,
-                           1,1);
+                           '2017-11-07 12:00:12','jmcgrath',
+                           '2017-11-08 13:00:12','jmcgrath',
+                           '2017-11-09 14:00:12','Development',
+                           'In Progress','Normal');
 
 
