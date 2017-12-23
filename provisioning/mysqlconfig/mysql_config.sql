@@ -105,6 +105,15 @@ CREATE TABLE web.Ticket
 );
 
 
+CREATE TABLE web.TicketAttribute (
+
+  AttributeId INT NOT NULL AUTO_INCREMENT,
+  Attribute VARCHAR(255) NOT NULL,
+  Description TEXT NOT NULL,
+  PRIMARY KEY (AttributeId)
+
+);
+
 
 CREATE TABLE web.TicketTransactionCategory (
 
@@ -132,7 +141,7 @@ CREATE TABLE web.TicketTransactionType (
 CREATE TABLE web.TicketTransaction (
 
   TransactionId INT NOT NULL AUTO_INCREMENT,
-  ParentTicketTransactionID INT NOT NULL,
+  ParentTransactionID INT NOT NULL,
   TicketId INT NOT NULL,
   TypeId INT NOT NULL,
   UserID INT NOT NULL,
@@ -140,7 +149,7 @@ CREATE TABLE web.TicketTransaction (
   FOREIGN KEY (TicketId) REFERENCES web.Ticket(TicketId),
   FOREIGN KEY (TypeId) REFERENCES web.TicketTransactionType(TypeId),
   FOREIGN KEY (UserID) REFERENCES web.User(UserId),
-  FOREIGN KEY (ParentTicketTransactionID) REFERENCES web.TicketTransaction(TransactionId),
+  FOREIGN KEY (ParentTransactionID) REFERENCES web.TicketTransaction(TransactionId),
   PRIMARY KEY (TransactionId)
 
 
@@ -150,42 +159,35 @@ CREATE TABLE web.TicketTransaction (
 
 CREATE TABLE web.TicketTransactionValueText (
 
-  TransactionValueId INT NOT NULL AUTO_INCREMENT,
+
   TransactionId INT NOT NULL,
   Value TEXT NOT NULL,
-  FOREIGN KEY (TransactionId) REFERENCES web.TicketTransaction(TransactionId),
-  PRIMARY KEY (TransactionValueId)
+  FOREIGN KEY (TransactionId) REFERENCES web.TicketTransaction(TransactionId)
 
 );
 
 CREATE TABLE web.TicketTransactionValueVarChar (
 
-  TransactionValueId INT NOT NULL AUTO_INCREMENT,
   TransactionId INT NOT NULL,
-  Value VARCHAR(255) NOT NULL,
-  FOREIGN KEY (TransactionId) REFERENCES web.TicketTransaction(TransactionId),
-  PRIMARY KEY (TransactionValueId)
+  Value TEXT NOT NULL,
+  FOREIGN KEY (TransactionId) REFERENCES web.TicketTransaction(TransactionId)
 
 );
 
 
 CREATE TABLE web.TicketTransactionValueInt (
 
-  TransactionValueId INT NOT NULL AUTO_INCREMENT,
   TransactionId INT NOT NULL,
-  Value INT NOT NULL,
-  FOREIGN KEY (TransactionId) REFERENCES web.TicketTransaction(TransactionId),
-  PRIMARY KEY (TransactionValueId)
+  Value TEXT NOT NULL,
+  FOREIGN KEY (TransactionId) REFERENCES web.TicketTransaction(TransactionId)
 
 );
 
 CREATE TABLE web.TicketTransactionValueDateTime (
 
-  TransactionValueId INT NOT NULL AUTO_INCREMENT,
   TransactionId INT NOT NULL,
-  Value DATETIME NOT NULL,
-  FOREIGN KEY (TransactionId) REFERENCES web.TicketTransaction(TransactionId),
-  PRIMARY KEY (TransactionValueId)
+  Value TEXT NOT NULL,
+  FOREIGN KEY (TransactionId) REFERENCES web.TicketTransaction(TransactionId)
 
 );
 
@@ -232,7 +234,7 @@ CREATE TABLE web.CommentTransactionType (
 CREATE TABLE web.CommentTransaction (
 
   TransactionId INT NOT NULL AUTO_INCREMENT,
-  ParentTicketTransactionID INT NOT NULL,
+  ParentTransactionID INT NOT NULL,
   CommentId INT NOT NULL,
   TypeId INT NOT NULL,
   UserID INT NOT NULL,
@@ -240,7 +242,7 @@ CREATE TABLE web.CommentTransaction (
   FOREIGN KEY (CommentId) REFERENCES web.Comment(TicketId),
   FOREIGN KEY (TypeId) REFERENCES web.CommentTransactionType(TypeId),
   FOREIGN KEY (UserID) REFERENCES web.User(UserId),
-  FOREIGN KEY (ParentTicketTransactionID) REFERENCES web.CommentTransaction(TransactionId),
+  FOREIGN KEY (ParentTransactionID) REFERENCES web.CommentTransaction(TransactionId),
   PRIMARY KEY (TransactionId)
 
 
@@ -250,42 +252,35 @@ CREATE TABLE web.CommentTransaction (
 
 CREATE TABLE web.CommentTransactionValueText (
 
-  TransactionValueId INT NOT NULL AUTO_INCREMENT,
+
   TransactionId INT NOT NULL,
   Value TEXT NOT NULL,
-  FOREIGN KEY (TransactionId) REFERENCES web.CommentTransaction(TransactionId),
-  PRIMARY KEY (TransactionValueId)
+  FOREIGN KEY (TransactionId) REFERENCES web.CommentTransaction(TransactionId)
 
 );
 
 CREATE TABLE web.CommentTransactionValueVarChar (
 
-  TransactionValueId INT NOT NULL AUTO_INCREMENT,
   TransactionId INT NOT NULL,
-  Value VARCHAR(255) NOT NULL,
-  FOREIGN KEY (TransactionId) REFERENCES web.CommentTransaction(TransactionId),
-  PRIMARY KEY (TransactionValueId)
+  Value TEXT NOT NULL,
+  FOREIGN KEY (TransactionId) REFERENCES web.CommentTransaction(TransactionId)
 
 );
 
 
 CREATE TABLE web.CommentTransactionValueInt (
 
-  TransactionValueId INT NOT NULL AUTO_INCREMENT,
   TransactionId INT NOT NULL,
-  Value INT NOT NULL,
-  FOREIGN KEY (TransactionId) REFERENCES web.CommentTransaction(TransactionId),
-  PRIMARY KEY (TransactionValueId)
+  Value TEXT NOT NULL,
+  FOREIGN KEY (TransactionId) REFERENCES web.CommentTransaction(TransactionId)
 
 );
 
 CREATE TABLE web.CommentTransactionValueDateTime (
 
-  TransactionValueId INT NOT NULL AUTO_INCREMENT,
   TransactionId INT NOT NULL,
-  Value DATETIME NOT NULL,
-  FOREIGN KEY (TransactionId) REFERENCES web.CommentTransaction(TransactionId),
-  PRIMARY KEY (TransactionValueId)
+  Value TEXT NOT NULL,
+  FOREIGN KEY (TransactionId) REFERENCES web.CommentTransaction(TransactionId)
 
 );
 
@@ -415,7 +410,7 @@ CREATE FUNCTION web.FuncTicketTransaction (
   BEGIN
 
 
-    INSERT INTO web.TicketTransaction (TicketId, TypeId, UserID, TransactionDate,ParentTicketTransactionID)
+    INSERT INTO web.TicketTransaction (TicketId, TypeId, UserID, TransactionDate,ParentTransactionID)
 
     VALUES(TI,
            ## Select Transction Type
