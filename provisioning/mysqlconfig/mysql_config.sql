@@ -120,8 +120,11 @@ CREATE TABLE web.TicketTransaction (
   TransactionId INT NOT NULL AUTO_INCREMENT,
   TicketId INT NOT NULL,
   TypeId INT NOT NULL,
+  UserID INT NOT NULL,
+  TransactionDate DATETIME NOT NULL,
   FOREIGN KEY (TicketId) REFERENCES web.Ticket(TicketId),
   FOREIGN KEY (TypeId) REFERENCES web.TicketTransactionType(TypeId),
+  FOREIGN KEY (UserID) REFERENCES web.User(UserId),
   PRIMARY KEY (TransactionId)
 
 
@@ -133,7 +136,6 @@ CREATE TABLE web.TicketTransactionValueText (
 
   TransactionValueId INT NOT NULL AUTO_INCREMENT,
   TransactionId INT NOT NULL,
-  TypeId INT NOT NULL,
   Value TEXT NOT NULL,
   FOREIGN KEY (TransactionId) REFERENCES web.TicketTransaction(TransactionId),
   PRIMARY KEY (TransactionValueId)
@@ -144,7 +146,6 @@ CREATE TABLE web.TicketTransactionValueVarChar (
 
   TransactionValueId INT NOT NULL AUTO_INCREMENT,
   TransactionId INT NOT NULL,
-  TypeId INT NOT NULL,
   Value VARCHAR(255) NOT NULL,
   FOREIGN KEY (TransactionId) REFERENCES web.TicketTransaction(TransactionId),
   PRIMARY KEY (TransactionValueId)
@@ -156,7 +157,6 @@ CREATE TABLE web.TicketTransactionValueInt (
 
   TransactionValueId INT NOT NULL AUTO_INCREMENT,
   TransactionId INT NOT NULL,
-  TypeId INT NOT NULL,
   Value INT NOT NULL,
   FOREIGN KEY (TransactionId) REFERENCES web.TicketTransaction(TransactionId),
   PRIMARY KEY (TransactionValueId)
@@ -167,7 +167,6 @@ CREATE TABLE web.TicketTransactionValueDateTime (
 
   TransactionValueId INT NOT NULL AUTO_INCREMENT,
   TransactionId INT NOT NULL,
-  TypeId INT NOT NULL,
   Value DATETIME NOT NULL,
   FOREIGN KEY (TransactionId) REFERENCES web.TicketTransaction(TransactionId),
   PRIMARY KEY (TransactionValueId)
@@ -208,8 +207,11 @@ CREATE TABLE web.CommentTransaction (
   TransactionId INT NOT NULL AUTO_INCREMENT,
   CommentId INT NOT NULL,
   TypeId INT NOT NULL,
+  UserID INT NOT NULL,
+  TransactionDate DATETIME NOT NULL,
   FOREIGN KEY (CommentId) REFERENCES web.Comment(TicketId),
   FOREIGN KEY (TypeId) REFERENCES web.CommentTransactionType(TypeId),
+  FOREIGN KEY (UserID) REFERENCES web.User(UserId),
   PRIMARY KEY (TransactionId)
 
 
@@ -221,7 +223,6 @@ CREATE TABLE web.CommentTransactionValueText (
 
   TransactionValueId INT NOT NULL AUTO_INCREMENT,
   TransactionId INT NOT NULL,
-  TypeId INT NOT NULL,
   Value TEXT NOT NULL,
   FOREIGN KEY (TransactionId) REFERENCES web.CommentTransaction(TransactionId),
   PRIMARY KEY (TransactionValueId)
@@ -232,7 +233,6 @@ CREATE TABLE web.CommentTransactionValueVarChar (
 
   TransactionValueId INT NOT NULL AUTO_INCREMENT,
   TransactionId INT NOT NULL,
-  TypeId INT NOT NULL,
   Value VARCHAR(255) NOT NULL,
   FOREIGN KEY (TransactionId) REFERENCES web.CommentTransaction(TransactionId),
   PRIMARY KEY (TransactionValueId)
@@ -244,7 +244,6 @@ CREATE TABLE web.CommentTransactionValueInt (
 
   TransactionValueId INT NOT NULL AUTO_INCREMENT,
   TransactionId INT NOT NULL,
-  TypeId INT NOT NULL,
   Value INT NOT NULL,
   FOREIGN KEY (TransactionId) REFERENCES web.CommentTransaction(TransactionId),
   PRIMARY KEY (TransactionValueId)
@@ -255,7 +254,6 @@ CREATE TABLE web.CommentTransactionValueDateTime (
 
   TransactionValueId INT NOT NULL AUTO_INCREMENT,
   TransactionId INT NOT NULL,
-  TypeId INT NOT NULL,
   Value DATETIME NOT NULL,
   FOREIGN KEY (TransactionId) REFERENCES web.CommentTransaction(TransactionId),
   PRIMARY KEY (TransactionValueId)
@@ -350,7 +348,7 @@ INSERT INTO web.User (UserName, FirstName, LastName, EmailAddress, Password, Rol
 
 
 
-## New Ticket ###
+##### New Ticket #########
 
 
 DROP PROCEDURE IF EXISTS web.create_new_Ticket;
@@ -374,6 +372,27 @@ CREATE PROCEDURE web.create_new_Ticket (TOS VARCHAR(255),      # TicketOwnerStri
     DECLARE DI INT;         # DepartmentId
     DECLARE SI INT;         # StatusId
     DECLARE PI INT;         # PriorityId
+    DECLARE TI INT;         # TicketId
+
+    # Used to get last added Row
+    DECLARE lastIdInTicketTransaction INT;
+
+
+    DECLARE exit handler for sqlexception
+    BEGIN
+      -- ERROR
+      SHOW ERRORS;
+      ROLLBACK;
+    END;
+
+    DECLARE exit handler for sqlwarning
+    BEGIN
+      -- WARNING
+      SHOW WARNINGS;
+      ROLLBACK;
+    END;
+
+
 
     SET TOI = (SELECT UserId FROM web.User WHERE UserName = TOS);
     SET CUI = (SELECT UserId FROM web.User WHERE UserName = CUS);
@@ -382,7 +401,6 @@ CREATE PROCEDURE web.create_new_Ticket (TOS VARCHAR(255),      # TicketOwnerStri
     SET SI = (SELECT StatusId FROM web.TicketStatus WHERE Status = SS);
     SET PI = (SELECT PriorityId FROM web.Priority WHERE Priority = PS);
 
-    SET autocommit=0;
 
     START TRANSACTION;
 
@@ -401,29 +419,47 @@ CREATE PROCEDURE web.create_new_Ticket (TOS VARCHAR(255),      # TicketOwnerStri
       TDate,DI,
       SI,PI);
 
+
+
+
+    ## Select Ticket ID just created
+    SET TI  = (SELECT TicketId FROM web.Ticket
+    WHERE TicketOwnerId = TOI
+          AND TicketTitle = TT AND TicketDescription = TDesc
+          AND CreationDate = CD AND CreationUserId = CUI
+          AND UpdateDate = UD AND UpdateUserId = UUI
+          AND TargetDate = TDate AND DepartmentId = DI
+          AND StatusId = SI AND PriorityId = PI);
+
+
+
     ## Add TicketOwnerId to Ticket Transaction Table
-    INSERT INTO web.TicketTransaction (TicketId, TypeId)
+    INSERT INTO web.TicketTransaction (TicketId, TypeId, UserID, TransactionDate)
 
-    VALUES(   ## Select Ticket ID just created
-              (SELECT TicketId FROM web.Ticket
-              WHERE TicketOwnerId = TOI
-                    AND TicketTitle = TT AND TicketDescription = TDesc
-                    AND CreationDate = CD AND CreationUserId = CUI
-                    AND UpdateDate = UD AND UpdateUserId = UUI
-                    AND TargetDate = TDate AND DepartmentId = DI
-                    AND StatusId = SI AND PriorityId = PI),
-
-              ## Select Transction Type
-              (SELECT * FROM web.TicketTransactionType WHERE Transaction = 'InitialTicketOwnerId')
+    VALUES(TI,
+           ## Select Transction Type
+           (SELECT TypeId FROM web.TicketTransactionType WHERE Transaction = 'InitialTicketOwnerId'),
+           CUI,CD
     );
+
+
+
+    ## Grab last inserted Id from
+    SET lastIdInTicketTransaction = LAST_INSERT_ID();
+
+
+
+    INSERT INTO web.TicketTransactionValueInt (TransactionId, Value)
+
+      VALUE (lastIdInTicketTransaction, TOI);
 
 
     COMMIT;
   END;
 
-call web.create_new_Ticket('jmcgrath',
+call web.create_new_Ticket('jsmith',
                            'Fix Function Foo','Fix Function Foo issue',
-                           '2017-11-07 12:00:12','jmcgrath',
+                           '2017-11-07 12:00:12','jsmith',
                            '2017-11-08 13:00:12','jmcgrath',
                            '2017-11-09 14:00:12','Development',
                            'In Progress','Normal');
