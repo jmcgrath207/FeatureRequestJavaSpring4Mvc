@@ -118,6 +118,7 @@ CREATE TABLE web.TicketTransactionType (
 CREATE TABLE web.TicketTransaction (
 
   TransactionId INT NOT NULL AUTO_INCREMENT,
+  ParentTicketTransactionID INT NOT NULL,
   TicketId INT NOT NULL,
   TypeId INT NOT NULL,
   UserID INT NOT NULL,
@@ -125,6 +126,7 @@ CREATE TABLE web.TicketTransaction (
   FOREIGN KEY (TicketId) REFERENCES web.Ticket(TicketId),
   FOREIGN KEY (TypeId) REFERENCES web.TicketTransactionType(TypeId),
   FOREIGN KEY (UserID) REFERENCES web.User(UserId),
+  FOREIGN KEY (ParentTicketTransactionID) REFERENCES web.TicketTransaction(TransactionId),
   PRIMARY KEY (TransactionId)
 
 
@@ -205,6 +207,7 @@ CREATE TABLE web.CommentTransactionType (
 CREATE TABLE web.CommentTransaction (
 
   TransactionId INT NOT NULL AUTO_INCREMENT,
+  ParentTicketTransactionID INT NOT NULL,
   CommentId INT NOT NULL,
   TypeId INT NOT NULL,
   UserID INT NOT NULL,
@@ -212,6 +215,7 @@ CREATE TABLE web.CommentTransaction (
   FOREIGN KEY (CommentId) REFERENCES web.Comment(TicketId),
   FOREIGN KEY (TypeId) REFERENCES web.CommentTransactionType(TypeId),
   FOREIGN KEY (UserID) REFERENCES web.User(UserId),
+  FOREIGN KEY (ParentTicketTransactionID) REFERENCES web.CommentTransaction(TransactionId),
   PRIMARY KEY (TransactionId)
 
 
@@ -357,22 +361,23 @@ INSERT INTO web.User (UserName, FirstName, LastName, EmailAddress, Password, Rol
 DROP FUNCTION IF EXISTS web.FuncTicketTransaction;
 
 CREATE FUNCTION web.FuncTicketTransaction (
-  TI INT,               # Ticket Id
-  TRANUSER INT,         # Transaction User
-  TRANDATE DATETIME,    # Transaction Date
-  TRANTYPE VARCHAR(255) # Transaction Type
+  TI INT,                # Ticket Id
+  TRANUSER INT,          # Transaction User
+  TRANDATE DATETIME,     # Transaction Date
+  TRANTYPE VARCHAR(255), # Transaction Type
+  PTI INT                # Parent TicketTransactionID
 )
   RETURNS INT
 
   BEGIN
 
 
-    INSERT INTO web.TicketTransaction (TicketId, TypeId, UserID, TransactionDate)
+    INSERT INTO web.TicketTransaction (TicketId, TypeId, UserID, TransactionDate,ParentTicketTransactionID)
 
     VALUES(TI,
            ## Select Transction Type
            (SELECT TypeId FROM web.TicketTransactionType WHERE Transaction = TRANTYPE),
-           TRANUSER,TRANDATE
+           TRANUSER,TRANDATE, PTI
     );
 
 
@@ -398,11 +403,12 @@ CREATE FUNCTION web.FuncTicketTransaction (
 
 DROP PROCEDURE IF EXISTS web.StoreProdTicketTransactionValueInt;
 
-CREATE PROCEDURE web.StoreProdTicketTransactionValueInt (IN TRANVALUE INT,        # Transaction Value
-                                                         IN TI INT,               # Ticket Id
-                                                         IN TRANUSER INT,         # Transaction User
-                                                         IN TRANDATE DATETIME,    # Transaction Date
-                                                         IN TRANTYPE VARCHAR(255) # Transaction Type
+CREATE PROCEDURE web.StoreProdTicketTransactionValueInt (TRANVALUE INT,         # Transaction Value
+                                                         TI INT,                # Ticket Id
+                                                         TRANUSER INT,          # Transaction User
+                                                         TRANDATE DATETIME,     # Transaction Date
+                                                         TRANTYPE VARCHAR(255), # Transaction Type
+                                                         PTI INT                # Parent TicketTransactionID
 )
 
   BEGIN
@@ -415,7 +421,8 @@ CREATE PROCEDURE web.StoreProdTicketTransactionValueInt (IN TRANVALUE INT,      
           TI ,          # Ticket Id
           TRANUSER,     # Transaction User
           TRANDATE,     # Transaction Date
-          TRANTYPE      # Transaction Type
+          TRANTYPE,     # Transaction Type
+          PTI           # Parent TicketTransactionID
       )),
       TRANVALUE);
 
@@ -433,7 +440,8 @@ CREATE PROCEDURE web.StoreProdTicketTransactionValueVarChar (TRANVALUE VARCHAR(2
                                                              TI INT,                        # Ticket Id
                                                              TRANUSER INT,                  # Transaction User
                                                              TRANDATE DATETIME,             # Transaction Date
-                                                             TRANTYPE VARCHAR(255)          # Transaction Type
+                                                             TRANTYPE VARCHAR(255),         # Transaction Type
+                                                             PTI INT                        # Parent TicketTransactionID
 )
   BEGIN
 
@@ -444,7 +452,8 @@ CREATE PROCEDURE web.StoreProdTicketTransactionValueVarChar (TRANVALUE VARCHAR(2
           TI ,          # Ticket Id
           TRANUSER,     # Transaction User
           TRANDATE,     # Transaction Date
-          TRANTYPE      # Transaction Type
+          TRANTYPE,     # Transaction Type
+          PTI           # Parent TicketTransactionID
       )),
       TRANVALUE);
 
@@ -467,7 +476,8 @@ CREATE PROCEDURE web.StoreProdTicketTransactionValueText (TRANVALUE TEXT,       
                                                           TI INT,                        # Ticket Id
                                                           TRANUSER INT,                  # Transaction User
                                                           TRANDATE DATETIME,             # Transaction Date
-                                                          TRANTYPE VARCHAR(255)          # Transaction Type
+                                                          TRANTYPE VARCHAR(255),         # Transaction Type
+                                                          PTI INT                        # Parent TicketTransactionID
 )
   BEGIN
 
@@ -478,7 +488,8 @@ CREATE PROCEDURE web.StoreProdTicketTransactionValueText (TRANVALUE TEXT,       
           TI ,          # Ticket Id
           TRANUSER,     # Transaction User
           TRANDATE,     # Transaction Date
-          TRANTYPE      # Transaction Type
+          TRANTYPE,     # Transaction Type
+          PTI           # Parent TicketTransactionID
       )),
       TRANVALUE);
 
@@ -498,7 +509,8 @@ CREATE PROCEDURE web.StoreProdTicketTransactionValueDateTime (TRANVALUE TEXT,   
                                                               TI INT,                        # Ticket Id
                                                               TRANUSER INT,                  # Transaction User
                                                               TRANDATE DATETIME,             # Transaction Date
-                                                              TRANTYPE VARCHAR(255)          # Transaction Type
+                                                              TRANTYPE VARCHAR(255),         # Transaction Type
+                                                              PTI INT                        # Parent TicketTransactionID
 )
   BEGIN
 
@@ -509,7 +521,8 @@ CREATE PROCEDURE web.StoreProdTicketTransactionValueDateTime (TRANVALUE TEXT,   
           TI ,          # Ticket Id
           TRANUSER,     # Transaction User
           TRANDATE,     # Transaction Date
-          TRANTYPE      # Transaction Type
+          TRANTYPE,     # Transaction Type
+          PTI           # Parent TicketTransactionID
       )),
       TRANVALUE);
 
@@ -546,6 +559,7 @@ CREATE PROCEDURE web.create_new_Ticket (TOS VARCHAR(255),      # TicketOwnerStri
     DECLARE SI INT;         # StatusId
     DECLARE PI INT;         # PriorityId
     DECLARE TI INT;         # TicketId
+    DECLARE PTI INT;        # ParentTransactionId
 
 
 
@@ -604,13 +618,19 @@ CREATE PROCEDURE web.create_new_Ticket (TOS VARCHAR(255),      # TicketOwnerStri
           AND StatusId = SI AND PriorityId = PI);
 
 
+    ## Select First available TicketTransaction Id that will become a Parent TicketTransaction Id
+    SET PTI = (SELECT AUTO_INCREMENT
+               FROM  information_schema.TABLES
+               WHERE TABLE_SCHEMA = 'web'
+                     AND   TABLE_NAME   = 'TicketTransaction');
     ### Add TicketOwnerId to Ticket Transaction
 
     Call web.StoreProdTicketTransactionValueInt (TOI,                    # Transaction Value
                                                  TI,                     # TicketId
                                                  CUI,                    # Transaction User
                                                  CD,                     # Transaction Date
-                                                 'InitialTicketOwnerId'  # Transaction Type
+                                                 'InitialTicketOwnerId', # Transaction Type
+                                                 PTI                     # Parent TicketTransactionID
     );
 
 
@@ -620,7 +640,8 @@ CREATE PROCEDURE web.create_new_Ticket (TOS VARCHAR(255),      # TicketOwnerStri
                                                      TI,                    # TicketId
                                                      CUI,                   # Transaction User
                                                      CD,                    # Transaction Date
-                                                     'InitialTicketTitle'   # Transaction Type
+                                                     'InitialTicketTitle',  # Transaction Type
+                                                     PTI                    # Parent TicketTransactionID
     );
 
     ### Add TicketDescription to Ticket Transaction
@@ -629,7 +650,8 @@ CREATE PROCEDURE web.create_new_Ticket (TOS VARCHAR(255),      # TicketOwnerStri
                                                   TI,                           # TicketId
                                                   CUI,                          # Transaction User
                                                   CD,                           # Transaction Date
-                                                  'InitialTicketDescription'    # Transaction Type
+                                                  'InitialTicketDescription',   # Transaction Type
+                                                  PTI                           # Parent TicketTransactionID
     );
 
     ### Add CreationDate to Ticket Transaction
@@ -638,17 +660,19 @@ CREATE PROCEDURE web.create_new_Ticket (TOS VARCHAR(255),      # TicketOwnerStri
                                                       TI,                      # TicketId
                                                       CUI,                     # Transaction User
                                                       CD,                      # Transaction Date
-                                                      'InitialCreationDate'    # Transaction Type
+                                                      'InitialCreationDate',   # Transaction Type
+                                                      PTI                      # Parent TicketTransactionID
     );
 
 
     ### Add CreationUserId to Ticket Transaction
 
-    Call web.StoreProdTicketTransactionValueInt (CUI,                    # Transaction Value
-                                                 TI,                     # TicketId
-                                                 CUI,                    # Transaction User
-                                                 CD,                     # Transaction Date
-                                                 'InitialCreationUserId' # Transaction Type
+    Call web.StoreProdTicketTransactionValueInt (CUI,                     # Transaction Value
+                                                 TI,                      # TicketId
+                                                 CUI,                     # Transaction User
+                                                 CD,                      # Transaction Date
+                                                 'InitialCreationUserId', # Transaction Type
+                                                 PTI                      # Parent TicketTransactionID
     );
 
 
@@ -659,7 +683,8 @@ CREATE PROCEDURE web.create_new_Ticket (TOS VARCHAR(255),      # TicketOwnerStri
                                                       TI,                      # TicketId
                                                       CUI,                     # Transaction User
                                                       CD,                      # Transaction Date
-                                                      'InitialUpdateDate'      # Transaction Type
+                                                      'InitialUpdateDate',     # Transaction Type
+                                                      PTI                      # Parent TicketTransactionID
     );
 
 
@@ -671,7 +696,8 @@ CREATE PROCEDURE web.create_new_Ticket (TOS VARCHAR(255),      # TicketOwnerStri
                                                  TI,                     # TicketId
                                                  CUI,                    # Transaction User
                                                  CD,                     # Transaction Date
-                                                 'InitialUpdateUserId' # Transaction Type
+                                                 'InitialUpdateUserId',  # Transaction Type
+                                                 PTI                     # Parent TicketTransactionID
     );
 
     ### Add TargetDate to Ticket Transaction
@@ -680,7 +706,8 @@ CREATE PROCEDURE web.create_new_Ticket (TOS VARCHAR(255),      # TicketOwnerStri
                                                       TI,                      # TicketId
                                                       CUI,                     # Transaction User
                                                       CD,                      # Transaction Date
-                                                      'InitialTargetDate'      # Transaction Type
+                                                      'InitialTargetDate',     # Transaction Type
+                                                      PTI                      # Parent TicketTransactionID
     );
 
 
@@ -692,7 +719,8 @@ CREATE PROCEDURE web.create_new_Ticket (TOS VARCHAR(255),      # TicketOwnerStri
                                                  TI,                     # TicketId
                                                  CUI,                    # Transaction User
                                                  CD,                     # Transaction Date
-                                                 'InitialDepartmentId'   # Transaction Type
+                                                 'InitialDepartmentId',  # Transaction Type
+                                                 PTI                     # Parent TicketTransactionID
     );
 
 
@@ -704,7 +732,8 @@ CREATE PROCEDURE web.create_new_Ticket (TOS VARCHAR(255),      # TicketOwnerStri
                                                  TI,                     # TicketId
                                                  CUI,                    # Transaction User
                                                  CD,                     # Transaction Date
-                                                 'InitialStatusId'       # Transaction Type
+                                                 'InitialStatusId',      # Transaction Type
+                                                 PTI                     # Parent TicketTransactionID
     );
 
 
@@ -715,7 +744,8 @@ CREATE PROCEDURE web.create_new_Ticket (TOS VARCHAR(255),      # TicketOwnerStri
                                                  TI,                     # TicketId
                                                  CUI,                    # Transaction User
                                                  CD,                     # Transaction Date
-                                                 'InitialPriorityId'       # Transaction Type
+                                                 'InitialPriorityId',    # Transaction Type
+                                                 PTI                     # Parent TicketTransactionID
     );
 
 
@@ -725,8 +755,8 @@ CREATE PROCEDURE web.create_new_Ticket (TOS VARCHAR(255),      # TicketOwnerStri
 
 call web.create_new_Ticket('jmcgrath',
                            'Fix Function Foo','Fix Function Foo issue',
-                           '2017-11-07 12:00:12','jsmith',
-                           '2017-11-08 13:00:12','jsmith',
+                           '2017-11-07 12:00:12','jmcgrath',
+                           '2017-11-08 13:00:12','jmcgrath',
                            '2017-11-09 14:00:12','Development',
                            'In Progress','Normal');
 
