@@ -348,6 +348,179 @@ INSERT INTO web.User (UserName, FirstName, LastName, EmailAddress, Password, Rol
 
 
 
+
+
+
+#### Generic Standard Functions ######
+
+
+DROP FUNCTION IF EXISTS web.FuncTicketTransaction;
+
+CREATE FUNCTION web.FuncTicketTransaction (
+  TI INT,               # Ticket Id
+  TRANUSER INT,         # Transaction User
+  TRANDATE DATETIME,    # Transaction Date
+  TRANTYPE VARCHAR(255) # Transaction Type
+)
+  RETURNS INT
+
+  BEGIN
+
+
+    INSERT INTO web.TicketTransaction (TicketId, TypeId, UserID, TransactionDate)
+
+    VALUES(TI,
+           ## Select Transction Type
+           (SELECT TypeId FROM web.TicketTransactionType WHERE Transaction = TRANTYPE),
+           TRANUSER,TRANDATE
+    );
+
+
+
+    ## Grab last inserted Id from
+    RETURN LAST_INSERT_ID();
+
+  END;
+
+
+
+
+
+
+
+#### Generic Standard Procedures ######
+
+
+
+
+
+#### Set Ticket Transaction Value Int ####
+
+DROP PROCEDURE IF EXISTS web.StoreProdTicketTransactionValueInt;
+
+CREATE PROCEDURE web.StoreProdTicketTransactionValueInt (IN TRANVALUE INT,        # Transaction Value
+                                                         IN TI INT,               # Ticket Id
+                                                         IN TRANUSER INT,         # Transaction User
+                                                         IN TRANDATE DATETIME,    # Transaction Date
+                                                         IN TRANTYPE VARCHAR(255) # Transaction Type
+)
+
+  BEGIN
+
+
+    INSERT INTO web.TicketTransactionValueInt (TransactionId, Value)
+
+      VALUE (
+      (SELECT web.FuncTicketTransaction (
+          TI ,          # Ticket Id
+          TRANUSER,     # Transaction User
+          TRANDATE,     # Transaction Date
+          TRANTYPE      # Transaction Type
+      )),
+      TRANVALUE);
+
+  END;
+
+
+
+
+
+#### Set Ticket Transaction Value VarChar ####
+
+DROP PROCEDURE IF EXISTS web.StoreProdTicketTransactionValueVarChar;
+
+CREATE PROCEDURE web.StoreProdTicketTransactionValueVarChar (TRANVALUE VARCHAR(255),        # Transaction Value
+                                                             TI INT,                        # Ticket Id
+                                                             TRANUSER INT,                  # Transaction User
+                                                             TRANDATE DATETIME,             # Transaction Date
+                                                             TRANTYPE VARCHAR(255)          # Transaction Type
+)
+  BEGIN
+
+    INSERT INTO web.TicketTransactionValueVarChar (TransactionId, Value)
+
+      VALUE (
+      (SELECT web.FuncTicketTransaction (
+          TI ,          # Ticket Id
+          TRANUSER,     # Transaction User
+          TRANDATE,     # Transaction Date
+          TRANTYPE      # Transaction Type
+      )),
+      TRANVALUE);
+
+
+  END;
+
+
+
+
+
+
+
+
+
+#### Set Ticket Transaction Value Text ####
+
+DROP PROCEDURE IF EXISTS web.StoreProdTicketTransactionValueText;
+
+CREATE PROCEDURE web.StoreProdTicketTransactionValueText (TRANVALUE TEXT,                # Transaction Value
+                                                          TI INT,                        # Ticket Id
+                                                          TRANUSER INT,                  # Transaction User
+                                                          TRANDATE DATETIME,             # Transaction Date
+                                                          TRANTYPE VARCHAR(255)          # Transaction Type
+)
+  BEGIN
+
+    INSERT INTO web.TicketTransactionValueText (TransactionId, Value)
+
+      VALUE (
+      (SELECT web.FuncTicketTransaction (
+          TI ,          # Ticket Id
+          TRANUSER,     # Transaction User
+          TRANDATE,     # Transaction Date
+          TRANTYPE      # Transaction Type
+      )),
+      TRANVALUE);
+
+
+  END;
+
+
+
+
+
+
+#### Set Ticket Transaction Value Date Time ####
+
+DROP PROCEDURE IF EXISTS web.StoreProdTicketTransactionValueDateTime;
+
+CREATE PROCEDURE web.StoreProdTicketTransactionValueDateTime (TRANVALUE TEXT,                # Transaction Value
+                                                              TI INT,                        # Ticket Id
+                                                              TRANUSER INT,                  # Transaction User
+                                                              TRANDATE DATETIME,             # Transaction Date
+                                                              TRANTYPE VARCHAR(255)          # Transaction Type
+)
+  BEGIN
+
+    INSERT INTO web.TicketTransactionValueDateTime (TransactionId, Value)
+
+      VALUE (
+      (SELECT web.FuncTicketTransaction (
+          TI ,          # Ticket Id
+          TRANUSER,     # Transaction User
+          TRANDATE,     # Transaction Date
+          TRANTYPE      # Transaction Type
+      )),
+      TRANVALUE);
+
+
+  END;
+
+
+
+
+
+
 ##### New Ticket #########
 
 
@@ -374,8 +547,7 @@ CREATE PROCEDURE web.create_new_Ticket (TOS VARCHAR(255),      # TicketOwnerStri
     DECLARE PI INT;         # PriorityId
     DECLARE TI INT;         # TicketId
 
-    # Used to get last added Row
-    DECLARE lastIdInTicketTransaction INT;
+
 
 
     DECLARE exit handler for sqlexception
@@ -432,35 +604,129 @@ CREATE PROCEDURE web.create_new_Ticket (TOS VARCHAR(255),      # TicketOwnerStri
           AND StatusId = SI AND PriorityId = PI);
 
 
+    ### Add TicketOwnerId to Ticket Transaction
 
-    ## Add TicketOwnerId to Ticket Transaction Table
-    INSERT INTO web.TicketTransaction (TicketId, TypeId, UserID, TransactionDate)
+    Call web.StoreProdTicketTransactionValueInt (TOI,                    # Transaction Value
+                                                 TI,                     # TicketId
+                                                 CUI,                    # Transaction User
+                                                 CD,                     # Transaction Date
+                                                 'InitialTicketOwnerId'  # Transaction Type
+    );
 
-    VALUES(TI,
-           ## Select Transction Type
-           (SELECT TypeId FROM web.TicketTransactionType WHERE Transaction = 'InitialTicketOwnerId'),
-           CUI,CD
+
+    ### Add TicketTitle to Ticket Transaction
+
+    Call web.StoreProdTicketTransactionValueVarChar (TT,                    # Transaction Value
+                                                     TI,                    # TicketId
+                                                     CUI,                   # Transaction User
+                                                     CD,                    # Transaction Date
+                                                     'InitialTicketTitle'   # Transaction Type
+    );
+
+    ### Add TicketDescription to Ticket Transaction
+
+    Call web.StoreProdTicketTransactionValueText (TDesc,                        # Transaction Value
+                                                  TI,                           # TicketId
+                                                  CUI,                          # Transaction User
+                                                  CD,                           # Transaction Date
+                                                  'InitialTicketDescription'    # Transaction Type
+    );
+
+    ### Add CreationDate to Ticket Transaction
+
+    Call web.StoreProdTicketTransactionValueDateTime (CD,                      # Transaction Value
+                                                      TI,                      # TicketId
+                                                      CUI,                     # Transaction User
+                                                      CD,                      # Transaction Date
+                                                      'InitialCreationDate'    # Transaction Type
+    );
+
+
+    ### Add CreationUserId to Ticket Transaction
+
+    Call web.StoreProdTicketTransactionValueInt (CUI,                    # Transaction Value
+                                                 TI,                     # TicketId
+                                                 CUI,                    # Transaction User
+                                                 CD,                     # Transaction Date
+                                                 'InitialCreationUserId' # Transaction Type
     );
 
 
 
-    ## Grab last inserted Id from
-    SET lastIdInTicketTransaction = LAST_INSERT_ID();
+    ### Add UpdateDate to Ticket Transaction
+
+    Call web.StoreProdTicketTransactionValueDateTime (UD,                      # Transaction Value
+                                                      TI,                      # TicketId
+                                                      CUI,                     # Transaction User
+                                                      CD,                      # Transaction Date
+                                                      'InitialUpdateDate'      # Transaction Type
+    );
 
 
 
-    INSERT INTO web.TicketTransactionValueInt (TransactionId, Value)
 
-      VALUE (lastIdInTicketTransaction, TOI);
+    ### Add UpdateUserId to Ticket Transaction
+
+    Call web.StoreProdTicketTransactionValueInt (UUI,                    # Transaction Value
+                                                 TI,                     # TicketId
+                                                 CUI,                    # Transaction User
+                                                 CD,                     # Transaction Date
+                                                 'InitialUpdateUserId' # Transaction Type
+    );
+
+    ### Add TargetDate to Ticket Transaction
+
+    Call web.StoreProdTicketTransactionValueDateTime (TDate,                   # Transaction Value
+                                                      TI,                      # TicketId
+                                                      CUI,                     # Transaction User
+                                                      CD,                      # Transaction Date
+                                                      'InitialTargetDate'      # Transaction Type
+    );
+
+
+
+
+    ### Add DepartmentId to Ticket Transaction
+
+    Call web.StoreProdTicketTransactionValueInt (DI,                     # Transaction Value
+                                                 TI,                     # TicketId
+                                                 CUI,                    # Transaction User
+                                                 CD,                     # Transaction Date
+                                                 'InitialDepartmentId'   # Transaction Type
+    );
+
+
+
+
+    ### Add StatusId to Ticket Transaction
+
+    Call web.StoreProdTicketTransactionValueInt (SI,                     # Transaction Value
+                                                 TI,                     # TicketId
+                                                 CUI,                    # Transaction User
+                                                 CD,                     # Transaction Date
+                                                 'InitialStatusId'       # Transaction Type
+    );
+
+
+
+    ### Add PriorityId to Ticket Transaction
+
+    Call web.StoreProdTicketTransactionValueInt (PI,                     # Transaction Value
+                                                 TI,                     # TicketId
+                                                 CUI,                    # Transaction User
+                                                 CD,                     # Transaction Date
+                                                 'InitialPriorityId'       # Transaction Type
+    );
+
 
 
     COMMIT;
   END;
 
-call web.create_new_Ticket('jsmith',
+call web.create_new_Ticket('jmcgrath',
                            'Fix Function Foo','Fix Function Foo issue',
                            '2017-11-07 12:00:12','jsmith',
-                           '2017-11-08 13:00:12','jmcgrath',
+                           '2017-11-08 13:00:12','jsmith',
                            '2017-11-09 14:00:12','Development',
                            'In Progress','Normal');
 
