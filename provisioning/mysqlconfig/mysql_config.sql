@@ -1,5 +1,5 @@
 
-### Edit Root aStatureeeeor access from any IP address ###
+### Edit Root account for access from any IP address ###
 
 #RENAME USER 'root'@'localhost' TO 'root'@'%';
 ## GRANT ALTER ROUTINE, CREATE ROUTINE, EXECUTE ON *.* TO 'root'@'%';
@@ -165,57 +165,106 @@ INSERT INTO web.TransactionCategory (Category, Description) VALUES ('InitialComm
 INSERT INTO web.TransactionCategory (Category, Description) VALUES ('AlteredComments','Category for Altered Comments');
 
 
+
+
+
 ##### Defining Types #####
 
 #### TransactionType For Tickets ###
 
 SELECT CategoryId INTO @ci FROM web.TransactionCategory WHERE Category = 'InitialTickets';
 
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('InitialTicketOwnerId','Initial Owner ID of ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('InitialTicketTitle','Initial Title of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('InitialTicketDescription','Initial Description of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('InitialCreationDate','Initial Creation date of ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('InitialCreationUserId','Initial Creation User Id of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('InitialUpdateDate','Initial Update Date of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('InitialUpdateUserId','Initial Update User Id of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('InitialTargetDate','Initial Target Date of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('InitialDepartmentId','Initial Department Id of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('InitialStatusId','Initial Status Id of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('InitialPriorityId','Initial Priority Id of the ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('OwnerId','Initial Owner ID of ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('Title','Initial Title of the ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('Description','Initial Description of the ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('CreationDate','Initial Creation date of ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('CreationUserId','Initial Creation User Id of the ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('UpdateDate','Initial Update Date of the ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('UpdateUserId','Initial Update User Id of the ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('TargetDate','Initial Target Date of the ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('DepartmentId','Initial Department Id of the ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('StatusId','Initial Status Id of the ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('PriorityId','Initial Priority Id of the ticket', @ci);
 
 SELECT CategoryId INTO @ci FROM web.TransactionCategory WHERE Category = 'AlteredTickets';
 
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('AlteredTicketOwnerId','Altered Owner ID of ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('AlteredTicketTitle','Altered Title of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('AlteredTicketDescription','Altered Description of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('AlteredCreationDate','Altered Creation date of ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('AlteredCreationUserId','Altered Creation User Id of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('AlteredUpdateDate','Altered Update Date of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('AlteredUpdateUserId','Altered Update User Id of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('AlteredTargetDate','Altered Target Date of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('AlteredDepartmentId','Altered Department Id of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('AlteredStatusId','Altered Status Id of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('AlteredPriorityId','Altered Priority Id of the ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('OwnerId','Altered Owner ID of ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('Title','Altered Title of the ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('Description','Altered Description of the ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('CreationDate','Altered Creation date of ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('CreationUserId','Altered Creation User Id of the ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('UpdateDate','Altered Update Date of the ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('UpdateUserId','Altered Update User Id of the ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('TargetDate','Altered Target Date of the ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('DepartmentId','Altered Department Id of the ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('StatusId','Altered Status Id of the ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('PriorityId','Altered Priority Id of the ticket', @ci);
 
 
 #### TransactionType For Comment ###
 
 SELECT CategoryId INTO @ci FROM web.TransactionCategory WHERE Category = 'InitialComments';
 
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('InitialCommentDescription','Initial Comment Description of a comment', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('InitialCreationDate','Initial Creation Date of a comment', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('InitialCreationUserId','Initial Creation User Id of a comment', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('InitialUpdateUserId','Initial Update User Id of a comment', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('CommentDescription','Initial Comment Description of a comment', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('CreationDate','Initial Creation Date of a comment', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('CreationUserId','Initial Creation User Id of a comment', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('UpdateUserId','Initial Update User Id of a comment', @ci);
 
 SELECT CategoryId INTO @ci FROM web.TransactionCategory WHERE Category = 'AlteredComments';
 
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('AlteredCommentDescription','Altered Comment Description of a comment', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('AlteredCreationDate','Altered Creation Date of a comment', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('AlteredCreationUserId','Altered Creation User Id of a comment', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('AlteredUpdateUserId','Altered Update User Id of a comment', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('CommentDescription','Altered Comment Description of a comment', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('CreationDate','Altered Creation Date of a comment', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('CreationUserId','Altered Creation User Id of a comment', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('UpdateUserId','Altered Update User Id of a comment', @ci);
+
+#### Setting TransactionTypeAttribute ###
+
+INSERT INTO web.TransactionTypeAttribute (AttributeValue, AttributeDescription) VALUES ('Parent','Classify The Transaction Type As A Parent');
+INSERT INTO web.TransactionTypeAttribute (AttributeValue, AttributeDescription) VALUES ('Child','Classify The Transaction Type As A Child');
+INSERT INTO web.TransactionTypeAttribute (AttributeValue, AttributeDescription) VALUES ('IdentifyAsTranId','The Transaction Type is allowed to be Identify as be the Transaction ID upon creation');
 
 
+### Setting TransactionTypeMeta ###
 
+INSERT INTO web.TransactionTypeMeta (TypeId, AttributeId)
+  SELECT TypeId, (SELECT AttributeId FROM web.TransactionTypeAttribute WHERE AttributeValue= 'Parent')
+  FROM web.TransactionType AS T
+    JOIN web.TransactionCategory AS CT ON T.CategoryId = CT.CategoryId
+  WHERE CT.Category = 'InitialTickets';
+
+INSERT INTO web.TransactionTypeMeta (TypeId, AttributeId)
+  SELECT TypeId, (SELECT AttributeId FROM web.TransactionTypeAttribute WHERE AttributeValue= 'IdentifyAsTranId')
+  FROM web.TransactionType AS T
+    JOIN web.TransactionCategory AS CT ON T.CategoryId = CT.CategoryId
+  WHERE CT.Category = 'InitialTickets';
+
+
+INSERT INTO web.TransactionTypeMeta (TypeId, AttributeId)
+  SELECT TypeId, (SELECT AttributeId FROM web.TransactionTypeAttribute WHERE AttributeValue= 'Parent')
+  FROM web.TransactionType AS T
+    JOIN web.TransactionCategory AS CT ON T.CategoryId = CT.CategoryId
+  WHERE CT.Category = 'AlteredTickets';
+
+
+INSERT INTO web.TransactionTypeMeta (TypeId, AttributeId)
+  SELECT TypeId, (SELECT AttributeId FROM web.TransactionTypeAttribute WHERE AttributeValue= 'IdentifyAsTranId')
+  FROM web.TransactionType AS T
+    JOIN web.TransactionCategory AS CT ON T.CategoryId = CT.CategoryId
+  WHERE CT.Category = 'AlteredTickets';
+
+
+INSERT INTO web.TransactionTypeMeta (TypeId, AttributeId)
+  SELECT TypeId, (SELECT AttributeId FROM web.TransactionTypeAttribute WHERE AttributeValue= 'Child')
+  FROM web.TransactionType AS T
+    JOIN web.TransactionCategory AS CT ON T.CategoryId = CT.CategoryId
+  WHERE CT.Category = 'InitialComments';
+
+
+INSERT INTO web.TransactionTypeMeta (TypeId, AttributeId)
+  SELECT TypeId, (SELECT AttributeId FROM web.TransactionTypeAttribute WHERE AttributeValue= 'Child')
+  FROM web.TransactionType AS T
+    JOIN web.TransactionCategory AS CT ON T.CategoryId = CT.CategoryId
+  WHERE CT.Category = 'AlteredComments';
 
 
 ## Role ID Type
@@ -224,27 +273,6 @@ INSERT INTO web.Role (RoleId, Role,RoleDescription) VALUES (
   1, 'User', 'Standard User Role'
 );
 
-
-
-## Status Type
-
-INSERT INTO web.TicketStatus (StatusId, Status,StatusDescription) VALUES (
-  1, 'In Progress', 'Ticket is currently being worked'
-);
-
-
-
-## Department Type
-
-INSERT INTO web.Department (DepartmentId, Department,DepartmentDescription) VALUES (
-  1, 'Development', 'For the Development Department'
-);
-
-
-## Priority Type
-INSERT INTO web.Priority (PriorityId, Priority,PriorityDescription) VALUES (
-  1, 'Normal', 'Non Urgent Task'
-);
 
 
 #### Create User Info ####
