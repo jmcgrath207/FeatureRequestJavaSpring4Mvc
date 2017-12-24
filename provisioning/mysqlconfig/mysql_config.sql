@@ -12,7 +12,7 @@ CREATE DATABASE web;
 CREATE TABLE web.Role
 (
 
-  RoleId  INT NOT NULL,
+  RoleId  INT UNSIGNED NOT NULL,
   Role VARCHAR(255) NOT NULL,
   RoleDescription TEXT NOT NULL,
   PRIMARY KEY (RoleId)
@@ -23,13 +23,13 @@ CREATE TABLE web.Role
 
 CREATE TABLE web.User
 (
-  UserId INT  NOT NULL AUTO_INCREMENT,
+  UserId INT UNSIGNED  NOT NULL AUTO_INCREMENT,
   UserName VARCHAR(255) NOT NULL,
   FirstName VARCHAR(255) NOT NULL,
   LastName VARCHAR(255) NOT NULL,
   EmailAddress VARCHAR(255) NOT NULL,
   Password VARCHAR(255) NOT NULL,
-  RoleId  INT NOT NULL,
+  RoleId  INT UNSIGNED NOT NULL,
   PRIMARY KEY (UserId),
   FOREIGN KEY (RoleId) REFERENCES web.Role(RoleId)
 
@@ -39,7 +39,7 @@ CREATE TABLE web.User
 
 CREATE TABLE web.TransactionCategory (
 
-  CategoryId INT NOT NULL AUTO_INCREMENT,
+  CategoryId INT UNSIGNED NOT NULL AUTO_INCREMENT,
   Category VARCHAR(255) NOT NULL,
   Description TEXT NOT NULL,
   PRIMARY KEY (CategoryId)
@@ -50,10 +50,10 @@ CREATE TABLE web.TransactionCategory (
 
 CREATE TABLE web.TransactionType (
 
-  TypeId INT NOT NULL AUTO_INCREMENT,
+  TypeId INT UNSIGNED NOT NULL AUTO_INCREMENT,
   Transaction VARCHAR(255) NOT NULL,
   Description TEXT NOT NULL,
-  CategoryId INT NOT NULL,
+  CategoryId INT UNSIGNED NOT NULL,
   TransactionValueTable VARCHAR(64),
   FOREIGN KEY (CategoryId) REFERENCES web.TransactionCategory(CategoryId),
   PRIMARY KEY (TypeId)
@@ -63,7 +63,7 @@ CREATE TABLE web.TransactionType (
 
 CREATE TABLE web.TransactionTypeAttribute (
 
-  AttributeId INT NOT NULL AUTO_INCREMENT,
+  AttributeId INT UNSIGNED NOT NULL AUTO_INCREMENT,
   AttributeValue VARCHAR(255),
   AttributeDescription TEXT,
   PRIMARY KEY (AttributeId,AttributeValue)
@@ -74,8 +74,8 @@ CREATE TABLE web.TransactionTypeAttribute (
 
 CREATE TABLE web.TransactionTypeMeta (
 
-  TypeId INT,
-  AttributeId INT,
+  TypeId INT UNSIGNED,
+  AttributeId INT UNSIGNED,
   FOREIGN KEY (TypeId) REFERENCES web.TransactionType(TypeId),
   FOREIGN KEY (AttributeId) REFERENCES web.TransactionTypeAttribute(AttributeId)
 
@@ -87,11 +87,11 @@ CREATE TABLE web.TransactionTypeMeta (
 
 CREATE TABLE web.Transactions (
 
-  TransactionId INT NOT NULL AUTO_INCREMENT,
-  GroupTransactionId INT NOT NULL,
-  ParentTransactionId INT NOT NULL,
-  TypeId INT NOT NULL,
-  UserID INT NOT NULL,
+  TransactionId BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  GroupTransactionId BIGINT UNSIGNED NOT NULL,
+  ParentTransactionId BIGINT UNSIGNED NOT NULL,
+  TypeId INT UNSIGNED NOT NULL,
+  UserID INT UNSIGNED NOT NULL,
   TransactionDate DATETIME NOT NULL,
   FOREIGN KEY (TypeId) REFERENCES web.TransactionType(TypeId),
   FOREIGN KEY (UserID) REFERENCES web.User(UserId),
@@ -110,9 +110,9 @@ CREATE TABLE web.Transactions (
 CREATE TABLE web.ActiveTransactions (
 
 
-  TransactionId INT NOT NULL,
-  ParentTransactionId INT NOT NULL,
-  TypeId INT NOT NULL,
+  TransactionId BIGINT UNSIGNED NOT NULL,
+  ParentTransactionId BIGINT UNSIGNED NOT NULL,
+  TypeId INT UNSIGNED NOT NULL,
   FOREIGN KEY (TypeId) REFERENCES web.TransactionType(TypeId),
   FOREIGN KEY (TransactionId) REFERENCES web.Transactions(TransactionId),
   FOREIGN KEY (ParentTransactionId) REFERENCES web.Transactions(ParentTransactionId),
@@ -125,7 +125,7 @@ CREATE TABLE web.ActiveTransactions (
 CREATE TABLE web.TransactionsValueText (
 
 
-  TransactionId INT NOT NULL,
+  TransactionId BIGINT UNSIGNED NOT NULL,
   Value TEXT NOT NULL,
   FOREIGN KEY (TransactionId) REFERENCES web.Transactions(TransactionId)
 
@@ -133,24 +133,24 @@ CREATE TABLE web.TransactionsValueText (
 
 CREATE TABLE web.TransactionsValueVarChar (
 
-  TransactionId INT NOT NULL,
+  TransactionId BIGINT UNSIGNED NOT NULL,
   Value VARCHAR(255) NOT NULL,
   FOREIGN KEY (TransactionId) REFERENCES web.Transactions(TransactionId)
 
 );
 
 
-CREATE TABLE web.TransactionsValueInt (
+CREATE TABLE web.TransactionsValueINT  (
 
-  TransactionId INT NOT NULL,
-  Value INT NOT NULL,
+  TransactionId BIGINT UNSIGNED NOT NULL,
+  Value INT UNSIGNED NOT NULL,
   FOREIGN KEY (TransactionId) REFERENCES web.Transactions(TransactionId)
 
 );
 
 CREATE TABLE web.TransactionsValueDateTime (
 
-  TransactionId INT NOT NULL,
+  TransactionId BIGINT UNSIGNED NOT NULL,
   Value DATETIME NOT NULL,
   FOREIGN KEY (TransactionId) REFERENCES web.Transactions(TransactionId)
 
