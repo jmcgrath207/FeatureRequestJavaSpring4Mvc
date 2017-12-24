@@ -2,8 +2,9 @@
 ### Edit Root account for access from any IP address ###
 
 #RENAME USER 'root'@'localhost' TO 'root'@'%';
-## GRANT ALTER ROUTINE, CREATE ROUTINE, EXECUTE ON *.* TO 'root'@'%';
+## GRANT ALTER ROUTINE, CREATE ROUTINE, EXECUTE, REFERENCES ON *.* TO 'root'@'%';
 ## Create Tables #####
+
 
 CREATE DATABASE web;
 
@@ -53,6 +54,7 @@ CREATE TABLE web.TransactionType (
   Transaction VARCHAR(255) NOT NULL,
   Description TEXT NOT NULL,
   CategoryId INT NOT NULL,
+  TransactionValueTable VARCHAR(64),
   FOREIGN KEY (CategoryId) REFERENCES web.TransactionCategory(CategoryId),
   PRIMARY KEY (TypeId)
 
@@ -83,8 +85,6 @@ CREATE TABLE web.TransactionTypeMeta (
 
 
 
-
-
 CREATE TABLE web.Transactions (
 
   TransactionId INT NOT NULL AUTO_INCREMENT,
@@ -101,6 +101,8 @@ CREATE TABLE web.Transactions (
 
 
 );
+
+
 
 
 
@@ -158,13 +160,13 @@ CREATE TABLE web.TransactionsValueDateTime (
 
 ### Defining Categories ####
 
-INSERT INTO web.TransactionCategory (Category, Description) VALUES ('InitialTickets','Category for Initial Tickets');
-INSERT INTO web.TransactionCategory (Category, Description) VALUES ('AlteredTickets','Category for Altered Tickets');
+INSERT INTO web.TransactionCategory (Category, Description) VALUES ('Tickets','Category for Tickets');
 
-INSERT INTO web.TransactionCategory (Category, Description) VALUES ('InitialComments','Category for Initial Comments');
-INSERT INTO web.TransactionCategory (Category, Description) VALUES ('AlteredComments','Category for Altered Comments');
+INSERT INTO web.TransactionCategory (Category, Description) VALUES ('Comments','Category for  Comments');
 
+INSERT INTO web.TransactionCategory (Category, Description) VALUES ('Departments','Category for  Departments');
 
+INSERT INTO web.TransactionCategory (Category, Description) VALUES ('Priorities','Category for Priorities');
 
 
 
@@ -172,56 +174,70 @@ INSERT INTO web.TransactionCategory (Category, Description) VALUES ('AlteredComm
 
 #### TransactionType For Tickets ###
 
-SELECT CategoryId INTO @ci FROM web.TransactionCategory WHERE Category = 'InitialTickets';
+SELECT CategoryId INTO @ci FROM web.TransactionCategory WHERE Category = 'Tickets';
 
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('OwnerId','Initial Owner ID of ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('Title','Initial Title of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('Description','Initial Description of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('CreationDate','Initial Creation date of ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('CreationUserId','Initial Creation User Id of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('UpdateDate','Initial Update Date of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('UpdateUserId','Initial Update User Id of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('TargetDate','Initial Target Date of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('DepartmentId','Initial Department Id of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('StatusId','Initial Status Id of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('PriorityId','Initial Priority Id of the ticket', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('Owner',' Owner ID of ticket', @ci,'TransactionsValueVarChar');
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('Title',' Title of the ticket', @ci, 'TransactionsValueVarChar');
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('Description',' Description of the ticket', @ci, 'TransactionsValueText');
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('CreationDate',' Creation date of ticket', @ci,'TransactionsValueDateTime');
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('CreationUser',' Creation User Id of the ticket', @ci,'TransactionsValueVarChar');
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('UpdateDate',' Update Date of the ticket', @ci,'TransactionsValueDateTime');
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('UpdateUser',' Update User Id of the ticket', @ci,'TransactionsValueVarChar');
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('TargetDate',' Target Date of the ticket', @ci,'TransactionsValueDateTime');
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('Department',' Department Id of the ticket', @ci,'TransactionsValueVarChar');
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('Status',' Status Id of the ticket', @ci,'TransactionsValueVarChar');
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('Priority',' Priority Id of the ticket', @ci, 'TransactionsValueVarChar');
 
-SELECT CategoryId INTO @ci FROM web.TransactionCategory WHERE Category = 'AlteredTickets';
 
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('OwnerId','Altered Owner ID of ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('Title','Altered Title of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('Description','Altered Description of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('CreationDate','Altered Creation date of ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('CreationUserId','Altered Creation User Id of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('UpdateDate','Altered Update Date of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('UpdateUserId','Altered Update User Id of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('TargetDate','Altered Target Date of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('DepartmentId','Altered Department Id of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('StatusId','Altered Status Id of the ticket', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('PriorityId','Altered Priority Id of the ticket', @ci);
 
 
 #### TransactionType For Comment ###
 
-SELECT CategoryId INTO @ci FROM web.TransactionCategory WHERE Category = 'InitialComments';
+SELECT CategoryId INTO @ci FROM web.TransactionCategory WHERE Category = 'Comments';
 
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('CommentDescription','Initial Comment Description of a comment', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('CreationDate','Initial Creation Date of a comment', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('CreationUserId','Initial Creation User Id of a comment', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('UpdateUserId','Initial Update User Id of a comment', @ci);
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('CommentDescription',' Comment Description of a comment', @ci, 'TransactionsValueText');
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('CreationDate',' Creation Date of a comment', @ci,'TransactionsValueDateTime');
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('CreationUser',' Creation User Id of a comment', @ci,'TransactionsValueVarChar');
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('UpdateUser',' Update User Id of a comment', @ci,'TransactionsValueVarChar');
 
-SELECT CategoryId INTO @ci FROM web.TransactionCategory WHERE Category = 'AlteredComments';
 
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('CommentDescription','Altered Comment Description of a comment', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('CreationDate','Altered Creation Date of a comment', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('CreationUserId','Altered Creation User Id of a comment', @ci);
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId) VALUES ('UpdateUserId','Altered Update User Id of a comment', @ci);
+
+### TransactionType for  Department ###
+
+SELECT CategoryId INTO @ci FROM web.TransactionCategory WHERE Category = 'Departments';
+
+
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('Development','Transaction Type for Development Department', @ci,'TransactionsValueVarChar');
+
+
+
+### TransactionType for  Priority ###
+
+SELECT CategoryId INTO @ci FROM web.TransactionCategory WHERE Category = 'Priorities';
+
+
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('Normal','Transaction Type for Non Urgent Task', @ci,'TransactionsValueVarChar');
+
+
+### TransactionType for  Priority ###
+
+SELECT CategoryId INTO @ci FROM web.TransactionCategory WHERE Category = 'Status';
+
+
+INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('InProgress','Transaction Type for In Progress', @ci,'TransactionsValueVarChar');
+
+
+
+
 
 #### Setting TransactionTypeAttribute ###
 
 INSERT INTO web.TransactionTypeAttribute (AttributeValue, AttributeDescription) VALUES ('Parent','Classify The Transaction Type As A Parent');
 INSERT INTO web.TransactionTypeAttribute (AttributeValue, AttributeDescription) VALUES ('Child','Classify The Transaction Type As A Child');
-INSERT INTO web.TransactionTypeAttribute (AttributeValue, AttributeDescription) VALUES ('IdentifyAsTranId','The Transaction Type is allowed to be Identify as be the Transaction ID upon creation');
+INSERT INTO web.TransactionTypeAttribute (AttributeValue, AttributeDescription) VALUES ('IdentifyAsTranId','The Transaction Type used  Transaction ID for identification');
+
+
+
 
 
 ### Setting TransactionTypeMeta ###
@@ -230,41 +246,23 @@ INSERT INTO web.TransactionTypeMeta (TypeId, AttributeId)
   SELECT TypeId, (SELECT AttributeId FROM web.TransactionTypeAttribute WHERE AttributeValue= 'Parent')
   FROM web.TransactionType AS T
     JOIN web.TransactionCategory AS CT ON T.CategoryId = CT.CategoryId
-  WHERE CT.Category = 'InitialTickets';
+  WHERE CT.Category = 'Tickets';
 
 INSERT INTO web.TransactionTypeMeta (TypeId, AttributeId)
   SELECT TypeId, (SELECT AttributeId FROM web.TransactionTypeAttribute WHERE AttributeValue= 'IdentifyAsTranId')
   FROM web.TransactionType AS T
     JOIN web.TransactionCategory AS CT ON T.CategoryId = CT.CategoryId
-  WHERE CT.Category = 'InitialTickets';
-
-
-INSERT INTO web.TransactionTypeMeta (TypeId, AttributeId)
-  SELECT TypeId, (SELECT AttributeId FROM web.TransactionTypeAttribute WHERE AttributeValue= 'Parent')
-  FROM web.TransactionType AS T
-    JOIN web.TransactionCategory AS CT ON T.CategoryId = CT.CategoryId
-  WHERE CT.Category = 'AlteredTickets';
-
-
-INSERT INTO web.TransactionTypeMeta (TypeId, AttributeId)
-  SELECT TypeId, (SELECT AttributeId FROM web.TransactionTypeAttribute WHERE AttributeValue= 'IdentifyAsTranId')
-  FROM web.TransactionType AS T
-    JOIN web.TransactionCategory AS CT ON T.CategoryId = CT.CategoryId
-  WHERE CT.Category = 'AlteredTickets';
+  WHERE CT.Category = 'Tickets';
 
 
 INSERT INTO web.TransactionTypeMeta (TypeId, AttributeId)
   SELECT TypeId, (SELECT AttributeId FROM web.TransactionTypeAttribute WHERE AttributeValue= 'Child')
   FROM web.TransactionType AS T
     JOIN web.TransactionCategory AS CT ON T.CategoryId = CT.CategoryId
-  WHERE CT.Category = 'InitialComments';
+  WHERE CT.Category = 'Comments';
 
 
-INSERT INTO web.TransactionTypeMeta (TypeId, AttributeId)
-  SELECT TypeId, (SELECT AttributeId FROM web.TransactionTypeAttribute WHERE AttributeValue= 'Child')
-  FROM web.TransactionType AS T
-    JOIN web.TransactionCategory AS CT ON T.CategoryId = CT.CategoryId
-  WHERE CT.Category = 'AlteredComments';
+
 
 
 ## Role ID Type
@@ -291,13 +289,27 @@ INSERT INTO web.User (UserName, FirstName, LastName, EmailAddress, Password, Rol
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #### Generic Standard Functions ######
 
 
 DROP FUNCTION IF EXISTS web.FuncTransactions;
 
 CREATE FUNCTION web.FuncTransactions (
-  TI INT,                # Ticket Id
   TRANUSER INT,          # Transaction User
   TRANDATE DATETIME,     # Transaction Date
   TRANTYPE VARCHAR(255), # Transaction Type
@@ -308,12 +320,12 @@ CREATE FUNCTION web.FuncTransactions (
   BEGIN
 
 
-    INSERT INTO web.Transactions (TicketId, TypeId, UserID, TransactionDate,ParentTransactionID)
+    INSERT INTO web.Transactions ( TypeId, UserID, TransactionDate,ParentTransactionID)
 
-    VALUES(TI,
-           ## Select Transction Type
-           (SELECT TypeId FROM web.TransactionType WHERE Transaction = TRANTYPE),
-           TRANUSER,TRANDATE, PTI
+    VALUES(
+      ## Select Transction Type
+      (SELECT TypeId FROM web.TransactionType WHERE Transaction = TRANTYPE),
+      TRANUSER,TRANDATE, PTI
     );
 
 
@@ -340,7 +352,6 @@ CREATE FUNCTION web.FuncTransactions (
 DROP PROCEDURE IF EXISTS web.StoreProdTransactionsValueInt;
 
 CREATE PROCEDURE web.StoreProdTransactionsValueInt (TRANVALUE INT,         # Transaction Value
-                                                    TI INT,                # Ticket Id
                                                     TRANUSER INT,          # Transaction User
                                                     TRANDATE DATETIME,     # Transaction Date
                                                     TRANTYPE VARCHAR(255), # Transaction Type
@@ -354,7 +365,6 @@ CREATE PROCEDURE web.StoreProdTransactionsValueInt (TRANVALUE INT,         # Tra
 
       VALUE (
       (SELECT web.FuncTransactions (
-          TI ,          # Ticket Id
           TRANUSER,     # Transaction User
           TRANDATE,     # Transaction Date
           TRANTYPE,     # Transaction Type
@@ -373,7 +383,6 @@ CREATE PROCEDURE web.StoreProdTransactionsValueInt (TRANVALUE INT,         # Tra
 DROP PROCEDURE IF EXISTS web.StoreProdTransactionsValueVarChar;
 
 CREATE PROCEDURE web.StoreProdTransactionsValueVarChar (TRANVALUE VARCHAR(255),        # Transaction Value
-                                                        TI INT,                        # Ticket Id
                                                         TRANUSER INT,                  # Transaction User
                                                         TRANDATE DATETIME,             # Transaction Date
                                                         TRANTYPE VARCHAR(255),         # Transaction Type
@@ -385,7 +394,6 @@ CREATE PROCEDURE web.StoreProdTransactionsValueVarChar (TRANVALUE VARCHAR(255), 
 
       VALUE (
       (SELECT web.FuncTransactions (
-          TI ,          # Ticket Id
           TRANUSER,     # Transaction User
           TRANDATE,     # Transaction Date
           TRANTYPE,     # Transaction Type
@@ -409,7 +417,6 @@ CREATE PROCEDURE web.StoreProdTransactionsValueVarChar (TRANVALUE VARCHAR(255), 
 DROP PROCEDURE IF EXISTS web.StoreProdTransactionsValueText;
 
 CREATE PROCEDURE web.StoreProdTransactionsValueText (TRANVALUE TEXT,                # Transaction Value
-                                                     TI INT,                        # Ticket Id
                                                      TRANUSER INT,                  # Transaction User
                                                      TRANDATE DATETIME,             # Transaction Date
                                                      TRANTYPE VARCHAR(255),         # Transaction Type
@@ -421,7 +428,6 @@ CREATE PROCEDURE web.StoreProdTransactionsValueText (TRANVALUE TEXT,            
 
       VALUE (
       (SELECT web.FuncTransactions (
-          TI ,          # Ticket Id
           TRANUSER,     # Transaction User
           TRANDATE,     # Transaction Date
           TRANTYPE,     # Transaction Type
@@ -442,7 +448,6 @@ CREATE PROCEDURE web.StoreProdTransactionsValueText (TRANVALUE TEXT,            
 DROP PROCEDURE IF EXISTS web.StoreProdTransactionsValueDateTime;
 
 CREATE PROCEDURE web.StoreProdTransactionsValueDateTime (TRANVALUE TEXT,                # Transaction Value
-                                                         TI INT,                        # Ticket Id
                                                          TRANUSER INT,                  # Transaction User
                                                          TRANDATE DATETIME,             # Transaction Date
                                                          TRANTYPE VARCHAR(255),         # Transaction Type
@@ -454,7 +459,6 @@ CREATE PROCEDURE web.StoreProdTransactionsValueDateTime (TRANVALUE TEXT,        
 
       VALUE (
       (SELECT web.FuncTransactions (
-          TI ,          # Ticket Id
           TRANUSER,     # Transaction User
           TRANDATE,     # Transaction Date
           TRANTYPE,     # Transaction Type
@@ -470,35 +474,36 @@ CREATE PROCEDURE web.StoreProdTransactionsValueDateTime (TRANVALUE TEXT,        
 
 
 
-##### New Ticket #########
+##### new Transaction#########
 
 
-DROP PROCEDURE IF EXISTS web.create_new_Ticket;
+DROP PROCEDURE IF EXISTS web.newTransaction;
 
-CREATE PROCEDURE web.create_new_Ticket (TOS VARCHAR(255),      # TicketOwnerString
-                                        TT VARCHAR(255),       # TicketTitle
-                                        TDesc TEXT,            # TicketDescription
-                                        CD DATETIME,           # CreationDate
-                                        CUS VARCHAR(255),      # CreationUserString
-                                        UD DATETIME,           # UpdateDate
-                                        UUS VARCHAR(255),      # UpdateUserString
-                                        TDate DATETIME,        # TargetDate
-                                        DS VARCHAR(255),       # DepartmentString
-                                        SS VARCHAR(255),       # StatusString
-                                        PS VARCHAR(255))       # PriorityString
+CREATE PROCEDURE web.newTransaction (DATA JSON)
   BEGIN
 
-    DECLARE TOI INT;        # TicketOwnerId
-    DECLARE CUI INT;        # CreationUserId
-    DECLARE UUI INT;        # UpdateUserId
-    DECLARE DI INT;         # DepartmentId
-    DECLARE SI INT;         # StatusId
-    DECLARE PI INT;         # PriorityId
-    DECLARE TI INT;         # TicketId
-    DECLARE PTI INT;        # ParentTransactionId
+    DECLARE done INT DEFAULT FALSE;
+    ## Declare Vars ###
+
+    DECLARE GTI INT;        # GroupTransactionId
+
+    DECLARE TypeCat VARCHAR(255);
+
+    DECLARE s JSON;
+
+    # CURSOR 1
+    DECLARE T VARCHAR(255);   ## Transaction
+    DECLARE TVT VARCHAR(255); ## TransactionValueTable
+    DECLARE cur1 CURSOR FOR SELECT  Transaction, TransactionValueTable FROM  web.TransactionType;
 
 
 
+
+    ##### Error Handlers ####
+
+    ### Error Handle for Loop ##
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done=TRUE;
 
     DECLARE exit handler for sqlexception
     BEGIN
@@ -514,186 +519,42 @@ CREATE PROCEDURE web.create_new_Ticket (TOS VARCHAR(255),      # TicketOwnerStri
       ROLLBACK;
     END;
 
-
-
-    SET TOI = (SELECT UserId FROM web.User WHERE UserName = TOS);
-    SET CUI = (SELECT UserId FROM web.User WHERE UserName = CUS);
-    SET UUI = (SELECT UserId FROM web.User WHERE UserName = UUS);
-    SET DI = (SELECT DepartmentId FROM web.Department WHERE Department = DS);
-    SET SI = (SELECT StatusId FROM web.TicketStatus WHERE Status = SS);
-    SET PI = (SELECT PriorityId FROM web.Priority WHERE Priority = PS);
-
-
-    START TRANSACTION;
-
-
-    INSERT INTO web.Ticket (TicketOwnerId,
-                            TicketTitle, TicketDescription,
-                            CreationDate, CreationUserId,
-                            UpdateDate, UpdateUserId,
-                            TargetDate, DepartmentId,
-                            StatusId, PriorityId)
-
-    VALUES (TOI,
-      TT,TDesc,
-      CD,CUI,
-      UD,UUI,
-      TDate,DI,
-      SI,PI);
-
-
-
-
-    ## Select Ticket ID just created
-    SET TI  = (SELECT TicketId FROM web.Ticket
-    WHERE TicketOwnerId = TOI
-          AND TicketTitle = TT AND TicketDescription = TDesc
-          AND CreationDate = CD AND CreationUserId = CUI
-          AND UpdateDate = UD AND UpdateUserId = UUI
-          AND TargetDate = TDate AND DepartmentId = DI
-          AND StatusId = SI AND PriorityId = PI);
-
-
     ## Select First available Transactions Id that will become a Parent Transactions Id
-    SET PTI = (SELECT AUTO_INCREMENT
+    SET GTI = (SELECT AUTO_INCREMENT
                FROM  information_schema.TABLES
                WHERE TABLE_SCHEMA = 'web'
                      AND   TABLE_NAME   = 'Transactions');
-    ### Add TicketOwnerId to Ticket Transaction
-
-    Call web.StoreProdTransactionsValueInt (TOI,                    # Transaction Value
-                                            TI,                     # TicketId
-                                            CUI,                    # Transaction User
-                                            CD,                     # Transaction Date
-                                            'InitialTicketOwnerId', # Transaction Type
-                                            PTI                     # Parent TransactionsID
-    );
 
 
-    ### Add TicketTitle to Ticket Transaction
+    OPEN cur1;
 
-    Call web.StoreProdTransactionsValueVarChar (TT,                    # Transaction Value
-                                                TI,                    # TicketId
-                                                CUI,                   # Transaction User
-                                                CD,                    # Transaction Date
-                                                'InitialTicketTitle',  # Transaction Type
-                                                PTI                    # Parent TransactionsID
-    );
+    START TRANSACTION;
+    -- Start our for loop
+    forLoop: LOOP
 
-    ### Add TicketDescription to Ticket Transaction
+      FETCH cur1 INTO T,TVT;
+      IF done = TRUE THEN
+        LEAVE forLoop;
+      END IF;
 
-    Call web.StoreProdTransactionsValueText (TDesc,                        # Transaction Value
-                                             TI,                           # TicketId
-                                             CUI,                          # Transaction User
-                                             CD,                           # Transaction Date
-                                             'InitialTicketDescription',   # Transaction Type
-                                             PTI                           # Parent TransactionsID
-    );
-
-    ### Add CreationDate to Ticket Transaction
-
-    Call web.StoreProdTransactionsValueDateTime (CD,                      # Transaction Value
-                                                 TI,                      # TicketId
-                                                 CUI,                     # Transaction User
-                                                 CD,                      # Transaction Date
-                                                 'InitialCreationDate',   # Transaction Type
-                                                 PTI                      # Parent TransactionsID
-    );
+      SET TypeCat = CONCAT(CONVERT('$.', CHAR(50)), T);
 
 
-    ### Add CreationUserId to Ticket Transaction
-
-    Call web.StoreProdTransactionsValueInt (CUI,                     # Transaction Value
-                                            TI,                      # TicketId
-                                            CUI,                     # Transaction User
-                                            CD,                      # Transaction Date
-                                            'InitialCreationUserId', # Transaction Type
-                                            PTI                      # Parent TransactionsID
-    );
+      IF (SELECT JSON_CONTAINS_PATH(DATA, 'one',  TypeCat) = 1)
+      THEN SET s =JSON_EXTRACT(DATA, TypeCat);
+      END IF;
 
 
 
-    ### Add UpdateDate to Ticket Transaction
-
-    Call web.StoreProdTransactionsValueDateTime (UD,                      # Transaction Value
-                                                 TI,                      # TicketId
-                                                 CUI,                     # Transaction User
-                                                 CD,                      # Transaction Date
-                                                 'InitialUpdateDate',     # Transaction Type
-                                                 PTI                      # Parent TransactionsID
-    );
-
-
-
-
-    ### Add UpdateUserId to Ticket Transaction
-
-    Call web.StoreProdTransactionsValueInt (UUI,                    # Transaction Value
-                                            TI,                     # TicketId
-                                            CUI,                    # Transaction User
-                                            CD,                     # Transaction Date
-                                            'InitialUpdateUserId',  # Transaction Type
-                                            PTI                     # Parent TransactionsID
-    );
-
-    ### Add TargetDate to Ticket Transaction
-
-    Call web.StoreProdTransactionsValueDateTime (TDate,                   # Transaction Value
-                                                 TI,                      # TicketId
-                                                 CUI,                     # Transaction User
-                                                 CD,                      # Transaction Date
-                                                 'InitialTargetDate',     # Transaction Type
-                                                 PTI                      # Parent TransactionsID
-    );
-
-
-
-
-    ### Add DepartmentId to Ticket Transaction
-
-    Call web.StoreProdTransactionsValueInt (DI,                     # Transaction Value
-                                            TI,                     # TicketId
-                                            CUI,                    # Transaction User
-                                            CD,                     # Transaction Date
-                                            'InitialDepartmentId',  # Transaction Type
-                                            PTI                     # Parent TransactionsID
-    );
-
-
-
-
-    ### Add StatusId to Ticket Transaction
-
-    Call web.StoreProdTransactionsValueInt (SI,                     # Transaction Value
-                                            TI,                     # TicketId
-                                            CUI,                    # Transaction User
-                                            CD,                     # Transaction Date
-                                            'InitialStatusId',      # Transaction Type
-                                            PTI                     # Parent TransactionsID
-    );
-
-
-
-    ### Add PriorityId to Ticket Transaction
-
-    Call web.StoreProdTransactionsValueInt (PI,                     # Transaction Value
-                                            TI,                     # TicketId
-                                            CUI,                    # Transaction User
-                                            CD,                     # Transaction Date
-                                            'InitialPriorityId',    # Transaction Type
-                                            PTI                     # Parent TransactionsID
-    );
-
+      -- End our for loop
+    END LOOP forLoop;
 
 
     COMMIT;
+
+    SELECT s;
   END;
 
-call web.create_new_Ticket('jmcgrath',
-                           'Fix Function Foo','Fix Function Foo issue',
-                           '2017-11-07 12:00:12','jmcgrath',
-                           '2017-11-08 13:00:12','jmcgrath',
-                           '2017-11-09 14:00:12','Development',
-                           'In Progress','Normal');
+call web.newTransaction('{"Owner": "user","Title": "Fix Function Foo" }');
 
 
