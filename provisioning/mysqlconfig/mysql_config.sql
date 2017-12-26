@@ -157,6 +157,23 @@ CREATE TABLE web.TransactionsValueDateTime (
 );
 
 
+## Table for find parent to child relationship between Transactions
+
+CREATE TABLE web.TransactionsRelations (
+
+  SourceTransactionId BIGINT UNSIGNED NOT NULL,
+  TypeId INT UNSIGNED NOT NULL,
+  TargetTransactionId BIGINT UNSIGNED NOT NULL,
+  FOREIGN KEY (TypeId) REFERENCES web.TransactionType(TypeId),
+  FOREIGN KEY (SourceTransactionId) REFERENCES web.Transactions(TransactionId),
+  FOREIGN KEY (TargetTransactionId) REFERENCES web.Transactions(TransactionId)
+
+);
+
+
+
+
+
 
 ### Defining Categories ####
 
@@ -185,9 +202,8 @@ INSERT INTO web.TransactionType (Transaction, Description, CategoryId, Transacti
 INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('TicketUpdateDate',' Update Date of the ticket', @ci,'TransactionsValueDateTime');
 INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('TicketUpdateUser',' Update User  of the ticket', @ci,'TransactionsValueVarChar');
 INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('TicketTargetDate',' Target Date of the ticket', @ci,'TransactionsValueDateTime');
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('Department',' Department Id of the ticket', @ci,'TransactionsValueVarChar');
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('TicketStatus',' Status  of the ticket', @ci,'TransactionsValueVarChar');
-INSERT INTO web.TransactionType (Transaction, Description, CategoryId, TransactionValueTable) VALUES ('TicketPriority',' Priority  of the ticket', @ci, 'TransactionsValueVarChar');
+
+
 
 
 
@@ -238,32 +254,18 @@ INSERT INTO web.TransactionType (Transaction, Description, CategoryId, Transacti
 INSERT INTO web.TransactionTypeAttribute (AttributeValue, AttributeDescription) VALUES ('Parent','Classify The Transaction Type As A Parent');
 INSERT INTO web.TransactionTypeAttribute (AttributeValue, AttributeDescription) VALUES ('Child','Classify The Transaction Type As A Child');
 INSERT INTO web.TransactionTypeAttribute (AttributeValue, AttributeDescription) VALUES ('IdentifyAsTranId','The Transaction Type used  Transaction ID for identification');
-
-
+INSERT INTO web.TransactionTypeAttribute (AttributeValue, AttributeDescription) VALUES ('Static','The Transactions that referecnes multiple transactions ex. Department');
+INSERT INTO web.TransactionTypeAttribute (AttributeValue, AttributeDescription) VALUES ('NoEdit','Transactions that can not be edit. ex. Ticket ID');
 
 
 
 ### Setting TransactionTypeMeta ###
 
-/*INSERT INTO web.TransactionTypeMeta (TypeId, AttributeId)
-  SELECT TypeId, (SELECT AttributeId FROM web.TransactionTypeAttribute WHERE AttributeValue= 'Parent')
-  FROM web.TransactionType AS T
-  JOIN web.TransactionCategory AS CT ON T.CategoryId = CT.CategoryId
-  WHERE CT.Category = 'Tickets';
-
 INSERT INTO web.TransactionTypeMeta (TypeId, AttributeId)
-  SELECT TypeId, (SELECT AttributeId FROM web.TransactionTypeAttribute WHERE AttributeValue= 'IdentifyAsTranId')
+  SELECT TypeId, (SELECT AttributeId FROM web.TransactionTypeAttribute WHERE AttributeValue= 'NoEdit')
   FROM web.TransactionType AS T
-  JOIN web.TransactionCategory AS CT ON T.CategoryId = CT.CategoryId
-  WHERE CT.Category = 'Tickets';
-
-
-INSERT INTO web.TransactionTypeMeta (TypeId, AttributeId)
-  SELECT TypeId, (SELECT AttributeId FROM web.TransactionTypeAttribute WHERE AttributeValue= 'Child')
-  FROM web.TransactionType AS T
-  JOIN web.TransactionCategory AS CT ON T.CategoryId = CT.CategoryId
-  WHERE CT.Category = 'Comments';*/
-
+    JOIN web.TransactionCategory AS CT ON T.CategoryId = CT.CategoryId
+  WHERE T.Transaction = 'TicketId';
 
 INSERT INTO web.TransactionTypeMeta (TypeId, AttributeId)
   SELECT TypeId, (SELECT AttributeId FROM web.TransactionTypeAttribute WHERE AttributeValue= 'IdentifyAsTranId')
@@ -278,6 +280,34 @@ INSERT INTO web.TransactionTypeMeta (TypeId, AttributeId)
   FROM web.TransactionType AS T
     JOIN web.TransactionCategory AS CT ON T.CategoryId = CT.CategoryId
   WHERE T.Transaction = 'CommentId';
+
+
+INSERT INTO web.TransactionTypeMeta (TypeId, AttributeId)
+  SELECT TypeId, (SELECT AttributeId FROM web.TransactionTypeAttribute WHERE AttributeValue= 'NoEdit')
+  FROM web.TransactionType AS T
+    JOIN web.TransactionCategory AS CT ON T.CategoryId = CT.CategoryId
+  WHERE T.Transaction = 'CommentId';
+
+
+INSERT INTO web.TransactionTypeMeta (TypeId, AttributeId)
+  SELECT TypeId, (SELECT AttributeId FROM web.TransactionTypeAttribute WHERE AttributeValue= 'Static')
+  FROM web.TransactionType AS T
+    JOIN web.TransactionCategory AS CT ON T.CategoryId = CT.CategoryId
+  WHERE T.Transaction = 'Department';
+
+INSERT INTO web.TransactionTypeMeta (TypeId, AttributeId)
+  SELECT TypeId, (SELECT AttributeId FROM web.TransactionTypeAttribute WHERE AttributeValue= 'Static')
+  FROM web.TransactionType AS T
+    JOIN web.TransactionCategory AS CT ON T.CategoryId = CT.CategoryId
+  WHERE T.Transaction = 'TicketStatus';
+
+
+INSERT INTO web.TransactionTypeMeta (TypeId, AttributeId)
+  SELECT TypeId, (SELECT AttributeId FROM web.TransactionTypeAttribute WHERE AttributeValue= 'Static')
+  FROM web.TransactionType AS T
+    JOIN web.TransactionCategory AS CT ON T.CategoryId = CT.CategoryId
+  WHERE T.Transaction = 'TicketPriority';
+
 
 
 ## Role ID Type
@@ -298,21 +328,6 @@ INSERT INTO web.User (UserName, FirstName, LastName, EmailAddress, Password, Rol
 INSERT INTO web.User (UserName, FirstName, LastName, EmailAddress, Password, RoleId) VALUES (
   'jsmith','john','smith','john.smith@gmail.com','test', 1
 );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -635,7 +650,9 @@ CREATE PROCEDURE web.newTransaction (DATA JSON)
   END;
 
 
-
+/* TODO: make stored producure match on Transcation Catorgoires, then Transcation Type ex. { "Tickets": {"TicketOwner": "jmcgrath"}} */
+/* TODO: If data is static in the Catorgory attribute then reference exisiting Trans ID  */
+/* TODO: Create work for Identifcation by Trans ID */
 
 call web.newTransaction('{"User": "jmcgrath",  "TicketOwner": "jmcgrath","TicketTitle": "Fix Function Foo",
 "TicketDescription": "Fix Function Foo issue", "TicketCreationDate": "2017-11-07 12:00:12", "TicketCreationUser": "jmcgrath",
