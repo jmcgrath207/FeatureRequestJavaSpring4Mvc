@@ -340,7 +340,7 @@ INSERT INTO web.User (UserName, FirstName, LastName, EmailAddress, Password, Rol
 DROP FUNCTION IF EXISTS web.FuncTransactions;
 
 CREATE FUNCTION web.FuncTransactions (
-  TRANUSERID INT,          # Transaction User
+  TRANUSERID INT,        # Transaction User
   TRANDATE DATETIME,     # Transaction Date
   TRANTYPE VARCHAR(255), # Transaction Type
   PTI INT,               # Parent TransactionsID
@@ -382,12 +382,12 @@ CREATE FUNCTION web.FuncTransactions (
 
 DROP PROCEDURE IF EXISTS web.StoreProdTransactionsValueInt;
 
-CREATE PROCEDURE web.StoreProdTransactionsValueInt (TRANVALUE INT,         # Transaction Value
+CREATE PROCEDURE web.StoreProdTransactionsValueInt (TRANVALUE INT,           # Transaction Value
                                                     TRANUSERID INT,          # Transaction User
-                                                    TRANDATE DATETIME,     # Transaction Date
-                                                    TRANTYPE VARCHAR(255), # Transaction Type
-                                                    PTI INT,                # Parent TransactionsID
-                                                    GTI INT                # Group TransactionsID
+                                                    TRANDATE DATETIME,       # Transaction Date
+                                                    TRANTYPE VARCHAR(255),   # Transaction Type
+                                                    PTI INT,                 # Parent TransactionsID
+                                                    GTI INT                  # Group TransactionsID
 )
 
   BEGIN
@@ -397,7 +397,7 @@ CREATE PROCEDURE web.StoreProdTransactionsValueInt (TRANVALUE INT,         # Tra
 
       VALUE (
       (SELECT web.FuncTransactions (
-          TRANUSERID,     # Transaction User
+          TRANUSERID,   # Transaction User
           TRANDATE,     # Transaction Date
           TRANTYPE,     # Transaction Type
           PTI,          # Parent TransactionsID
@@ -415,8 +415,8 @@ CREATE PROCEDURE web.StoreProdTransactionsValueInt (TRANVALUE INT,         # Tra
 
 DROP PROCEDURE IF EXISTS web.StoreProdTransactionsValueVarChar;
 
-CREATE PROCEDURE web.StoreProdTransactionsValueVarChar (TRANVALUE VARCHAR(255),        # Transaction Value
-                                                        TRANUSERID INT,             # Transaction User
+CREATE PROCEDURE web.StoreProdTransactionsValueVarChar (TRANVALUE VARCHAR(255),   # Transaction Value
+                                                        TRANUSERID INT,           # Transaction User
                                                         TRANDATE DATETIME,        # Transaction Date
                                                         TRANTYPE VARCHAR(255),    # Transaction Type
                                                         PTI INT,                  # Parent TransactionsID
@@ -428,7 +428,7 @@ CREATE PROCEDURE web.StoreProdTransactionsValueVarChar (TRANVALUE VARCHAR(255), 
 
       VALUE (
       (SELECT web.FuncTransactions (
-          TRANUSERID,     # Transaction User
+          TRANUSERID,   # Transaction User
           TRANDATE,     # Transaction Date
           TRANTYPE,     # Transaction Type
           PTI,          # Parent TransactionsID
@@ -451,8 +451,8 @@ CREATE PROCEDURE web.StoreProdTransactionsValueVarChar (TRANVALUE VARCHAR(255), 
 
 DROP PROCEDURE IF EXISTS web.StoreProdTransactionsValueText;
 
-CREATE PROCEDURE web.StoreProdTransactionsValueText (TRANVALUE TEXT,                # Transaction Value
-                                                     TRANUSERID INT,             # Transaction User
+CREATE PROCEDURE web.StoreProdTransactionsValueText (TRANVALUE TEXT,           # Transaction Value
+                                                     TRANUSERID INT,           # Transaction User
                                                      TRANDATE DATETIME,        # Transaction Date
                                                      TRANTYPE VARCHAR(255),    # Transaction Type
                                                      PTI INT,                  # Parent TransactionsID
@@ -464,7 +464,7 @@ CREATE PROCEDURE web.StoreProdTransactionsValueText (TRANVALUE TEXT,            
 
       VALUE (
       (SELECT web.FuncTransactions (
-          TRANUSERID,     # Transaction User
+          TRANUSERID,   # Transaction User
           TRANDATE,     # Transaction Date
           TRANTYPE,     # Transaction Type
           PTI,          # Parent TransactionsID
@@ -484,8 +484,8 @@ CREATE PROCEDURE web.StoreProdTransactionsValueText (TRANVALUE TEXT,            
 
 DROP PROCEDURE IF EXISTS web.StoreProdTransactionsValueDateTime;
 
-CREATE PROCEDURE web.StoreProdTransactionsValueDateTime (TRANVALUE TEXT,                # Transaction Value
-                                                         TRANUSERID INT,             # Transaction User
+CREATE PROCEDURE web.StoreProdTransactionsValueDateTime (TRANVALUE TEXT,           # Transaction Value
+                                                         TRANUSERID INT,           # Transaction User
                                                          TRANDATE DATETIME,        # Transaction Date
                                                          TRANTYPE VARCHAR(255),    # Transaction Type
                                                          PTI INT,                  # Parent TransactionsID
@@ -497,7 +497,7 @@ CREATE PROCEDURE web.StoreProdTransactionsValueDateTime (TRANVALUE TEXT,        
 
       VALUE (
       (SELECT web.FuncTransactions (
-          TRANUSERID,     # Transaction User
+          TRANUSERID,   # Transaction User
           TRANDATE,     # Transaction Date
           TRANTYPE,     # Transaction Type
           PTI,          # Parent TransactionsID
@@ -536,7 +536,7 @@ CREATE PROCEDURE web.newTransaction (DATA JSON)
 
     # CURSOR 1
     DECLARE TRANTYPE VARCHAR(255);   ## Transaction
-    DECLARE TVT VARCHAR(255); ## TransactionValueTable
+    DECLARE TVT VARCHAR(255);        ## TransactionValueTable
     DECLARE cur1 CURSOR FOR SELECT  Transaction, TransactionValueTable FROM  web.TransactionType;
 
 
@@ -597,18 +597,18 @@ CREATE PROCEDURE web.newTransaction (DATA JSON)
       IF (SELECT JSON_CONTAINS_PATH(DATA, 'one',  TRANTYPECAT) = 1) THEN
         IF ( TVT='TransactionsValueVarChar') THEN
           CALL web.StoreProdTransactionsValueVarChar ((SELECT JSON_UNQUOTE((SELECT JSON_EXTRACT(DATA, TRANTYPECAT)))),        # Transaction Value
-                                                      TRANUSERID,             # Transaction User
-                                                      TRANDATETIME,          # Transaction Date
-                                                      TRANTYPE,           # Transaction Type
+                                                      TRANUSERID,           # Transaction User
+                                                      TRANDATETIME,         # Transaction Date
+                                                      TRANTYPE,             # Transaction Type
                                                       PTI,                  # Parent TransactionsID
                                                       GTI                   # Group TransactionsID
           );
 
         ELSEIF  ( TVT='TransactionsValueText') THEN
           CALL web.StoreProdTransactionsValueText ((SELECT JSON_UNQUOTE((SELECT JSON_EXTRACT(DATA, TRANTYPECAT)))),        # Transaction Value
-                                                   TRANUSERID,             # Transaction User
-                                                   TRANDATETIME,          # Transaction Date
-                                                   TRANTYPE,           # Transaction Type
+                                                   TRANUSERID,           # Transaction User
+                                                   TRANDATETIME,         # Transaction Date
+                                                   TRANTYPE,             # Transaction Type
                                                    PTI,                  # Parent TransactionsID
                                                    GTI                   # Group TransactionsID
           );
@@ -616,18 +616,18 @@ CREATE PROCEDURE web.newTransaction (DATA JSON)
 
         ELSEIF  ( TVT='TransactionsValueDateTime') THEN
           CALL web.StoreProdTransactionsValueDateTime ((SELECT JSON_UNQUOTE((SELECT JSON_EXTRACT(DATA, TRANTYPECAT)))),        # Transaction Value
-                                                       TRANUSERID,             # Transaction User
-                                                       TRANDATETIME,          # Transaction Date
-                                                       TRANTYPE,           # Transaction Type
+                                                       TRANUSERID,           # Transaction User
+                                                       TRANDATETIME,         # Transaction Date
+                                                       TRANTYPE,             # Transaction Type
                                                        PTI,                  # Parent TransactionsID
                                                        GTI                   # Group TransactionsID
           );
 
         ELSEIF  ( TVT='TransactionsValueINT') THEN
           CALL web.StoreProdTransactionsValueInt ((SELECT JSON_UNQUOTE((SELECT JSON_EXTRACT(DATA, TRANTYPECAT)))),        # Transaction Value
-                                                  TRANUSERID,             # Transaction User
-                                                  TRANDATETIME,          # Transaction Date
-                                                  TRANTYPE,           # Transaction Type
+                                                  TRANUSERID,           # Transaction User
+                                                  TRANDATETIME,         # Transaction Date
+                                                  TRANTYPE,             # Transaction Type
                                                   PTI,                  # Parent TransactionsID
                                                   GTI                   # Group TransactionsID
           );
@@ -652,12 +652,13 @@ CREATE PROCEDURE web.newTransaction (DATA JSON)
 
 /* TODO: make stored producure match on Transcation Catorgoires, then Transcation Type ex. { "Tickets": {"TicketOwner": "jmcgrath"}} */
 /* TODO: If data is static in the Catorgory attribute then reference exisiting Trans ID  */
-/* TODO: Create work for Identifcation by Trans ID */
+/* TODO: look for existing parent trans ID*/
+/* TODO: Create work for Identification by Trans ID */
 
 call web.newTransaction('{"User": "jmcgrath",  "TicketOwner": "jmcgrath","TicketTitle": "Fix Function Foo",
-"TicketDescription": "Fix Function Foo issue", "TicketCreationDate": "2017-11-07 12:00:12", "TicketCreationUser": "jmcgrath",
-"TicketUpdateDate": "2017-11-08 13:00:12", "TicketUpdateUser": "jmcgrath", "TicketTargetDate": "2017-11-09 14:00:12",
-"Department": "Development",  "TicketStatus": "In Progress", "TicketPriority": "Normal"}');
+  "TicketDescription": "Fix Function Foo issue", "TicketCreationDate": "2017-11-07 12:00:12", "TicketCreationUser": "jmcgrath",
+  "TicketUpdateDate": "2017-11-08 13:00:12", "TicketUpdateUser": "jmcgrath", "TicketTargetDate": "2017-11-09 14:00:12",
+  "Department": "Development",  "TicketStatus": "In Progress", "TicketPriority": "Normal"}');
 
 
 
