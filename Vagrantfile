@@ -187,7 +187,6 @@ Vagrant.configure(VAGRANT_VERSION) do |config|
         changeRoot = 'sed -i -e "/^PermitRootLogin/s/^.*$/PermitRootLogin yes/" /etc/ssh/sshd_config;'
         changePassAuth = 'sed -i -e "/^PasswordAuthentication/s/^.*$/#PasswordAuthentication no/" /etc/ssh/sshd_config;'
         changeResponseAuth = 'sed -i -e "/^ChallengeResponseAuthentication/s/^.*$/#ChallengeResponseAuthentication no/" /etc/ssh/sshd_config;'
-        s.inline =
         s.inline = changeRoot + changePassAuth + changeResponseAuth + 'service sshd restart'
         #s.args   = [ROOT_SSH_ACCESS]
       end
