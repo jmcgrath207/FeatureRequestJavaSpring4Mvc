@@ -44,7 +44,7 @@ HOSTNAME_1 = "web"
 HOSTNAME_1_DISABLE = false
 HOSTNAME_1_PLAYBOOK = "provisioning/web-playbook.yml"
 DISTRO_B1 = "ubuntu/xenial64"
-VERSION_B1 = "20170626.0.0"
+VERSION_B1 = "20180126.0.0"
 RAM_B1 = 2048
 PORT_FOWARD_1 = [8080,8080,5005,5005,1099,1099,8009,8009]   #Vagrant box port first then local host port
 
@@ -54,7 +54,7 @@ HOSTNAME_2 = "db"
 HOSTNAME_2_DISABLE = false
 HOSTNAME_2_PLAYBOOK = "provisioning/db-playbook.yml"
 DISTRO_B2 = "ubuntu/xenial64"
-VERSION_B2 = "20170626.0.0"
+VERSION_B2 = "20180126.0.0"
 RAM_B2 = 1000
 PORT_FOWARD_2 = [3306,3306]
 
@@ -184,8 +184,12 @@ Vagrant.configure(VAGRANT_VERSION) do |config|
 
       #args is not working
       config.vm.provision "shell" do |s|
-        s.inline = 'sed -i -e "/^PermitRootLogin/s/^.*$/PermitRootLogin yes/" /etc/ssh/sshd_config; service sshd restart'
-        s.args   = [ROOT_SSH_ACCESS]
+        changeRoot = 'sed -i -e "/^PermitRootLogin/s/^.*$/PermitRootLogin yes/" /etc/ssh/sshd_config;'
+        changePassAuth = 'sed -i -e "/^PasswordAuthentication/s/^.*$/#PasswordAuthentication no/" /etc/ssh/sshd_config;'
+        changeResponseAuth = 'sed -i -e "/^ChallengeResponseAuthentication/s/^.*$/#ChallengeResponseAuthentication no/" /etc/ssh/sshd_config;'
+        s.inline =
+        s.inline = changeRoot + changePassAuth + changeResponseAuth + 'service sshd restart'
+        #s.args   = [ROOT_SSH_ACCESS]
       end
 
 
